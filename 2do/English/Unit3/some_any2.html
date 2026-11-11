@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Some & Any Challenge 2! 🌟</title>
+    <style>
+        :root {
+            --primary: #4cc9f0;
+            --success: #2ec4b6;
+            --error: #e63946;
+            --background: #f0f4f8;
+            --text: #2b2d42;
+            --heading: #4a4e69;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 850px;
+            width: 100%;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            box-sizing: border-box;
+        }
+
+        h1 { text-align: center; color: var(--heading); font-size: 2.2rem; margin-bottom: 5px; }
+        p.subtitle { text-align: center; color: #64748b; font-size: 1.1rem; margin-bottom: 20px; }
+
+        /* Kid-friendly Rule Reminder Box */
+        .tip-box {
+            background-color: #fffbeb;
+            border: 2px dashed #f59e0b;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            color: #78350f;
+            line-height: 1.5;
+        }
+
+        .sentences-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sentence-row {
+            font-size: 1.25rem;
+            padding: 16px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            line-height: 1.6;
+            transition: all 0.3s;
+            border-left: 6px solid transparent;
+        }
+
+        .sentence-number {
+            font-weight: bold;
+            color: #64748b;
+            margin-right: 4px;
+        }
+
+        /* Dropdown styling */
+        .some-any-select {
+            font-size: 1.15rem;
+            font-weight: bold;
+            padding: 5px 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            background-color: white;
+            color: var(--text);
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .some-any-select:focus {
+            border-color: var(--primary);
+        }
+
+        /* Validation Feedback styles */
+        .row-correct {
+            background-color: #ecfdf5;
+            border-left-color: var(--success);
+        }
+
+        .row-wrong {
+            background-color: #fff5f5;
+            border-left-color: var(--error);
+        }
+
+        .correction-text {
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: var(--error);
+            margin-left: 8px;
+            display: none;
+        }
+
+        /* Action Button */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 35px;
+        }
+
+        .check-btn {
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            font-weight: bold;
+            padding: 15px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+            transition: all 0.2s;
+        }
+
+        .check-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+        }
+
+        .win-message {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--success);
+            margin-top: 30px;
+            display: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🌟 Some & Any Challenge 2! 🌟</h1>
+        <p class="subtitle">Choose "some" or "any" to complete every sentence!</p>
+
+        <div class="tip-box">
+            <strong>💡 Detective Clues:</strong><br>
+            🟢 Positive (<strong>+</strong>) → <strong>some</strong> &nbsp;|&nbsp; 
+            🔴 Negative (<strong>-</strong>) & ❓ Questions (<strong>?</strong>) → <strong>any</strong><br>
+            ⭐ <em>Special Rule:</em> Polite requests or offers (<em>Would you like...? / Could you...?</em>) → <strong>some</strong>!
+        </div>
+
+        <div class="sentences-list" id="mixed-list">
+            <!-- 1 -->
+            <div class="sentence-row">
+                <span class="sentence-number"></span> ⛵ Jonathan could see a small boat, a lake and 
+                <select class="some-any-select" data-answer="some">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> trees in the distance. 🌲
+                <span class="correction-text">❌ (Use: some)</span>
+            </div>
+
+            <!-- 2 -->
+            <div class="sentence-row">
+                <span class="sentence-number"></span> 🐠 Miss Mason hasn't got a pet dog, she only has 
+                <select class="some-any-select" data-answer="some">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> tropical fish.
+                <span class="correction-text">❌ (Use: some)</span>
+            </div>
+
+            <!-- 3 -->
+            <div class="sentence-row">
+                <span class="sentence-number"></span> 🎬 Shelly likes 
+                <select class="some-any-select" data-answer="some">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> films by Woody Allen but not all of them.
+                <span class="correction-text">❌ (Use: some)</span>
+            </div>
+
+            <!-- 4 (Two blanks) -->
+            <div class="sentence-row">
+                <span class="sentence-number"></span> 🍪 There aren't 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> chocolate biscuits in the kitchen cupboard. I must remember to buy 
+                <select class="some-any-select" data-answer="some">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> more.
+                <span class="correction-text">❌ (Use: any / some)</span>
+            </div>
+
+            <!-- 5 -->
+            <div class="sentence-row">
+                <span class="sentence-number"></span> 🦖 Tim can't find 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> good books about dinosaurs in the library. 📚
+                <span class="correction-text">❌ (Use: any)</span>
+            </div>
+
+            <!-- 6 -->
+            <div class="sentence-row">
+                <span class="sentence-number"></span> 🏛️ Natalie has got 
+                <select class="some-any-select" data-answer="some">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> great friends living in Athens.
+                <span class="correction-text">❌ (Use: some)</span>
+            </div>
+
+            <!-- 7 -->
+            <div class="sentence-row">
+                <span class="sentence-number"></span> 🦩 There aren't 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> wild flamingos in Canada. 🇨🇦
+                <span class="correction-text">❌ (Use: any)</span>
+            </div>
+
+            <!-- 8 -->
+            <div class="sentence-row">
+                <span class="sentence-number"></span> 💃 We love dancing to 
+                <select class="some-any-select" data-answer="some">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> types of Latin music. The Samba is great! 🎶
+                <span class="correction-text">❌ (Use: some)</span>
+            </div>
+
+            <!-- 9 -->
+            <div class="sentence-row">
+                <span class="sentence-number"></span> 🎮 Have you got 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> new games for your X-Box 360?
+                <span class="correction-text">❌ (Use: any)</span>
+            </div>
+
+            <!-- 10 (Two blanks) -->
+            <div class="sentence-row">
+                <span class="sentence-number"></span> 📩 Are there 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> messages for me? No, sorry, there aren't 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select>.
+                <span class="correction-text">❌ (Use: any / any)</span>
+            </div>
+
+            <!-- 11 (Polite request) -->
+            <div class="sentence-row">
+                <span class="sentence-number"></span> ⭐ 🎂 Could you please buy me 
+                <select class="some-any-select" data-answer="some">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> more sugar for the cake? I have run out of it.
+                <span class="correction-text">❌ (Polite request → Use: some)</span>
+            </div>
+
+            <div class="sentence-row">
+                <span class="sentence-number"></span> ⭐ 🍊 Would you like 
+                <select class="some-any-select" data-answer="some">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> fresh orange juice? Yes, I would love 
+                <select class="some-any-select" data-answer="some">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select>.
+                <span class="correction-text">❌ (Polite offer → Use: some / some)</span>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button class="check-btn" onclick="checkAnswers()">Check Answers ✔️</button>
+        </div>
+
+        <div class="win-message" id="win-msg">🎉 Amazing Job! You solved the Some & Any Challenge! ⭐</div>
+    </div>
+
+    <script>
+        // Shuffle and re-number sentences on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const list = document.getElementById('mixed-list');
+            const rows = Array.from(list.children);
+            
+            for (let i = rows.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                list.appendChild(rows[j]);
+                rows.splice(j, 1);
+            }
+            
+            const currentRows = list.querySelectorAll('.sentence-row');
+            currentRows.forEach((row, index) => {
+                row.querySelector('.sentence-number').innerText = (index + 1) + ".";
+            });
+        });
+
+        function checkAnswers() {
+            const rows = document.querySelectorAll('.sentence-row');
+            let allCorrect = true;
+
+            rows.forEach(row => {
+                const selects = row.querySelectorAll('.some-any-select');
+                const correction = row.querySelector('.correction-text');
+                let rowIsCorrect = true;
+
+                row.classList.remove('row-correct', 'row-wrong');
+                correction.style.display = 'none';
+
+                selects.forEach(select => {
+                    const correctAnswer = select.getAttribute('data-answer');
+                    const userAnswer = select.value;
+                    if (userAnswer !== correctAnswer) {
+                        rowIsCorrect = false;
+                    }
+                });
+
+                if (rowIsCorrect) {
+                    row.classList.add('row-correct');
+                } else {
+                    row.classList.add('row-wrong');
+                    correction.style.display = 'inline';
+                    allCorrect = false;
+                }
+            });
+
+            const winMsg = document.getElementById('win-msg');
+            if (allCorrect) {
+                winMsg.style.display = 'block';
+                winMsg.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                winMsg.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
+

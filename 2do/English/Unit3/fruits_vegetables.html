@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍎 Fruits, Vegetables & Plurals! 🥦</title>
+    <style>
+        :root {
+            --fruit-color: #ff6b6b;
+            --veg-color: #4caf50;
+            --primary: #4cc9f0;
+            --background: #f0f4f8;
+            --text: #2d3436;
+            --success: #2ec4b6;
+            --error: #e63946;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        h1, h2, h3 { text-align: center; color: #4a4e69; }
+        h1 { font-size: 2.3rem; margin-bottom: 5px; }
+        h2 { font-size: 1.8rem; margin-top: 40px; border-bottom: 3px solid var(--primary); padding-bottom: 10px; }
+
+        /* Game 1: Sorting Boxes */
+        .sorting-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+        .box {
+            width: 45%;
+            min-height: 200px;
+            border: 3px dashed #cbd5e1;
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-content: flex-start;
+            background: #f8fafc;
+            transition: all 0.2s;
+        }
+
+        .box-fruit { border-color: var(--fruit-color); }
+        .box-fruit h3 { color: var(--fruit-color); width: 100%; margin: 0 0 10px 0; }
+        .box-veg { border-color: var(--veg-color); }
+        .box-veg h3 { color: var(--veg-color); width: 100%; margin: 0 0 10px 0; }
+        
+        .box.drag-over { background: #e2e8f0; }
+
+        .food-items-pool {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f1f5f9;
+            border-radius: 15px;
+        }
+
+        .food-card {
+            background: white;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 8px 12px;
+            cursor: grab;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            user-select: none;
+        }
+
+        /* Game 2: Plurals Table */
+        .plurals-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .plural-row {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 5px solid #cbd5e1;
+            transition: all 0.3s;
+        }
+
+        .plural-row img {
+            width: 45px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .word-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            width: 100px;
+        }
+
+        .plural-input {
+            font-size: 1.1rem;
+            padding: 6px 10px;
+            width: 110px;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            outline: none;
+            font-weight: bold;
+        }
+
+        .plural-input:focus { border-color: var(--primary); }
+        
+        .row-correct { border-left-color: var(--success); background: #ecfdf5; }
+        .row-wrong { border-left-color: var(--error); background: #fff5f5; }
+        
+        .correction {
+            font-size: 0.9rem;
+            color: var(--error);
+            font-weight: bold;
+            display: none;
+        }
+
+        /* Check Button */
+        .btn-container { display: flex; justify-content: center; margin-top: 35px; }
+        .check-btn {
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            font-weight: bold;
+            padding: 15px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+        .check-btn:hover { transform: translateY(-2px); }
+
+        .win-message {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--success);
+            margin-top: 25px;
+            display: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🍓 Vegetable & Fruit Sorting! 🥦</h1>
+        <p style="text-align:center; font-size:1.1rem; color:#64748b;">Drag and drop the food into the correct box!</p>
+
+        <!-- Pool of items to drag -->
+        <div class="food-items-pool" id="items-pool">
+            <!-- Vegetables -->
+            <div class="food-card" draggable="true" id="f-bean" data-type="veg">🌱 bean</div>
+            <div class="food-card" draggable="true" id="f-cabbage" data-type="veg">🥬 cabbage</div>
+            <div class="food-card" draggable="true" id="f-carrot" data-type="veg">🥕 carrot</div>
+            <div class="food-card" draggable="true" id="f-corn" data-type="veg">🌽 corn</div>
+            <div class="food-card" draggable="true" id="f-mushroom" data-type="veg">🍄 mushroom</div>
+            <div class="food-card" draggable="true" id="f-onion" data-type="veg">🧅 onion</div>
+            <div class="food-card" draggable="true" id="f-pea" data-type="veg">🫛 pea</div>
+            <div class="food-card" draggable="true" id="f-pepper" data-type="veg">🫑 pepper</div>
+            <!-- Fruits -->
+            <div class="food-card" draggable="true" id="f-coconut" data-type="fruit">🥥 coconut</div>
+            <div class="food-card" draggable="true" id="f-kiwi" data-type="fruit">🥝 kiwi</div>
+            <div class="food-card" draggable="true" id="f-lemon" data-type="fruit">🍋 lemon</div>
+            <div class="food-card" draggable="true" id="f-lime" data-type="fruit">🟢 lime</div>
+            <div class="food-card" draggable="true" id="f-mango" data-type="fruit">🥭 mango</div>
+            <div class="food-card" draggable="true" id="f-orange" data-type="fruit">🍊 orange</div>
+            <div class="food-card" draggable="true" id="f-pear" data-type="fruit">🍐 pear</div>
+            <div class="food-card" draggable="true" id="f-pineapple" data-type="fruit">🍍 pineapple</div>
+        </div>
+
+        <div class="sorting-container">
+            <div class="box box-veg" data-box="veg" ondragover="allowDrop(event)" ondrop="dropFood(event)">
+                <h3>🥦 VEGETABLES</h3>
+            </div>
+            <div class="box box-fruit" data-box="fruit" ondragover="allowDrop(event)" ondrop="dropFood(event)">
+                <h3>🍎 FRUIT</h3>
+            </div>
+        </div>
+
+         <!-- SECTION 2: PLURALS -->
+        <h2>📝 Type the Plurals! (Write with -s or -es)</h2>
+        <p style="text-align:center; color:#64748b;">Read the word and write the plural form!</p>
+        
+        <div class="plurals-grid">
+            <!-- Column 1 (Vegetables) -->
+            <div class="plural-row">
+                <span class="word-label">🌱 1 bean →</span>
+                <input type="text" class="plural-input" data-correct="beans" placeholder="plural...">
+                <span class="correction">❌ beans</span>
+            </div>
+            <div class="plural-row">
+                <span class="word-label">🥬 1 cabbage →</span>
+                <input type="text" class="plural-input" data-correct="cabbages" placeholder="plural...">
+                <span class="correction">❌ cabbages</span>
+            </div>
+            <div class="plural-row">
+                <span class="word-label">🥕 1 carrot →</span>
+                <input type="text" class="plural-input" data-correct="carrots" placeholder="plural...">
+                <span class="correction">❌ carrots</span>
+            </div>
+            <div class="plural-row">
+                <span class="word-label">🌽 1 corn →</span>
+                <input type="text" class="plural-input" data-correct="corns" placeholder="plural...">
+                <span class="correction">❌ corns</span>
+            </div>
+            <div class="plural-row">
+                <span class="word-label">🍄 1 mushroom →</span>
+                <input type="text" class="plural-input" data-correct="mushrooms" placeholder="plural...">
+                <span class="correction">❌ mushrooms</span>
+            </div>
+            <div class="plural-row">
+                <span class="word-label">🧅 1 onion →</span>
+                <input type="text" class="plural-input" data-correct="onions" placeholder="plural...">
+                <span class="correction">❌ onions</span>
+            </div>
+            <div class="plural-row">
+                <span class="word-label">🫛 1 pea →</span>
+                <input type="text" class="plural-input" data-correct="peas" placeholder="plural...">
+                <span class="correction">❌ peas</span>
+            </div>
+            <div class="plural-row">
+                <span class="word-label">🫑 1 pepper →</span>
+                <input type="text" class="plural-input" data-correct="peppers" placeholder="plural...">
+                <span class="correction">❌ peppers</span>
+            </div>
+
+            <!-- Column 2 (Fruits) -->
+            <div class="plural-row">
+                <span class="word-label">🥥 1 coconut →</span>
+                <input type="text" class="plural-input" data-correct="coconuts" placeholder="plural...">
+                <span class="correction">❌ coconuts</span>
+            </div>
+            <div class="plural-row">
+                <span class="word-label">🥝 1 kiwi →</span>
+                <input type="text" class="plural-input" data-correct="kiwis" placeholder="plural...">
+                <span class="correction">❌ kiwis</span>
+            </div>
+            <div class="plural-row">
+                <span class="word-label">🍋 1 lemon →</span>
+                <input type="text" class="plural-input" data-correct="lemons" placeholder="plural...">
+                <span class="correction">❌ lemons</span>
+            </div>
+            <div class="plural-row">
+                <span class="word-label">🟢 1 lime →</span>
+                <input type="text" class="plural-input" data-correct="limes" placeholder="plural...">
+                <span class="correction">❌ limes</span>
+            </div>
+            <div class="plural-row">
+                <span class="word-label">🥭 1 mango →</span>
+                <input type="text" class="plural-input" data-correct="mangoes" placeholder="plural...">
+                <span class="correction">❌ mangoes</span>
+            </div>
+            <div class="plural-row">
+                <span class="word-label">🍊 1 orange →</span>
+                <input type="text" class="plural-input" data-correct="oranges" placeholder="plural...">
+                <span class="correction">❌ oranges</span>
+            </div>
+            <div class="plural-row">
+                <span class="word-label">🍐 1 pear →</span>
+                <input type="text" class="plural-input" data-correct="pears" placeholder="plural...">
+                <span class="correction">❌ pears</span>
+            </div>
+            <div class="plural-row">
+                <span class="word-label">🍍 1 pineapple →</span>
+                <input type="text" class="plural-input" data-correct="pineapples" placeholder="placeholder...">
+                <span class="correction">❌ pineapples</span>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button class="check-btn" onclick="validateEverything()">Check Everything! ✔️</button>
+        </div>
+
+        <div class="win-message" id="win-msg">🎉 Awesome job! You know your fruits, vegetables, and plurals! ⭐</div>
+    </div>
+
+    <script>
+        let draggedId = '';
+
+        // Drag and Drop Logic
+        const cards = document.querySelectorAll('.food-card');
+        cards.forEach(card => {
+            card.addEventListener('dragstart', (e) => { draggedId = e.target.id; });
+        });
+
+        // Mix the cards randomly in the pool at start
+        const pool = document.getElementById('items-pool');
+        for (let i = pool.children.length; i >= 0; i--) {
+            pool.appendChild(pool.children[Math.random() * i | 0]);
+        }
+
+        function allowDrop(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+        
+        document.querySelectorAll('.box').forEach(box => {
+            box.addEventListener('dragleave', (e) => { e.currentTarget.classList.remove('drag-over'); });
+        });
+
+        function dropFood(e) {
+            e.preventDefault();
+            const box = e.currentTarget;
+            box.classList.remove('drag-over');
+            const item = document.getElementById(draggedId);
+            
+            // Check if it belongs to this box type
+            if (item.getAttribute('data-type') === box.getAttribute('data-box')) {
+                box.appendChild(item);
+                item.style.cursor = 'default';
+                item.setAttribute('draggable', 'false');
+            } else {
+                box.style.borderColor = 'var(--error)';
+                setTimeout(() => { 
+                    box.style.borderColor = box.getAttribute('data-box') === 'veg' ? 'var(--veg-color)' : 'var(--fruit-color)'; 
+                }, 500);
+            }
+        }
+
+        // Form Validation Logic
+        function validateEverything() {
+            const rows = document.querySelectorAll('.plural-row');
+            let allInputsCorrect = true;
+
+            rows.forEach(row => {
+                const input = row.querySelector('.plural-input');
+                const correction = row.querySelector('.correction');
+                const correctVal = input.getAttribute('data-correct').toLowerCase().trim();
+                const userVal = input.value.toLowerCase().trim();
+
+                row.classList.remove('row-correct', 'row-wrong');
+                correction.style.display = 'none';
+
+                if (userVal === correctVal) {
+                    row.classList.add('row-correct');
+                } else {
+                    row.classList.add('row-wrong');
+                    correction.style.display = 'inline';
+                    allInputsCorrect = false;
+                }
+            });
+
+            // Check if pool is empty (all sorted) and all plurals are right
+            const poolIsEmpty = document.getElementById('items-pool').children.length === 0;
+            const winMsg = document.getElementById('win-msg');
+
+            if (allInputsCorrect && poolIsEmpty) {
+                winMsg.style.display = 'block';
+                winMsg.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                winMsg.style.display = 'none';
+                if (!poolIsEmpty) {
+                    alert("Almost done! Sort all the foods into the boxes too!");
+                }
+            }
+        }
+    </script>
+</body>
+</html>

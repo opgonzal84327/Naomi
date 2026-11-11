@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🕵️‍♂️ Whose Is It? Drag & Drop Game!</title>
+    <style>
+        :root {
+            --primary: #4cc9f0;
+            --success: #2ec4b6;
+            --error: #e63946;
+            --background: #f8f9fa;
+            --text: #2b2d42;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            margin: 0;
+            padding: 0 20px 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-top: 20px;
+        }
+
+        /* FIXED Word Bank at the top */
+        .word-bank-container {
+            position: sticky;
+            top: 0;
+            background: #ffffff;
+            padding: 20px;
+            border-bottom: 4px solid #edf2f7;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.04);
+            z-index: 1000;
+            width: 100%;
+            max-width: 800px;
+            box-sizing: border-box;
+            border-radius: 0 0 20px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .drag-container {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .drag-item {
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: grab;
+            font-weight: bold;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            user-select: none;
+            transition: transform 0.2s;
+        }
+
+        .drag-item:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+        }
+
+        /* Sentences List */
+        .sentences-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .game-block {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 6px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .context-line {
+            font-size: 1.1rem;
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .question-line {
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            line-height: 1.5;
+        }
+
+        .sentence-number {
+            font-weight: bold;
+            color: #64748b;
+        }
+
+        /* Drag Zones */
+        .drop-zone {
+            width: 95px;
+            height: 38px;
+            border: 2px dashed #94a3b8;
+            border-radius: 8px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            font-weight: bold;
+            color: var(--text);
+            font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+
+        .drop-zone.drag-over {
+            background: #e0f2fe;
+            border-color: var(--primary);
+        }
+
+        /* Validation Feedback styles */
+        .row-correct {
+            background-color: #ecfdf5;
+            border-left-color: var(--success);
+        }
+
+        .row-correct .drop-zone {
+            border: 2px solid var(--success);
+            background: #ffffff;
+            color: var(--success);
+        }
+
+        .row-wrong {
+            background-color: #fff5f5;
+            border-left-color: var(--error);
+        }
+
+        .row-wrong .drop-zone {
+            border: 2px solid var(--error);
+            background: #ffffff;
+            color: var(--error);
+        }
+
+        .correction-text {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--error);
+            margin-left: 10px;
+            display: none;
+        }
+
+        /* Action Button */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .check-btn {
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            font-weight: bold;
+            padding: 15px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+            transition: all 0.2s;
+        }
+
+        .check-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+        }
+
+        .win-message {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--success);
+            margin-top: 30px;
+            display: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- This container stays completely fixed while scrolling -->
+    <div class="word-bank-container">
+        <div class="drag-container">
+            <div class="drag-item" draggable="true">mine</div>
+            <div class="drag-item" draggable="true">yours</div>
+            <div class="drag-item" draggable="true">his</div>
+            <div class="drag-item" draggable="true">hers</div>
+            <div class="drag-item" draggable="true">ours</div>
+            <div class="drag-item" draggable="true">theirs</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sentences-list" id="mixed-list">
+            <!-- Mine -->
+            <div class="game-block">
+                <div class="context-line">👤 This red pencil belongs to <strong>me</strong>.</div>
+                <div class="question-line">
+                    <span class="sentence-number"></span> Whose pencil is it? → It's <div class="drop-zone" data-answer="mine"></div>. ✏️
+                    <span class="correction-text">❌ (Correct: mine)</span>
+                </div>
+            </div>
+            <div class="game-block">
+                <div class="context-line">👤 I have a beautiful cat.</div>
+                <div class="question-line">
+                    <span class="sentence-number"></span> Whose cat is it? → It's <div class="drop-zone" data-answer="mine"></div>. 🐱
+                    <span class="correction-text">❌ (Correct: mine)</span>
+                </div>
+            </div>
+
+            <!-- Yours -->
+            <div class="game-block">
+                <div class="context-line">🫵 This blue balloon belongs to <strong>you</strong>.</div>
+                <div class="question-line">
+                    <span class="sentence-number"></span> Whose balloon is it? → It's <div class="drop-zone" data-answer="yours"></div>. 🎈
+                    <span class="correction-text">❌ (Correct: yours)</span>
+                </div>
+            </div>
+            <div class="game-block">
+                <div class="context-line">🫵 You have a fast bicycle.</div>
+                <div class="question-line">
+                    <span class="sentence-number"></span> Whose bicycle is it? → It's <div class="drop-zone" data-answer="yours"></div>. 🚲
+                    <span class="correction-text">❌ (Correct: yours)</span>
+                </div>
+            </div>
+
+            <!-- His -->
+            <div class="game-block">
+                <div class="context-line">👦 Toby has a green toy car.</div>
+                <div class="question-line">
+                    <span class="sentence-number"></span> Whose car is it? → It's <div class="drop-zone" data-answer="his"></div>. 🚗
+                    <span class="correction-text">❌ (Correct: his)</span>
+                </div>
+            </div>
+            <div class="game-block">
+                <div class="context-line">👦 This guitar belongs to Leo.</div>
+                <div class="question-line">
+                    <span class="sentence-number"></span> Whose guitar is it? → It's <div class="drop-zone" data-answer="his"></div>. 🎸
+                    <span class="correction-text">❌ (Correct: his)</span>
+                </div>
+            </div>
+
+            <!-- Hers -->
+            <div class="game-block">
+                <div class="context-line">👧 Emma has a pretty doll.</div>
+                <div class="question-line">
+                    <span class="sentence-number"></span> Whose doll is it? → It's <div class="drop-zone" data-answer="hers"></div>. 🪆
+                    <span class="correction-text">❌ (Correct: hers)</span>
+                </div>
+            </div>
+            <div class="game-block">
+                <div class="context-line">👧 This pink dress belongs to Lily.</div>
+                <div class="question-line">
+                    <span class="sentence-number"></span> Whose dress is it? → It's <div class="drop-zone" data-answer="hers"></div>. 25 👗
+                    <span class="correction-text">❌ (Correct: hers)</span>
+                </div>
+            </div>
+
+            <!-- Ours -->
+            <div class="game-block">
+                <div class="context-line">🧑‍🤝‍🧑 We have a big trophy.</div>
+                <div class="question-line">
+                    <span class="sentence-number"></span> Whose trophy is it? → It's <div class="drop-zone" data-answer="ours"></div>. 🏆
+                    <span class="correction-text">❌ (Correct: ours)</span>
+                </div>
+            </div>
+            <div class="game-block">
+                <div class="context-line">🧑‍🤝‍🧑 This house belongs to you and me.</div>
+                <div class="question-line">
+                    <span class="sentence-number"></span> Whose house is it? → It's <div class="drop-zone" data-answer="ours"></div>. 🏡
+                    <span class="correction-text">❌ (Correct: ours)</span>
+                </div>
+            </div>
+
+            <div class="game-block">
+                <div class="context-line">👥 Tom and Ben have a big ball.</div>
+                <div class="question-line">
+                    <span class="sentence-number"></span> Whose ball is it? → It's <div class="drop-zone" data-answer="theirs"></div>. ⚽
+                    <span class="correction-text">❌ (Correct: theirs)</span>
+                </div>
+            </div>
+            <div class="game-block">
+                <div class="context-line">👥 This library belongs to the students.</div>
+                <div class="question-line">
+                    <span class="sentence-number"></span> Whose books are they? → They're <div class="drop-zone" data-answer="theirs"></div>. 📚
+                    <span class="correction-text">❌ (Correct: theirs)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button class="check-btn" onclick="validateEverything()">Check Answers ✔️</button>
+        </div>
+
+        <div class="win-message" id="win-msg">🎉 Brilliant Detective! You mastered "Whose"! ⭐</div>
+    </div>
+
+    <script>
+        let draggedText = '';
+
+        // Handle Drag Events
+        const dragItems = document.querySelectorAll('.drag-item');
+        dragItems.forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                draggedText = e.target.innerText;
+            });
+        });
+
+        // Handle Drop Zones
+        const dropZones = document.querySelectorAll('.drop-zone');
+        dropZones.forEach(zone => {
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                zone.classList.add('drag-over');
+            });
+
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('drag-over');
+            });
+
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zone.classList.remove('drag-over');
+                zone.innerText = draggedText;
+                
+                // Clear error/correct feedback if answer is updated
+                const parentBlock = zone.closest('.game-block');
+                parentBlock.classList.remove('row-correct', 'row-wrong');
+                parentBlock.querySelector('.correction-text').style.display = 'none';
+            });
+        });
+
+        // Shuffle elements on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const list = document.getElementById('mixed-list');
+            const blocks = Array.from(list.children);
+            
+            for (let i = blocks.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                list.appendChild(blocks[j]);
+                blocks.splice(j, 1);
+            }
+            
+            const currentBlocks = list.querySelectorAll('.game-block');
+            currentBlocks.forEach((block, index) => {
+                block.querySelector('.sentence-number').innerText = (index + 1) + ".";
+            });
+        });
+
+        // Validate Everything on Button Click
+        function validateEverything() {
+            const blocks = document.querySelectorAll('.game-block');
+            let totalCorrect = true;
+
+            blocks.forEach(block => {
+                const zone = block.querySelector('.drop-zone');
+                const correction = block.querySelector('.correction-text');
+                const correctAnswer = zone.getAttribute('data-answer');
+                const userAnswer = zone.innerText.trim();
+
+                block.classList.remove('row-correct', 'row-wrong');
+                correction.style.display = 'none';
+
+                if (userAnswer === correctAnswer) {
+                    block.classList.add('row-correct');
+                } else {
+                    block.classList.add('row-wrong');
+                    correction.style.display = 'inline';
+                    totalCorrect = false;
+                }
+            });
+
+            const winMsg = document.getElementById('win-msg');
+            if (totalCorrect) {
+                winMsg.style.display = 'block';
+                winMsg.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                winMsg.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

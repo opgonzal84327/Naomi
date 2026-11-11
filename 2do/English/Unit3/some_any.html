@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍏 Some and Any Kitchen Game! 🥦</title>
+    <style>
+        :root {
+            --primary: #4cc9f0;
+            --success: #2ec4b6;
+            --error: #e63946;
+            --background: #f0f4f8;
+            --text: #2b2d42;
+            --heading: #4a4e69;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+
+        h1 { text-align: center; color: var(--heading); font-size: 2.3rem; margin-bottom: 5px; }
+        p.subtitle { text-align: center; color: #64748b; font-size: 1.1rem; margin-bottom: 30px; }
+        
+        h2 { 
+            font-size: 1.5rem; 
+            margin-top: 30px; 
+            padding-bottom: 8px; 
+            border-bottom: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-positive h2 { color: #4caf50; border-bottom-color: #4caf50; }
+        .section-negative h2 { color: #f44336; border-bottom-color: #f44336; }
+        .section-question h2 { color: #ff9800; border-bottom-color: #ff9800; }
+
+        .sentences-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 15px;
+        }
+
+        .sentence-row {
+            font-size: 1.3rem;
+            padding: 15px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            line-height: 1.5;
+            transition: all 0.3s;
+            border-left: 6px solid transparent;
+        }
+
+        .sentence-number {
+            font-weight: bold;
+            color: #64748b;
+            margin-right: 5px;
+        }
+
+        /* Dropdown styling */
+        .some-any-select {
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 6px 15px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            background-color: white;
+            color: var(--text);
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .some-any-select:focus {
+            border-color: var(--primary);
+        }
+
+        /* Validation Feedback styles */
+        .row-correct {
+            background-color: #ecfdf5;
+            border-left-color: var(--success);
+        }
+
+        .row-wrong {
+            background-color: #fff5f5;
+            border-left-color: var(--error);
+        }
+
+        .correction-text {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--error);
+            margin-left: 10px;
+            display: none;
+        }
+
+        /* Action Button */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 35px;
+        }
+
+        .check-btn {
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            font-weight: bold;
+            padding: 15px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+            transition: all 0.2s;
+        }
+
+        .check-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+        }
+
+        .win-message {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--success);
+            margin-top: 30px;
+            display: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🍏 What's in the Cupboard? 🥦</h1>
+        <p class="subtitle">Choose "some" or "any" to complete the kitchen sentences!</p>
+
+        <!-- ALL SENTENCES MIXED TOGETHER -->
+        <div class="sentences-list" id="mixed-list">
+            <div class="sentence-row">
+                <span class="sentence-number"></span> There are 
+                <select class="some-any-select" data-answer="some">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> apples 🍎 in the cupboard.
+                <span class="correction-text">❌ (Use: some)</span>
+            </div>
+            <div class="sentence-row">
+                <span class="sentence-number"></span> There are 
+                <select class="some-any-select" data-answer="some">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> carrots 🥕 on the table.
+                <span class="correction-text">❌ (Use: some)</span>
+            </div>
+            <div class="sentence-row">
+                <span class="sentence-number"></span> There are 
+                <select class="some-any-select" data-answer="some">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> mushrooms 🍄 in the basket.
+                <span class="correction-text">❌ (Use: some)</span>
+            </div>
+            <div class="sentence-row">
+                <span class="sentence-number"></span> There are 
+                <select class="some-any-select" data-answer="some">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> mangoes 🥭 for breakfast.
+                <span class="correction-text">❌ (Use: some)</span>
+            </div>
+            <div class="sentence-row">
+                <span class="sentence-number"></span> There are 
+                <select class="some-any-select" data-answer="some">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> peas 🫛 in the bowl.
+                <span class="correction-text">❌ (Use: some)</span>
+            </div>
+            <div class="sentence-row">
+                <span class="sentence-number"></span> There aren't 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> oranges 🍊 in the kitchen.
+                <span class="correction-text">❌ (Use: any)</span>
+            </div>
+            <div class="sentence-row">
+                <span class="sentence-number"></span> There aren't 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> onions 🧅 on the plate.
+                <span class="correction-text">❌ (Use: any)</span>
+            </div>
+            <div class="sentence-row">
+                <span class="sentence-number"></span> There aren't 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> pineapples 🍍 in the fridge.
+                <span class="correction-text">❌ (Use: any)</span>
+            </div>
+            <div class="sentence-row">
+                <span class="sentence-number"></span> There aren't 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> beans 🌱 in the pot.
+                <span class="correction-text">❌ (Use: any)</span>
+            </div>
+            <div class="sentence-row">
+                <span class="sentence-number"></span> There aren't 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> coconuts 🥥 on the tree.
+                <span class="correction-text">❌ (Use: any)</span>
+            </div>
+            <div class="sentence-row">
+                <span class="sentence-number"></span> Are there 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> pears 🍐 in the bag?
+                <span class="correction-text">❌ (Use: any)</span>
+            </div>
+            <div class="sentence-row">
+                <span class="sentence-number"></span> Are there 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> lemons 🍋 for the juice?
+                <span class="correction-text">❌ (Use: any)</span>
+            </div>
+            <div class="sentence-row">
+                <span class="sentence-number"></span> Are there 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> peppers 🫑 in the salad?
+                <span class="correction-text">❌ (Use: any)</span>
+            </div>
+            <div class="sentence-row">
+                <span class="sentence-number"></span> Are there 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> kiwis 🥝 on the plate?
+                <span class="correction-text">❌ (Use: any)</span>
+            </div>
+            <div class="sentence-row">
+                <span class="sentence-number"></span> Are there 
+                <select class="some-any-select" data-answer="any">
+                    <option value="">---</option><option value="some">some</option><option value="any">any</option>
+                </select> corns 🌽 in the box?
+                <span class="correction-text">❌ (Use: any)</span>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button class="check-btn" onclick="checkAnswers()">Check Answers ✔️</button>
+        </div>
+
+        <div class="win-message" id="win-msg">🎉 Super Kitchen Master! You know Some and Any! ⭐</div>
+    </div>
+
+    <script>
+        // Shuffle and re-number everything at startup
+        window.addEventListener('DOMContentLoaded', () => {
+            const list = document.getElementById('mixed-list');
+            const rows = Array.from(list.children);
+            
+            // Random mix
+            for (let i = rows.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                list.appendChild(rows[j]);
+                rows.splice(j, 1);
+            }
+            
+            // Re-assign perfect order numbers 1-15
+            const currentRows = list.querySelectorAll('.sentence-row');
+            currentRows.forEach((row, index) => {
+                row.querySelector('.sentence-number').innerText = (index + 1) + ".";
+            });
+        });
+
+        function checkAnswers() {
+            const rows = document.querySelectorAll('.sentence-row');
+            let allCorrect = true;
+
+            rows.forEach(row => {
+                const select = row.querySelector('.some-any-select');
+                const correction = row.querySelector('.correction-text');
+                const correctAnswer = select.getAttribute('data-answer');
+                const userAnswer = select.value;
+
+                row.classList.remove('row-correct', 'row-wrong');
+                correction.style.display = 'none';
+
+                if (userAnswer === correctAnswer) {
+                    row.classList.add('row-correct');
+                } else {
+                    row.classList.add('row-wrong');
+                    correction.style.display = 'inline';
+                    allCorrect = false;
+                }
+            });
+
+            const winMsg = document.getElementById('win-msg');
+            if (allCorrect) {
+                winMsg.style.display = 'block';
+                winMsg.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                winMsg.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

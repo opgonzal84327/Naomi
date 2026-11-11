@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Food & Tableware Web App</title>
+    <style>
+        :root {
+            --orange-main: #e76f51;
+            --green-main: #9abc6c;
+            --cream-bg: #fdfaf6;
+            --dark-text: #2b2d42;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cream-bg);
+            color: var(--dark-text);
+            padding-bottom: 60px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--orange-main), var(--green-main));
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 { font-size: 2.5rem; margin-bottom: 5px; }
+        header p { font-size: 1.2rem; opacity: 0.9; }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* --- SECCIÓN QUIZ --- */
+        .quiz-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: var(--orange-main);
+            width: 4.16%; /* 1/24 */
+            transition: width 0.3s ease;
+        }
+
+        .question-box {
+            min-height: 120px;
+            margin-bottom: 20px;
+        }
+
+        .question-box h2 {
+            color: #666;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        /* Contenedor Fijo de Opciones (No se mueve con el scroll) */
+        .options-fixed-container {
+            background: #f1f3f5;
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background-color: white;
+            border: 2px solid #cbd5e1;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .option-btn:hover {
+            border-color: #94a3b8;
+            transform: translateY(-2px);
+        }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+            text-align: center;
+        }
+
+        /* --- SECCIÓN TARJETAS (DICCIONARIO INTERACTIVO) --- */
+        .visual-menu-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            color: #4a4a4a;
+        }
+
+        .menu-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .menu-split { grid-template-columns: 1fr; }
+            .options-grid { grid-template-columns: 1fr; }
+        }
+
+        .column {
+            border-radius: 25px;
+            padding: 25px;
+            color: white;
+        }
+
+        .orange-column { background-color: var(--orange-main); }
+        .green-column { background-color: var(--green-main); }
+
+        .column h2 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            border-bottom: 2px dashed rgba(255,255,255,0.4);
+            padding-bottom: 10px;
+        }
+
+        .sub-category {
+            margin-bottom: 25px;
+        }
+
+        .sub-category h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+            text-transform: uppercase;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .word-card {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .word-card:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        .word-card::before {
+            content: "🔊 ";
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🎵 Kids Food & Kitchen Interactive App</h1>
+        <p>¡Juega al quiz y haz clic en las tarjetas para escuchar la pronunciación!</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- SECCIÓN DEL QUIZ -->
+        <section class="quiz-section">
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="question-box">
+                <h2 id="question-category">Category</h2>
+                <div class="question-text" id="question-text">Loading question...</div>
+            </div>
+            
+            <!-- Bloque Fijo de Opciones -->
+            <div class="options-fixed-container">
+                <div class="options-grid" id="options-grid">
+                    <!-- Botones generados dinámicamente por JS -->
+                </div>
+                <div class="feedback-box" id="feedback"></div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE LAS TARJETAS AUDIO-INTERACTIVAS -->
+        <h2 class="visual-menu-title">🌟 Click & Listen Dictionary</h2>
+        
+        <div class="menu-split">
+            <!-- COLUMNA NARANJA -->
+            <div class="column orange-column">
+                <h2>#1 TABLEWARE & MAINS</h2>
+                
+                <div class="sub-category">
+                    <h3>Tableware</h3>
+                    <div class="cards-grid" id="tableware-cards"></div>
+                </div>
+                
+                <div class="sub-category">
+                    <h3>Main Dishes</h3>
+                    <div class="cards-grid" id="main-cards"></div>
+                </div>
+            </div>
+
+            <!-- COLUMNA VERDE -->
+            <div class="column green-column">
+                <h2>#2 DESSERTS & FAST FOOD</h2>
+                
+                <div class="sub-category">
+                    <h3>Desserts</h3>
+                    <div class="cards-grid" id="desserts-cards"></div>
+                </div>
+                
+                <div class="sub-category">
+                    <h3>Fast Food</h3>
+                    <div class="cards-grid" id="fast-food-cards"></div>
+                </div>
+
+                <div class="sub-category">
+                    <h3>Drinks</h3>
+                    <div class="cards-grid" id="drinks-cards"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Datos organizados de las palabras para el Diccionario
+        const vocabulary = {
+            tableware: ['bowl', 'fork', 'glass', 'knife', 'plate', 'napkin', 'spoon'],
+            mainDishes: ['meatball', 'potato', 'sausage', 'soup', 'vegetables'],
+            desserts: ['apple pie', 'cheese and crackers', 'chocolate cake', 'fruit', 'ice cream', 'yoghurt'],
+            fastFood: ['burger', 'fries', 'salad'],
+            drinks: ['milkshake', 'soda', 'water']
+        };
+
+        // Banco de las 24 preguntas totalmente en inglés
+        const quizQuestions = [
+            { cat: "Tableware", q: "You put soup or cereal in this round, deep dish. What is it?", options: ["bowl", "fork", "napkin", "glass"], correct: "bowl" },
+            { cat: "Tableware", q: "You use this tool with pointy teeth to pick up your food. What is it?", options: ["spoon", "fork", "knife", "plate"], correct: "fork" },
+            { cat: "Tableware", q: "You drink cold water or milk out of this clear cup. What is it?", options: ["plate", "napkin", "glass", "bowl"], correct: "glass" },
+            { cat: "Tableware", q: "You use this sharp tool to cut your food into pieces. What is it?", options: ["fork", "spoon", "napkin", "knife"], correct: "knife" },
+            { cat: "Tableware", q: "You put your yummy lunch or dinner flat on top of this round dish. What is it?", options: ["plate", "bowl", "glass", "spoon"], correct: "plate" },
+            { cat: "Tableware", q: "You use this soft paper or cloth to wipe your mouth after eating. What is it?", options: ["knife", "napkin", "fork", "potato"], correct: "napkin" },
+            { cat: "Tableware", q: "You use this round-headed tool to eat your soup or ice cream. What is it?", options: ["fork", "plate", "spoon", "glass"], correct: "spoon" },
+            { cat: "Main Dishes", q: "This is a small, round ball of yummy ground meat. What is it?", options: ["potato", "sausage", "soup", "meatball"], correct: "meatball" },
+            { cat: "Main Dishes", q: "This is a brown or yellow vegetable that grows in the ground and makes great french fries. What is it?", options: ["potato", "sausage", "vegetables", "salad"], correct: "potato" },
+            { cat: "Main Dishes", q: "This is a long, tasty meat link that you often eat for breakfast or in a hot dog. What is it?", options: ["meatball", "sausage", "ice cream", "soup"], correct: "sausage" },
+            { cat: "Main Dishes", q: "This is a hot, liquid meal made with water, veggies, and broth that you eat with a spoon. What is it?", options: ["water", "soda", "soup", "milkshake"], correct: "soup" },
+            { cat: "Main Dishes", q: "These are healthy green, red, or orange parts of plants like carrots and broccoli. What are they?", options: ["chocolate cake", "apple pie", "ice cream", "vegetables"], correct: "vegetables" },
+            { cat: "Desserts", q: "This is a sweet baked dessert filled with warm apples and a yummy crust. What is it?", options: ["apple pie", "chocolate cake", "yoghurt", "ice cream"], correct: "apple pie" },
+            { cat: "Desserts", q: "This is a crunchy snack where you put a slice of cheese on top of a crispy little square biscuit. What is it?", options: ["fruit", "cheese and crackers", "salad", "fries"], correct: "cheese and crackers" },
+            { cat: "Desserts", q: "This is a sweet, fluffy birthday treat made with rich brown chocolate. What is it?", options: ["apple pie", "yoghurt", "chocolate cake", "meatball"], correct: "chocolate cake" },
+            { cat: "Desserts", q: "Apples, bananas, and strawberries are sweet, healthy things that grow on trees. What are they?", options: ["vegetables", "sausage", "potato", "fruit"], correct: "fruit" },
+            { cat: "Desserts", q: "This is a cold, sweet, creamy treat that you eat in a cone on a hot summer day. What is it?", options: ["ice cream", "water", "soup", "soda"], correct: "ice cream" },
+            { cat: "Desserts", q: "This is a smooth, creamy dairy snack that you eat with a spoon, and it can taste like strawberries. What is it?", options: ["butter", "yoghurt", "water", "cheese and crackers"], correct: "yoghurt" },
+            { cat: "Fast Food", q: "This is a round sandwich with a yummy meat patty, cheese, and lettuce inside a soft bun. What is it?", options: ["salad", "fries", "burger", "soup"], correct: "burger" },
+            { cat: "Fast Food", q: "These are long, golden, crispy pieces of potato fried in hot oil. What are they?", options: ["potato", "vegetables", "sausage", "fries"], correct: "fries" },
+            { cat: "Fast Food", q: "This is a fresh mix of green lettuce, tomatoes, and yummy dressing. What is it?", options: ["salad", "soup", "meatball", "fruit"], correct: "salad" },
+            { cat: "Drinks", q: "This is a thick, sweet cold drink made by blending milk and ice cream together. What is it?", options: ["water", "milkshake", "soda", "juice"], correct: "milkshake" },
+            { cat: "Drinks", q: "This is a fizzy, bubbly, sweet cold drink that pops with little bubbles in your mouth. What is it?", options: ["water", "milkshake", "soda", "soup"], correct: "soda" },
+            { cat: "Drinks", q: "This is a clear, clean liquid with no color that you drink when you are thirsty. What is it?", options: ["soda", "milkshake", "soup", "water"], correct: "water" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0; // Contador de respuestas correctas al primer intento
+        let hasMistakeInCurrentQuestion = false; // Bandera para saber si falló en la pregunta actual
+
+        // Función para desordenar el arreglo de preguntas de forma aleatoria
+        function shuffleQuestions(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Función del motor de voz (Pronunciación nativa)
+        function speakWord(word) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Tu navegador no soporta la función de voz.");
+            }
+        }
+
+        // Generar Tarjetas Interactivas automáticamente
+        function generateCards(containerId, words) {
+            const container = document.getElementById(containerId);
+            words.forEach(word => {
+                const card = document.createElement('div');
+                card.className = 'word-card';
+                card.innerText = word;
+                card.onclick = () => speakWord(word);
+                container.appendChild(card);
+            });
+        }
+
+        // Renderizar el Diccionario Visual al cargar
+        generateCards('tableware-cards', vocabulary.tableware);
+        generateCards('main-cards', vocabulary.mainDishes);
+        generateCards('desserts-cards', vocabulary.desserts);
+        generateCards('fast-food-cards', vocabulary.fastFood);
+        generateCards('drinks-cards', vocabulary.drinks);
+
+        // Lógica del Cuestionario Interactiva
+        function loadQuestion() {
+            const feedback = document.getElementById('feedback');
+            feedback.style.display = 'none';
+            hasMistakeInCurrentQuestion = false; // Reiniciar bandera de error para la nueva pregunta
+
+            if (currentQuestionIndex >= quizQuestions.length) {
+                document.getElementById('question-category').innerText = "🎉 AMAZING WORK!";
+                document.getElementById('question-text').innerText = `¡Felicidades! Completaste el reto. Tuviste ${score} respuestas correctas al primer intento de un total de ${quizQuestions.length}. ¡Sigue practicando abajo con el diccionario!`;
+                document.getElementById('options-grid').innerHTML = "";
+                document.getElementById('progress').style.width = "100%";
+                return;
+            }
+
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+            
+            // Actualizar textos
+            document.getElementById('question-category').innerText = `Question ${currentQuestionIndex + 1}/24 - Category: ${currentQuestion.cat}`;
+            document.getElementById('question-text').innerText = currentQuestion.q;
+            
+            // Actualizar barra de progreso
+            const progressPercent = ((currentQuestionIndex) / quizQuestions.length) * 100;
+            document.getElementById('progress').style.width = `${progressPercent}%`;
+
+            // Renderizar botones de opciones
+            const optionsGrid = document.getElementById('options-grid');
+            optionsGrid.innerHTML = "";
+
+            currentQuestion.options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = option;
+                btn.onclick = () => checkAnswer(option, currentQuestion.correct, btn);
+                optionsGrid.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected, correct, clickedButton) {
+            const feedback = document.getElementById('feedback');
+            feedback.style.display = 'block';
+
+            if (selected === correct) {
+                feedback.style.backgroundColor = "#d4edda";
+                feedback.style.color = "#155724";
+                feedback.innerText = "¡Correcto! ¡Excellent job! 🌟";
+                speakWord(correct);
+                
+                // Si no se equivocó previamente en esta pregunta, gana un punto
+                if (!hasMistakeInCurrentQuestion) {
+                    score++;
+                }
+                
+                // Pasar a la siguiente pregunta
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    loadQuestion();
+                }, 1500);
+            } else {
+                hasMistakeInCurrentQuestion = true; // Marcamos que ya tuvo un fallo en esta pregunta
+                feedback.style.backgroundColor = "#f8d7da";
+                feedback.style.color = "#721c24";
+                feedback.innerText = "Oops, ¡inténtalo otra vez! You can do it! 💪";
+                clickedButton.style.borderColor = "#f5c6cb";
+                clickedButton.style.backgroundColor = "#f8d7da";
+            }
+        }
+
+        // Mezclar las preguntas al iniciar la app para que siempre sean aleatorias
+        shuffleQuestions(quizQuestions);
+        // Iniciar la primera pregunta
+        loadQuestion();
+    </script>
+</body>
+</html>

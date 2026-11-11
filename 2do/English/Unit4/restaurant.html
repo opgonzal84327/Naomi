@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patitas Magical Restaurant</title>
+    <style>
+        :root {
+            --pink-magic: #ffccd5;
+            --purple-dark: #4a154b;
+            --purple-btn: #9333ea;
+            --mint: #c7f9cc;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fef1f2, #f5f3ff);
+            color: var(--purple-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background-color: var(--white);
+            max-width: 800px;
+            width: 100%;
+            border-radius: 30px;
+            box-shadow: 0 15px 40px rgba(74, 21, 75, 0.12);
+            border: 4px solid var(--pink-magic);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-banner {
+            background-color: var(--purple-dark);
+            color: white;
+            padding: 15px;
+            border-radius: 20px;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .step-indicator {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #8b5cf6;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .character-box {
+            font-size: 4.5rem;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .bubble-text {
+            background-color: #faf5ff;
+            border: 2px solid #e9d5ff;
+            padding: 15px 20px;
+            border-radius: 20px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        /* --- GRILLA DE SELECCIÓN MÚLTIPLE --- */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .item-card {
+            background-color: var(--white);
+            border: 2px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .item-card .icon {
+            font-size: 2.2rem;
+        }
+
+        .item-card:hover {
+            transform: translateY(-3px);
+            border-color: #c084fc;
+        }
+
+        .item-card.selected {
+            background-color: #f3e8ff;
+            border-color: #a855f7;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.25);
+        }
+
+        /* --- BOTONES DE CONTROL --- */
+        .btn-action {
+            background: linear-gradient(135deg, #a855f7, #7e22ce);
+            color: white;
+            border: none;
+            padding: 14px 45px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(126, 34, 206, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .btn-action:hover {
+            transform: scale(1.05);
+        }
+
+        /* --- TICKET FINAL DE ORDEN --- */
+        .ticket {
+            background-color: #fffbeb;
+            border: 2px dashed #f59e0b;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: left;
+            margin: 20px 0;
+            font-size: 1.15rem;
+        }
+
+        .ticket h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #b45309;
+        }
+
+        .ticket-line {
+            margin-bottom: 8px;
+            border-bottom: 1px dotted #fde68a;
+            padding-bottom: 4px;
+        }
+
+        /* --- CONTENEDOR DE GRAMÁTICA (4 BLOQUES) --- */
+        .grammar-section {
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .grammar-block {
+            padding: 15px;
+            border-radius: 18px;
+            margin-bottom: 15px;
+        }
+
+        .block-green { background-color: #f0fdf4; border: 2px solid #bbf7d0; }
+        .block-purple { background-color: #faf5ff; border: 2px solid #e9d5ff; }
+        .block-blue { background-color: #eff6ff; border: 2px solid #bfdbfe; }
+        .block-orange { background-color: #fff7ed; border: 2px solid #fed7aa; }
+
+        .block-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .block-green .block-title { color: #166534; }
+        .block-purple .block-title { color: #6b21a8; }
+        .block-blue .block-title { color: #1e40af; }
+        .block-orange .block-title { color: #9a3412; }
+
+        .sentence-row {
+            background-color: white;
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .speak-btn {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+
+        .speak-btn:hover {
+            background-color: #e2e8f0;
+            transform: scale(1.1);
+        }
+
+        .grammar-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: #9a3412;
+            margin-top: 6px;
+        }
+
+        /* --- SECCIÓN FINAL: REPETIR EL JUEGO --- */
+        .replay-box {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #fdf4ff, #fae8ff);
+            border: 3px solid #f0abfc;
+            border-radius: 25px;
+            text-align: center;
+        }
+
+        .replay-box h3 {
+            font-size: 1.4rem;
+            color: #701a75;
+            margin-bottom: 18px;
+        }
+
+        .replay-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(22, 163, 74, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, #f43f5e, #e11d48);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(225, 29, 72, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .btn-yes:hover, .btn-no:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <div class="header-banner">🐾 Patitas Magical Restaurant</div>
+        <div class="step-indicator" id="step-title">Step 1 of 6</div>
+        
+        <div class="character-box" id="character-avatar">🦄</div>
+        <div class="bubble-text" id="bubble-message">Loading restaurant...</div>
+
+        <!-- Zona dinámica de juego -->
+        <div id="game-content">
+            <div class="items-grid" id="options-grid"></div>
+        </div>
+
+        <!-- Botón Next -->
+        <button class="btn-action" id="next-btn" onclick="processStep()">Next ➔</button>
+    </div>
+
+    <script>
+        const menuItems = {
+            food: [
+                { id: 'meatball', name: 'Meatball', icon: '🧆' },
+                { id: 'potato', name: 'Potato', icon: '🥔' },
+                { id: 'sausage', name: 'Sausage', icon: '🌭' },
+                { id: 'soup', name: 'Soup', icon: '🥣' },
+                { id: 'vegetables', name: 'Vegetables', icon: '🥦' },
+                { id: 'burger', name: 'Burger', icon: '🍔' },
+                { id: 'fries', name: 'Fries', icon: '🍟' },
+                { id: 'salad', name: 'Salad', icon: '🥗' }
+            ],
+            drinks: [
+                { id: 'milkshake', name: 'Milkshake', icon: '🥤' },
+                { id: 'soda', name: 'Soda', icon: '🫧' },
+                { id: 'water', name: 'Water', icon: '💧' }
+            ],
+            desserts: [
+                { id: 'apple pie', name: 'Apple Pie', icon: '🥧' },
+                { id: 'cheese and crackers', name: 'Cheese and Crackers', icon: '🧀' },
+                { id: 'chocolate cake', name: 'Chocolate Cake', icon: '🍰' },
+                { id: 'fruit', name: 'Fruit', icon: '🍓' },
+                { id: 'ice cream', name: 'Ice Cream', icon: '🍦' },
+                { id: 'yoghurt', name: 'Yoghurt', icon: '🍧' }
+            ],
+            tableware: [
+                { id: 'bowl', name: 'Bowl', icon: '🥣' },
+                { id: 'fork', name: 'Fork', icon: '🍴' },
+                { id: 'glass', name: 'Glass', icon: '🥛' },
+                { id: 'knife', name: 'Knife', icon: '🔪' },
+                { id: 'plate', name: 'Plate', icon: '🍽️' },
+                { id: 'napkin', name: 'Napkin', icon: '🧻' },
+                { id: 'spoon', name: 'Spoon', icon: '🥄' }
+            ]
+        };
+
+        let currentStep = 1;
+        let selectedFood = [];
+        let selectedDrinks = [];
+        let selectedDesserts = [];
+        let selectedTableware = [];
+        let dilemaDrinkChosen = "";
+
+        // Motor de voz en inglés
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Renderizar tarjetas seleccionables
+        function renderOptions(items, currentSelectionList) {
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = "";
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                if (currentSelectionList.includes(item.name)) card.classList.add('selected');
+                
+                card.innerHTML = `<span class="icon">${item.icon}</span><span>${item.name}</span>`;
+                
+                card.onclick = () => {
+                    if (currentSelectionList.includes(item.name)) {
+                        const index = currentSelectionList.indexOf(item.name);
+                        currentSelectionList.splice(index, 1);
+                        card.classList.remove('selected');
+                    } else {
+                        currentSelectionList.push(item.name);
+                        card.classList.add('selected');
+                        speak(item.name);
+                    }
+                };
+                grid.appendChild(card);
+            });
+        }
+
+        function updateGame() {
+            const stepTitle = document.getElementById('step-title');
+            const avatar = document.getElementById('character-avatar');
+            const message = document.getElementById('bubble-message');
+            const nextBtn = document.getElementById('next-btn');
+            const gameContent = document.getElementById('game-content');
+
+            switch(currentStep) {
+                case 1:
+                    nextBtn.style.display = "inline-block";
+                    stepTitle.innerText = "Step 1 of 6 - Main Dishes";
+                    avatar.innerText = "🦄";
+                    let msg1 = "Welcome to Patitas Restaurant! I am very hungry! What would you like to eat? Select my food!";
+                    message.innerText = msg1;
+                    speak(msg1);
+                    gameContent.innerHTML = '<div class="items-grid" id="options-grid"></div>';
+                    renderOptions(menuItems.food, selectedFood);
+                    break;
+                
+                case 2:
+                    stepTitle.innerText = "Step 2 of 6 - Drinks";
+                    avatar.innerText = "😋";
+                    let msg2 = "Perfect! Now, what would you like to drink? Select my drinks!";
+                    message.innerText = msg2;
+                    speak(msg2);
+                    gameContent.innerHTML = '<div class="items-grid" id="options-grid"></div>';
+                    renderOptions(menuItems.drinks, selectedDrinks);
+                    break;
+
+                case 3:
+                    stepTitle.innerText = "Step 3 of 6 - The Drink Dilemma";
+                    avatar.innerText = "🤔";
+                    nextBtn.style.display = "none";
+                    
+                    let d1 = selectedDrinks[0] || "Milkshake";
+                    let d2 = selectedDrinks[1] || (d1 === "Water" ? "Soda" : "Water");
+                    
+                    message.innerHTML = `
+                        <p style="margin-bottom: 12px; color: #6b7280; font-size: 1.05rem; font-style: italic;">Sparkle is undecided between two drinks! Ask her:</p>
+                        <p style="font-size: 1.35rem; color: #9333ea; font-weight: bold; margin-bottom: 18px;">"Which one do you want? ${d1} or ${d2}?"</p>
+                        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                            <button class="btn-action" style="background:#f59e0b" onclick="chooseDilema('${d1}')">${d1}</button>
+                            <button class="btn-action" style="background:#06b6d4" onclick="chooseDilema('${d2}')">${d2}</button>
+                        </div>
+                    `;
+                    gameContent.innerHTML = "";
+                    speak(`Which one do you want? ${d1} or ${d2}?`);
+                    break;
+
+                case 4:
+                    nextBtn.style.display = "inline-block";
+                    stepTitle.innerText = "Step 4 of 6 - Desserts";
+                    avatar.innerText = "🤩";
+                    let msg4 = "Yummy! I love desserts! What sweet treats would you like? Select my desserts!";
+                    message.innerText = msg4;
+                    speak(msg4);
+                    gameContent.innerHTML = '<div class="items-grid" id="options-grid"></div>';
+                    renderOptions(menuItems.desserts, selectedDesserts);
+                    break;
+
+                case 5:
+                    stepTitle.innerText = "Step 5 of 6 - Tableware Tools";
+                    avatar.innerText = "🧐";
+                    let msg5 = "Look at the table! To eat my delicious order, what tools do you think I need? Select my tableware!";
+                    message.innerText = msg5;
+                    speak(msg5);
+                    gameContent.innerHTML = '<div class="items-grid" id="options-grid"></div>';
+                    renderOptions(menuItems.tableware, selectedTableware);
+                    break;
+
+                case 6:
+                    stepTitle.innerText = "Step 6 of 6 - Order Receipt & Grammar";
+                    avatar.innerText = "👑";
+                    nextBtn.style.display = "none";
+                    
+                    let foodList = selectedFood.join(', ') || "Soup";
+                    let drinkList = dilemaDrinkChosen || "Water";
+                    let dessertList = selectedDesserts.join(', ') || "Ice Cream";
+                    let toolsList = selectedTableware.join(', ') || "Spoon";
+
+                    let msg6 = "Thank you very much! Your order will be delivered immediately!";
+                    message.innerText = msg6;
+                    speak(msg6);
+
+                    let sampleLike = (selectedFood[0] || "Soup").toLowerCase();
+                    let sampleDislikeItem = menuItems.food.find(f => !selectedFood.includes(f.name));
+                    let sampleDislike = (sampleDislikeItem ? sampleDislikeItem.name : "Burger").toLowerCase();
+
+                    let finalHtml = `
+                        <div class="ticket">
+                            <h3>📜 OFFICIAL PATITAS RECEIPT</h3>
+                            <div class="ticket-line"><strong>To Eat:</strong> ${foodList}</div>
+                            <div class="ticket-line"><strong>To Drink:</strong> ${drinkList}</div>
+                            <div class="ticket-line"><strong>Dessert:</strong> ${dessertList}</div>
+                            <div class="ticket-line"><strong>Required Tableware:</strong> ${toolsList}</div>
+                            <p style="text-align:center; margin-top:10px; font-weight:bold; color:#166534">Thank you very much! 🦄🌈</p>
+                        </div>
+
+                        <div class="grammar-section">
+                            <div class="grammar-block block-green">
+                                <div class="block-title">🟢 Block A: Preferences (Like)</div>
+                                <div class="sentence-row">
+                                    <button class="speak-btn" onclick="speak('I like ${sampleLike}. I do not like ${sampleDislike}.')">🔊</button>
+                                    <span><strong>I</strong> like ${sampleLike}. / <strong>I don't</strong> like ${sampleDislike}.</span>
+                                </div>
+                                <div class="sentence-row">
+                                    <button class="speak-btn" onclick="speak('She likes ${sampleLike}. She does not like ${sampleDislike}.')">🔊</button>
+                                    <span><strong>She</strong> like<u>s</u> ${sampleLike}. / <strong>She doesn't</strong> like ${sampleDislike}.</span>
+                                </div>
+                                <div class="sentence-row">
+                                    <button class="speak-btn" onclick="speak('You like ${sampleLike}. You do not like ${sampleDislike}.')">🔊</button>
+                                    <span><strong>You</strong> like ${sampleLike}. / <strong>You don't</strong> like ${sampleDislike}.</span>
+                                </div>
+                            </div>
+
+                            <div class="grammar-block block-purple">
+                                <div class="block-title">🟣 Block B: Direct Wants (Want + Food)</div>
+                                <div class="sentence-row">
+                                    <button class="speak-btn" onclick="speak('I want ${sampleLike}. I do not want ${sampleDislike}.')">🔊</button>
+                                    <span><strong>I</strong> want ${sampleLike}. / <strong>I don't</strong> want ${sampleDislike}.</span>
+                                </div>
+                                <div class="sentence-row">
+                                    <button class="speak-btn" onclick="speak('She wants ${sampleLike}. She does not want ${sampleDislike}.')">🔊</button>
+                                    <span><strong>She</strong> want<u>s</u> ${sampleLike}. / <strong>She doesn't</strong> want ${sampleDislike}.</span>
+                                </div>
+                                <div class="sentence-row">
+                                    <button class="speak-btn" onclick="speak('You want ${sampleLike}. You do not want ${sampleDislike}.')">🔊</button>
+                                    <span><strong>You</strong> want ${sampleLike}. / <strong>You don't</strong> want ${sampleDislike}.</span>
+                                </div>
+                            </div>
+
+                            <div class="grammar-block block-blue">
+                                <div class="block-title">🔵 Block C: Action Wants (Want to + Eat)</div>
+                                <div class="sentence-row">
+                                    <button class="speak-btn" onclick="speak('I want to eat ${sampleLike}. I do not want to eat ${sampleDislike}.')">🔊</button>
+                                    <span><strong>I</strong> want to eat ${sampleLike}. / <strong>I don't</strong> want to eat ${sampleDislike}.</span>
+                                </div>
+                                <div class="sentence-row">
+                                    <button class="speak-btn" onclick="speak('She wants to eat ${sampleLike}. She does not want to eat ${sampleDislike}.')">🔊</button>
+                                    <span><strong>She</strong> want<u>s</u> to eat ${sampleLike}. / <strong>She doesn't</strong> want to eat ${sampleDislike}.</span>
+                                </div>
+                                <div class="sentence-row">
+                                    <button class="speak-btn" onclick="speak('You want to eat ${sampleLike}. You do not want to eat ${sampleDislike}.')">🔊</button>
+                                    <span><strong>You</strong> want to eat ${sampleLike}. / <strong>You don't</strong> want to eat ${sampleDislike}.</span>
+                                </div>
+                            </div>
+
+                            <div class="grammar-block block-orange">
+                                <div class="block-title">🟠 Block D: Polite Orders (Would like & Contractions)</div>
+                                <div class="sentence-row">
+                                    <button class="speak-btn" onclick="speak('I would like ${sampleLike}. I would like ${sampleLike}.')">🔊</button>
+                                    <span><strong>I would like</strong> ${sampleLike}. ➔ <strong>I'd like</strong> ${sampleLike}.</span>
+                                </div>
+                                <div class="sentence-row">
+                                    <button class="speak-btn" onclick="speak('She would like ${sampleLike}. She would like ${sampleLike}.')">🔊</button>
+                                    <span><strong>She would like</strong> ${sampleLike}. ➔ <strong>She'd like</strong> ${sampleLike}.</span>
+                                </div>
+                                <div class="sentence-row">
+                                    <button class="speak-btn" onclick="speak('You would like ${sampleLike}. You would like ${sampleLike}.')">🔊</button>
+                                    <span><strong>You would like</strong> ${sampleLike}. ➔ <strong>You'd like</strong> ${sampleLike}.</span>
+                                </div>
+                                <div class="grammar-note">✨ Notice! "Would like" stays the same for I, She, and You!</div>
+                            </div>
+                        </div>
+
+                        <div class="replay-box" id="replay-section">
+                            <h3>🦄 Would you like to play again?</h3>
+                            <div class="replay-buttons">
+                                <button class="btn-yes" onclick="restartGame()">Yes, please! 🌟</button>
+                                <button class="btn-no" onclick="endGame()">No, thank you 💖</button>
+                            </div>
+                        </div>
+                    `;
+
+                    gameContent.innerHTML = finalHtml;
+                    break;
+            }
+        }
+
+        function chooseDilema(drinkName) {
+            dilemaDrinkChosen = drinkName;
+            speak(`That one! I want ${drinkName}!`);
+            currentStep = 4;
+            updateGame();
+        }
+
+        function processStep() {
+            if (currentStep < 6) {
+                currentStep++;
+                updateGame();
+            }
+        }
+
+        function restartGame() {
+            speak("Yes, please! Let's play again!");
+            currentStep = 1;
+            selectedFood = [];
+            selectedDrinks = [];
+            selectedDesserts = [];
+            selectedTableware = [];
+            dilemaDrinkChosen = "";
+            setTimeout(() => {
+                updateGame();
+            }, 800);
+        }
+
+        function endGame() {
+            speak("No, thank you! Goodbye, great chef! See you next time!");
+            document.getElementById('character-avatar').innerText = "🌈🦄✨";
+            document.getElementById('bubble-message').innerText = "Goodbye, great chef! Thank you for playing at Patitas Restaurant! See you next time! 🌈✨";
+            document.getElementById('replay-section').innerHTML = `
+                <h3 style="color:#16a34a;">🎉 Amazing job today!</h3>
+                <p style="margin-bottom:15px; color:#475569;">You finished the entire Magical Menu.</p>
+                <button class="btn-action" onclick="restartGame()">Start New Order ↺</button>
+            `;
+        }
+
+        updateGame();
+    </script>
+</body>
+</html>
+

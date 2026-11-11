@@ -172,6 +172,14 @@
             display: none;
             font-weight: bold;
         }
+		/* Estilo cuando se selecciona una tarjeta con el dedo */
+		.food-card.selected-touch {
+			background-color: #ff9f1c !important;
+			color: white !important;
+			transform: scale(1.08);
+			box-shadow: 0 4px 12px rgba(255, 159, 28, 0.5);
+		}
+
     </style>
 </head>
 <body>
@@ -311,42 +319,79 @@
     <script>
         let draggedId = '';
 
-        // Drag and Drop Logic
+        // Eventos para Mouse y Pantalla Táctil en las tarjetas
         const cards = document.querySelectorAll('.food-card');
         cards.forEach(card => {
-            card.addEventListener('dragstart', (e) => { draggedId = e.target.id; });
+            // Soporte Mouse
+            card.addEventListener('dragstart', (e) => { 
+                draggedId = e.target.id; 
+            });
+
+            // Soporte Pantalla Táctil (Tocar tarjeta)
+            card.addEventListener('click', () => {
+                // Solo permitir seleccionar si aún está en el banco inicial
+                if (card.parentElement.id === 'items-pool') {
+                    cards.forEach(c => c.classList.remove('selected-touch'));
+                    card.classList.add('selected-touch');
+                    draggedId = card.id;
+                }
+            });
         });
 
-        // Mix the cards randomly in the pool at start
+        // Mezclar las tarjetas aleatoriamente al inicio
         const pool = document.getElementById('items-pool');
         for (let i = pool.children.length; i >= 0; i--) {
             pool.appendChild(pool.children[Math.random() * i | 0]);
         }
 
-        function allowDrop(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+        function allowDrop(e) { 
+            e.preventDefault(); 
+            e.currentTarget.classList.add('drag-over'); 
+        }
         
+        // Eventos para Mouse y Pantalla Táctil en las cajas
         document.querySelectorAll('.box').forEach(box => {
-            box.addEventListener('dragleave', (e) => { e.currentTarget.classList.remove('drag-over'); });
+            // Soporte Mouse
+            box.addEventListener('dragleave', (e) => { 
+                e.currentTarget.classList.remove('drag-over'); 
+            });
+
+            // Soporte Pantalla Táctil (Tocar caja para guardar)
+            box.addEventListener('click', () => {
+                if (draggedId !== '') {
+                    moveFoodToBox(box);
+                }
+            });
         });
 
         function dropFood(e) {
             e.preventDefault();
             const box = e.currentTarget;
             box.classList.remove('drag-over');
+            moveFoodToBox(box);
+        }
+
+        // Función unificada que valida y coloca el alimento en la caja
+        function moveFoodToBox(box) {
             const item = document.getElementById(draggedId);
-            
-            // Check if it belongs to this box type
+            if (!item) return;
+
+            // Verificar si pertenece a esa caja
             if (item.getAttribute('data-type') === box.getAttribute('data-box')) {
                 box.appendChild(item);
                 item.style.cursor = 'default';
                 item.setAttribute('draggable', 'false');
+                item.classList.remove('selected-touch');
+                draggedId = ''; // Limpiar selección
             } else {
+                // Parpadeo rojo si se equivoca de caja
                 box.style.borderColor = 'var(--error)';
                 setTimeout(() => { 
                     box.style.borderColor = box.getAttribute('data-box') === 'veg' ? 'var(--veg-color)' : 'var(--fruit-color)'; 
                 }, 500);
             }
         }
+
 
         // Form Validation Logic
         function validateEverything() {

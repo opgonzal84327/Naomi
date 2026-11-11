@@ -1,0 +1,47 @@
+window.bancoPreguntas = [
+        // --- PREGUNTAS (HOW MUCH / HOW MANY / MUCH / MANY) ---
+        { antes: "How", despues: "water do you drink every day?", opciones: ["much", "many", "lot"], correcta: "much" },
+        { antes: "How", despues: "brothers and sisters do you have?", opciones: ["many", "much", "lots"], correcta: "many" },
+        { antes: "How", despues: "sugar do you want in your coffee?", opciones: ["much", "many", "a lot"], correcta: "much" },
+        { antes: "How", despues: "countries have you visited?", opciones: ["many", "much", "lot"], correcta: "many" },
+        { antes: "How", despues: "time do we have before the flight?", opciones: ["much", "many", "lots"], correcta: "much" },
+        { antes: "How", despues: "chairs do we need for the meeting?", opciones: ["many", "much", "a lot"], correcta: "many" },
+        { antes: "How", despues: "money did you spend on that jacket?", opciones: ["much", "many", "lot"], correcta: "much" },
+        { antes: "How", despues: "emails do you receive per day?", opciones: ["many", "much", "lots"], correcta: "many" },
+        { antes: "Did you take", despues: "photos during your vacation?", opciones: ["many", "much", "a lot"], correcta: "many" },
+        { antes: "Is there", despues: "traffic on the highway right now?", opciones: ["much", "many", "lots"], correcta: "much" },
+        { antes: "Were there", despues: "people at the concert?", opciones: ["many", "much", "a lot"], correcta: "many" },
+        { antes: "Do you have", despues: "work to do this weekend?", opciones: ["much", "many", "lot"], correcta: "much" },
+        { antes: "How", despues: "hours do you sleep every night?", opciones: ["many", "much", "a lot"], correcta: "many" },
+        { antes: "How", despues: "rice should I cook for four people?", opciones: ["much", "many", "lots"], correcta: "much" },
+        { antes: "Are there", despues: "good restaurants near your office?", opciones: ["many", "much", "a lot"], correcta: "many" },
+
+        // --- NEGATIVAS ---
+        { antes: "I don't have", despues: "free time during the week.", opciones: ["much", "many", "lots"], correcta: "much" },
+        { antes: "There aren't", despues: "apples left in the basket.", opciones: ["many", "much", "a lot"], correcta: "many" },
+        { antes: "She didn't make", despues: "mistakes on the exam.", opciones: ["many", "much", "lot"], correcta: "many" },
+        { antes: "We don't have", despues: "information about the new project.", opciones: ["much", "many", "lots"], correcta: "much" },
+        { antes: "There isn't", despues: "milk left in the carton.", opciones: ["much", "many", "a lot"], correcta: "much" },
+        { antes: "He doesn't have", despues: "friends in this city.", opciones: ["many", "much", "lot"], correcta: "many" },
+        { antes: "I didn't get", despues: "sleep last night.", opciones: ["much", "many", "lots"], correcta: "much" },
+        { antes: "There weren't", despues: "cars on the road this morning.", opciones: ["many", "much", "a lot"], correcta: "many" },
+        { antes: "They don't eat", despues: "fast food.", opciones: ["much", "many", "lot"], correcta: "much" },
+        { antes: "I haven't read", despues: "books this year.", opciones: ["many", "much", "a lot"], correcta: "many" },
+        { antes: "There isn't", despues: "noise in this neighborhood.", opciones: ["much", "many", "lots"], correcta: "much" },
+        { antes: "She doesn't wear", despues: "jewelry.", opciones: ["much", "many", "a lot"], correcta: "much" },
+        { antes: "We didn't see", despues: "tourists at the museum.", opciones: ["many", "much", "lot"], correcta: "many" },
+        { antes: "You don't need", despues: "experience for this job.", opciones: ["much", "many", "lots"], correcta: "much" },
+        { antes: "There aren't", despues: "parking spaces available.", opciones: ["many", "much", "a lot"], correcta: "many" },
+
+        // --- AFIRMATIVAS (A LOT OF) ---
+        { antes: "She drinks", despues: "water when she exercises.", opciones: ["a lot of", "many", "much"], correcta: "a lot of" },
+        { antes: "There are", despues: "interesting places to visit here.", opciones: ["a lot of", "much", "lot"], correcta: "a lot of" },
+        { antes: "We had", despues: "fun at the beach yesterday.", opciones: ["a lot of", "many", "much"], correcta: "a lot of" },
+        { antes: "He has", despues: "books in his personal library.", opciones: ["a lot of", "much", "lot"], correcta: "a lot of" },
+        { antes: "They spent", despues: "money renovating their house.", opciones: ["a lot of", "many", "much"], correcta: "a lot of" },
+        { antes: "There is", despues: "snow on the mountains in winter.", opciones: ["a lot of", "many", "lot"], correcta: "a lot of" },
+        { antes: "I met", despues: "nice people at the conference.", opciones: ["a lot of", "much", "lot"], correcta: "a lot of" },
+        { antes: "You need", despues: "patience to learn a new language.", opciones: ["a lot of", "many", "much"], correcta: "a lot of" },
+        { antes: "We bought", despues: "snacks for the road trip.", opciones: ["a lot of", "much", "lot"], correcta: "a lot of" },
+        { antes: "There was", despues: "rain last month.", opciones: ["a lot of", "many", "lot"], correcta: "a lot of" }
+    ];

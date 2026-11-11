@@ -1,0 +1,47 @@
+window.bancoPreguntas = [
+        // --- COMPARATIVOS ---
+        { antes: "My new apartment is", despues: "than my old one.", opciones: ["bigger", "biggest", "more big"], correcta: "bigger" },
+        { antes: "This book is", despues: "than the movie.", opciones: ["more interesting", "interestinger", "most interesting"], correcta: "more interesting" },
+        { antes: "Today is", despues: "than yesterday.", opciones: ["colder", "coldest", "more cold"], correcta: "colder" },
+        { antes: "A plane is much", despues: "than a train.", opciones: ["faster", "fastest", "more fast"], correcta: "faster" },
+        { antes: "Your coffee tastes", despues: "than mine.", opciones: ["better", "gooder", "best"], correcta: "better" },
+        { antes: "This math exam was", despues: "than I expected.", opciones: ["easier", "easiest", "more easy"], correcta: "easier" },
+        { antes: "Gold is", despues: "than silver.", opciones: ["more expensive", "expensiver", "most expensive"], correcta: "more expensive" },
+        { antes: "The traffic today is", despues: "than it was on Monday.", opciones: ["worse", "badder", "worst"], correcta: "worse" },
+        { antes: "She is two years", despues: "than her brother.", opciones: ["younger", "youngest", "more young"], correcta: "younger" },
+        { antes: "Living in the city is", despues: "than living in the countryside.", opciones: ["noisier", "noisiest", "more noisy"], correcta: "noisier" },
+        { antes: "This sofa is", despues: "than those wooden chairs.", opciones: ["more comfortable", "comfortabler", "most comfortable"], correcta: "more comfortable" },
+        { antes: "Is your bag", despues: "than mine?", opciones: ["heavier", "heaviest", "more heavy"], correcta: "heavier" },
+        { antes: "English grammar isn't", despues: "than German grammar.", opciones: ["harder", "hardest", "more hard"], correcta: "harder" },
+        { antes: "Which phone is", despues: ", the blue one or the black one?", opciones: ["cheaper", "cheapest", "more cheap"], correcta: "cheaper" },
+        { antes: "My house is", despues: "from the airport than yours.", opciones: ["farther", "farthest", "more far"], correcta: "farther" },
+
+        // --- SUPERLATIVOS ---
+        { antes: "Mount Everest is", despues: "mountain in the world.", opciones: ["the highest", "higher", "the most high"], correcta: "the highest" },
+        { antes: "That was", despues: "meal I have ever eaten!", opciones: ["the best", "better", "the goodest"], correcta: "the best" },
+        { antes: "She is", despues: "student in our entire class.", opciones: ["the smartest", "smarter", "the most smart"], correcta: "the smartest" },
+        { antes: "This is", despues: "car in the dealership.", opciones: ["the most expensive", "more expensive", "the expensivest"], correcta: "the most expensive" },
+        { antes: "December 21st is", despues: "day of the year.", opciones: ["the shortest", "shorter", "the most short"], correcta: "the shortest" },
+        { antes: "He is", despues: "person I know.", opciones: ["the funniest", "funnier", "the most funny"], correcta: "the funniest" },
+        { antes: "That was", despues: "mistake of his career.", opciones: ["the worst", "worse", "the baddest"], correcta: "the worst" },
+        { antes: "Tokyo is one of", despues: "cities in the world.", opciones: ["the largest", "larger", "the most large"], correcta: "the largest" },
+        { antes: "What is", despues: "building in your country?", opciones: ["the tallest", "taller", "the most tall"], correcta: "the tallest" },
+        { antes: "This is", despues: "part of the whole book.", opciones: ["the most boring", "more boring", "the boringest"], correcta: "the most boring" },
+        { antes: "Who is", despues: "runner on the team?", opciones: ["the fastest", "faster", "the most fast"], correcta: "the fastest" },
+        { antes: "It wasn't", despues: "movie, but it was okay.", opciones: ["the greatest", "greater", "the most great"], correcta: "the greatest" },
+        { antes: "Summer is", despues: "season of the year here.", opciones: ["the hottest", "hotter", "the most hot"], correcta: "the hottest" },
+        { antes: "She bought", despues: "dress in the store.", opciones: ["the prettiest", "prettier", "the most pretty"], correcta: "the prettiest" },
+        { antes: "What is", despues: "animal on Earth?", opciones: ["the most dangerous", "more dangerous", "the dangerousest"], correcta: "the most dangerous" },
+
+        // --- MIXTOS (CONTEXTO) ---
+        { antes: "My sister is", despues: "than me, but my dad is the tallest.", opciones: ["taller", "the tallest", "tall"], correcta: "taller" },
+        { antes: "This hotel isn't", despues: "than the one we stayed at last year.", opciones: ["cleaner", "the cleanest", "more clean"], correcta: "cleaner" },
+        { antes: "Are you", despues: "person in your family?", opciones: ["the oldest", "older", "the most old"], correcta: "the oldest" },
+        { antes: "I think science is", despues: "than history.", opciones: ["more difficult", "the most difficult", "difficulter"], correcta: "more difficult" },
+        { antes: "Jupiter is", despues: "planet in our solar system.", opciones: ["the biggest", "bigger", "the most big"], correcta: "the biggest" },
+        { antes: "Your handwriting is much", despues: "than mine.", opciones: ["neater", "the neatest", "more neat"], correcta: "neater" },
+        { antes: "That wasn't", despues: "idea you've ever had.", opciones: ["the brightest", "brighter", "the most bright"], correcta: "the brightest" },
+        { antes: "Why is this suitcase", despues: "than the other one?", opciones: ["lighter", "the lightest", "more light"], correcta: "lighter" },
+        { antes: "He drives", despues: "when it rains.", opciones: ["more carefully", "the most carefully", "carefuller"], correcta: "more carefully" },
+        { antes: "Today is", despues: "day of my life!", opciones: ["the happiest", "happier", "the most happy"], correcta: "the happiest" }
+    ];

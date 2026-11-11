@@ -1,0 +1,47 @@
+window.bancoPreguntas = [
+        // --- PREGUNTAS ---
+        { antes: "", despues: "you speak English?", opciones: ["Do", "Does", "Is"], correcta: "Do" },
+        { antes: "", despues: "she live near the university?", opciones: ["Does", "Do", "Is"], correcta: "Does" },
+        { antes: "Where", despues: "your parents work?", opciones: ["do", "does", "are"], correcta: "do" },
+        { antes: "What time", despues: "the movie start?", opciones: ["does", "do", "is"], correcta: "does" },
+        { antes: "", despues: "they have enough money for the tickets?", opciones: ["Do", "Does", "Are"], correcta: "Do" },
+        { antes: "Why", despues: "he always arrive late?", opciones: ["does", "do", "is"], correcta: "does" },
+        { antes: "", despues: "it rain a lot in this city?", opciones: ["Does", "Do", "Is"], correcta: "Does" },
+        { antes: "How often", despues: "you go to the dentist?", opciones: ["do", "does", "are"], correcta: "do" },
+        { antes: "", despues: "your brother play any musical instruments?", opciones: ["Does", "Do", "Is"], correcta: "Does" },
+        { antes: "Which bus", despues: "we need to take?", opciones: ["do", "does", "are"], correcta: "do" },
+        { antes: "", despues: "Maria and Carlos know each other?", opciones: ["Do", "Does", "Are"], correcta: "Do" },
+        { antes: "How much", despues: "this laptop cost?", opciones: ["does", "do", "is"], correcta: "does" },
+        { antes: "", despues: "the train stop at this station?", opciones: ["Does", "Do", "Is"], correcta: "Does" },
+        { antes: "What kind of music", despues: "your sister like?", opciones: ["does", "do", "is"], correcta: "does" },
+        { antes: "", despues: "I need a passport to travel there?", opciones: ["Do", "Does", "Am"], correcta: "Do" },
+
+        // --- NEGACIONES ---
+        { antes: "I", despues: "drink coffee after 5:00 PM.", opciones: ["don't", "doesn't", "not"], correcta: "don't" },
+        { antes: "He", despues: "eat meat because he is vegetarian.", opciones: ["doesn't", "don't", "isn't"], correcta: "doesn't" },
+        { antes: "We", despues: "have class on Saturdays.", opciones: ["don't", "doesn't", "aren't"], correcta: "don't" },
+        { antes: "My phone", despues: "work properly without Wi-Fi.", opciones: ["doesn't", "don't", "isn't"], correcta: "doesn't" },
+        { antes: "They", despues: "understand the instructions.", opciones: ["don't", "doesn't", "aren't"], correcta: "don't" },
+        { antes: "Sarah", despues: "like spicy food.", opciones: ["doesn't", "don't", "isn't"], correcta: "doesn't" },
+        { antes: "You", despues: "need to bring anything to the party.", opciones: ["don't", "doesn't", "aren't"], correcta: "don't" },
+        { antes: "The store", despues: "open until 10:00 AM.", opciones: ["doesn't", "don't", "isn't"], correcta: "doesn't" },
+        { antes: "My friends", despues: "live in this neighborhood anymore.", opciones: ["don't", "doesn't", "aren't"], correcta: "don't" },
+        { antes: "It", despues: "matter if we are five minutes late.", opciones: ["doesn't", "don't", "isn't"], correcta: "doesn't" },
+        { antes: "She", despues: "want to go out tonight.", opciones: ["doesn't", "don't", "isn't"], correcta: "doesn't" },
+        { antes: "Cats", despues: "usually like swimming in water.", opciones: ["don't", "doesn't", "aren't"], correcta: "don't" },
+        { antes: "Tom", despues: "have a driver's license yet.", opciones: ["doesn't", "don't", "isn't"], correcta: "doesn't" },
+        { antes: "I", despues: "know the answer to that question.", opciones: ["don't", "doesn't", "am not"], correcta: "don't" },
+        { antes: "This key", despues: "fit the front door.", opciones: ["doesn't", "don't", "isn't"], correcta: "doesn't" },
+
+        // --- RESPUESTAS CORTAS Y CONTRASTES ---
+        { antes: "Does she work here? Yes, she", despues: ".", opciones: ["does", "do", "is"], correcta: "does" },
+        { antes: "Do they live in Spain? No, they", despues: ".", opciones: ["don't", "doesn't", "aren't"], correcta: "don't" },
+        { antes: "Does it take long to get there? No, it", despues: ".", opciones: ["doesn't", "don't", "isn't"], correcta: "doesn't" },
+        { antes: "Do you like this song? Yes, I", despues: ".", opciones: ["do", "does", "am"], correcta: "do" },
+        { antes: "He says he plays tennis, but he really", despues: ".", opciones: ["doesn't", "don't", "isn't"], correcta: "doesn't" },
+        { antes: "My sister likes horror movies, but I", despues: ".", opciones: ["don't", "doesn't", "am not"], correcta: "don't" },
+        { antes: "I don't have a car, but my brother", despues: ".", opciones: ["does", "do", "has"], correcta: "does" },
+        { antes: "Why", despues: "she look so tired today?", opciones: ["does", "do", "is"], correcta: "does" },
+        { antes: "Where", despues: "the students keep their backpacks?", opciones: ["do", "does", "are"], correcta: "do" },
+        { antes: "The weather", despues: "look very good for a picnic.", opciones: ["doesn't", "don't", "isn't"], correcta: "doesn't" }
+    ];

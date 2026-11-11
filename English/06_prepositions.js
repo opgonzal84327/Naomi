@@ -1,0 +1,47 @@
+window.bancoPreguntas = [
+        // --- TIEMPO ---
+        { antes: "The meeting starts", despues: "9:30 AM.", opciones: ["at", "on", "in"], correcta: "at" },
+        { antes: "My birthday is", despues: "October.", opciones: ["in", "on", "at"], correcta: "in" },
+        { antes: "We always have a big dinner", despues: "Christmas Day.", opciones: ["on", "in", "at"], correcta: "on" },
+        { antes: "I usually go to the gym", despues: "the morning.", opciones: ["in", "on", "at"], correcta: "in" },
+        { antes: "Are you doing anything special", despues: "Friday night?", opciones: ["on", "in", "at"], correcta: "on" },
+        { antes: "The stars shine brightly", despues: "night.", opciones: ["at", "in", "on"], correcta: "at" },
+        { antes: "They got married", despues: "2018.", opciones: ["in", "on", "at"], correcta: "in" },
+        { antes: "Let's meet", despues: "noon for lunch.", opciones: ["at", "on", "in"], correcta: "at" },
+        { antes: "The weather is usually very cold here", despues: "winter.", opciones: ["in", "on", "at"], correcta: "in" },
+        { antes: "Our flight leaves", despues: "July 15th.", opciones: ["on", "in", "at"], correcta: "on" },
+        { antes: "I will finish the report", despues: "two hours.", opciones: ["in", "at", "on"], correcta: "in" },
+        { antes: "He doesn't like working", despues: "weekends.", opciones: ["on", "in", "at"], correcta: "on" },
+        { antes: "We arrived home", despues: "midnight.", opciones: ["at", "on", "in"], correcta: "at" },
+        { antes: "Technology changed a lot", despues: "the 21st century.", opciones: ["in", "on", "at"], correcta: "in" },
+        { antes: "See you", despues: "Monday morning!", opciones: ["on", "in", "at"], correcta: "on" },
+
+        // --- LUGAR ---
+        { antes: "She is waiting for you", despues: "the bus stop.", opciones: ["at", "in", "on"], correcta: "at" },
+        { antes: "Your keys are", despues: "the kitchen table.", opciones: ["on", "in", "at"], correcta: "on" },
+        { antes: "They live", despues: "Mexico City.", opciones: ["in", "on", "at"], correcta: "in" },
+        { antes: "There is a beautiful painting", despues: "the wall.", opciones: ["on", "in", "at"], correcta: "on" },
+        { antes: "I left my jacket", despues: "the car.", opciones: ["in", "on", "at"], correcta: "in" },
+        { antes: "Turn left", despues: "the traffic lights.", opciones: ["at", "in", "on"], correcta: "at" },
+        { antes: "We are", despues: "the second floor.", opciones: ["on", "in", "at"], correcta: "on" },
+        { antes: "The kids are playing", despues: "the garden.", opciones: ["in", "on", "at"], correcta: "in" },
+        { antes: "Write your name", despues: "the top of the page.", opciones: ["at", "in", "on"], correcta: "at" },
+        { antes: "I read an interesting article", despues: "the newspaper.", opciones: ["in", "on", "at"], correcta: "in" },
+        { antes: "She is currently", despues: "the train heading north.", opciones: ["on", "in", "at"], correcta: "on" },
+        { antes: "Someone is knocking", despues: "the door.", opciones: ["at", "in", "on"], correcta: "at" },
+        { antes: "Madrid is", despues: "Spain.", opciones: ["in", "on", "at"], correcta: "in" },
+        { antes: "Put the milk back", despues: "the fridge, please.", opciones: ["in", "on", "at"], correcta: "in" },
+        { antes: "He was standing", despues: "the corner of the street.", opciones: ["at", "in", "on"], correcta: "at" },
+
+        // --- NEGATIVAS Y PREGUNTAS ---
+        { antes: "I am not", despues: "home right now; I'm at work.", opciones: ["at", "in", "on"], correcta: "at" },
+        { antes: "Why isn't the document", despues: "my desk?", opciones: ["on", "in", "at"], correcta: "on" },
+        { antes: "They don't open the store", despues: "Sundays.", opciones: ["on", "in", "at"], correcta: "on" },
+        { antes: "Is there a bank", despues: "this neighborhood?", opciones: ["in", "on", "at"], correcta: "in" },
+        { antes: "We didn't see him", despues: "the party last night.", opciones: ["at", "on", "in"], correcta: "at" },
+        { antes: "Don't sit", despues: "that chair; it's broken.", opciones: ["on", "in", "at"], correcta: "on" },
+        { antes: "Are you", despues: "bed already?", opciones: ["in", "on", "at"], correcta: "in" },
+        { antes: "The concert isn't", despues: "October; it's in November.", opciones: ["in", "on", "at"], correcta: "in" },
+        { antes: "Did you leave your phone", despues: "the taxi?", opciones: ["in", "on", "at"], correcta: "in" },
+        { antes: "What time do you arrive", despues: "the airport?", opciones: ["at", "in", "on"], correcta: "at" }
+    ];

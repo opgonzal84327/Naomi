@@ -198,6 +198,14 @@
             display: none;
             font-weight: bold;
         }
+		
+		/* Estilo cuando se selecciona una ficha con el dedo */
+		.drag-item.selected-touch {
+			background-color: #ff9f1c !important;
+			transform: scale(1.1);
+			box-shadow: 0 0 15px rgba(255, 159, 28, 0.6);
+		}
+
     </style>
 </head>
 <body>
@@ -320,39 +328,63 @@
     </div>
 
     <script>
-        let draggedText = '';
+		let draggedText = '';
+		let selectedElement = null;
 
-        // Handle Drag Events
-        const dragItems = document.querySelectorAll('.drag-item');
-        dragItems.forEach(item => {
-            item.addEventListener('dragstart', (e) => {
-                draggedText = e.target.innerText;
-            });
-        });
+		// Eventos para Mouse y Toque en las fichas superiores
+		const dragItems = document.querySelectorAll('.drag-item');
+		dragItems.forEach(item => {
+			// Soporte Mouse
+			item.addEventListener('dragstart', (e) => {
+				draggedText = e.target.innerText;
+			});
 
-        // Handle Drop Zones
-        const dropZones = document.querySelectorAll('.drop-zone');
-        dropZones.forEach(zone => {
-            zone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                zone.classList.add('drag-over');
-            });
+			// Soporte Pantalla Táctil (Tocar para elegir)
+			item.addEventListener('click', () => {
+				dragItems.forEach(i => i.classList.remove('selected-touch'));
+				item.classList.add('selected-touch');
+				draggedText = item.innerText;
+				selectedElement = item;
+			});
+		});
 
-            zone.addEventListener('dragleave', () => {
-                zone.classList.remove('drag-over');
-            });
+		// Eventos para Mouse y Toque en los recuadros vacíos
+		const dropZones = document.querySelectorAll('.drop-zone');
+		dropZones.forEach(zone => {
+			// Soporte Mouse
+			zone.addEventListener('dragover', (e) => {
+				e.preventDefault();
+				zone.classList.add('drag-over');
+			});
 
-            zone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                zone.classList.remove('drag-over');
-                zone.innerText = draggedText;
-                
-                // Clear error/correct feedback if answer is updated
-                const parentBlock = zone.closest('.game-block');
-                parentBlock.classList.remove('row-correct', 'row-wrong');
-                parentBlock.querySelector('.correction-text').style.display = 'none';
-            });
-        });
+			zone.addEventListener('dragleave', () => {
+				zone.classList.remove('drag-over');
+			});
+
+			zone.addEventListener('drop', (e) => {
+				e.preventDefault();
+				zone.classList.remove('drag-over');
+				placeWord(zone);
+			});
+
+			// Soporte Pantalla Táctil (Tocar para poner)
+			zone.addEventListener('click', () => {
+				if (draggedText !== '') {
+					placeWord(zone);
+				}
+			});
+		});
+
+		function placeWord(zone) {
+			zone.innerText = draggedText;
+			
+			// Limpiar marcas de revisión previas si cambia su respuesta
+			const parentBlock = zone.closest('.game-block') || zone.parentElement;
+			parentBlock.classList.remove('row-correct', 'row-wrong');
+			const correction = parentBlock.querySelector('.correction-text');
+			if (correction) correction.style.display = 'none';
+		}
+
 
         // Shuffle elements on load
         window.addEventListener('DOMContentLoaded', () => {

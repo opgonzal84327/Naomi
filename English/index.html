@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Master Hub</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #0d9488;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #1e293b;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: var(--card);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+        }
+        header {
+            text-align: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+        h1 { color: var(--primary); margin: 0 0 8px 0; }
+        .subtitle { color: #64748b; margin: 0; }
+
+        /* --- ESTILOS DEL MENÚ PRINCIPAL --- */
+        .category-title {
+            color: var(--accent);
+            border-bottom: 1px solid #cbd5e1;
+            padding-bottom: 5px;
+            margin-top: 25px;
+            font-size: 1.2em;
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .topic-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .topic-card:hover {
+            border-color: var(--primary);
+            background: #eff6ff;
+            transform: translateY(-2px);
+        }
+        .topic-title {
+            font-weight: bold;
+            font-size: 1.05em;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        .topic-desc {
+            font-size: 0.85em;
+            color: #64748b;
+        }
+
+        /* --- ESTILOS DE LA VISTA DE EJERCICIOS --- */
+        #quiz-view { display: none; }
+        .quiz-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+        .btn-back {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-back:hover { background: #475569; }
+        select.mode-select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 2px solid #cbd5e1;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        .question-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+        }
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .question-text { font-size: 1.1em; font-weight: 500; }
+        select.answer-select {
+            padding: 5px 10px;
+            font-size: 0.95em;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            background-color: #f8fafc;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-audio {
+            display: none;
+            background-color: #0284c7;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+            cursor: pointer;
+            align-items: center;
+            gap: 5px;
+        }
+        .feedback { margin-top: 8px; font-weight: bold; font-size: 0.92em; display: none; }
+        .correct { border-left: 6px solid #22c55e; background-color: #f0fdf4; }
+        .incorrect { border-left: 6px solid #ef4444; background-color: #fef2f2; }
+        .text-correct { color: #15803d; }
+        .text-incorrect { color: #b91c1c; }
+        .actions { display: flex; gap: 15px; justify-content: center; margin-top: 25px; flex-wrap: wrap; }
+        .btn-main { padding: 14px 28px; font-size: 1.05em; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; color: white; }
+        .btn-grade { background-color: var(--primary); }
+        .btn-shuffle { background-color: var(--accent); }
+        #score-box {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            background-color: #eff6ff;
+            border: 2px solid #bfdbfe;
+            color: var(--primary);
+        }
+        .error-msg {
+            background: #fef2f2;
+            border: 2px solid #ef4444;
+            color: #b91c1c;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>English Grammar Master Hub</h1>
+        <p class="subtitle" id="header-subtitle">Select a grammar topic to start practicing</p>
+    </header>
+
+    <!-- VISTA 1: MENÚ DE TEMAS -->
+    <div id="menu-view"></div>
+
+    <!-- VISTA 2: EJERCICIOS DEL TEMA SELECCIONADO -->
+    <div id="quiz-view">
+        <div class="quiz-topbar">
+            <button class="btn-back" onclick="volverAlMenu()">← Back to Menu</button>
+            <h2 id="current-topic-title" style="margin: 0; color: var(--primary); font-size: 1.2em;"></h2>
+            <select id="limit-selector" class="mode-select" onchange="prepararPreguntas()">
+                <option value="20">Quick Mode (20 random)</option>
+                <option value="all" selected>Full Bank (All)</option>
+            </select>
+        </div>
+
+        <div id="quiz-container"></div>
+
+        <div class="actions" id="quiz-actions">
+            <button class="btn-main btn-grade" onclick="calificar()">Check Answers</button>
+            <button class="btn-main btn-shuffle" onclick="prepararPreguntas()">Shuffle & Restart</button>
+        </div>
+
+        <div id="score-box"></div>
+    </div>
+</div>
+
+<script>
+    // Catálogo de los 18 temas y el nombre de su archivo .js correspondiente
+    const catalogoTemas = [
+        {
+            categoria: "1. Foundations & Nouns",
+            items: [
+                { id: "01_possessives", titulo: "Possessives", desc: "my, mine, his, hers, our, ours, 's / s' (70 Qs)" },
+                { id: "02_object_pronouns", titulo: "Object Pronouns", desc: "me, you, him, her, it, us, them (40 Qs)" },
+                { id: "03_demonstratives", titulo: "This / That / These / Those & There is/are", desc: "Distance & existence (50 Qs)" },
+                { id: "04_articles_some_any", titulo: "Articles & Basic Quantifiers", desc: "a, an, some, any (40 Qs)" },
+                { id: "05_much_many", titulo: "Quantifiers of Quantity", desc: "much, many, a lot of (40 Qs)" }
+            ]
+        },
+        {
+            categoria: "2. Prepositions & Modifiers",
+            items: [
+                { id: "06_prepositions", titulo: "Prepositions of Time & Place", desc: "in, on, at (40 Qs)" },
+                { id: "07_comparatives", titulo: "Comparatives & Superlatives", desc: "-er, more, the -est, the most (40 Qs)" },
+                { id: "08_adverbs_frequency", titulo: "Adverbs of Frequency", desc: "always, usually, often, never & word order (40 Qs)" }
+            ]
+        },
+        {
+            categoria: "3. Verbs & Auxiliaries",
+            items: [
+                { id: "09_do_does", titulo: "Present Simple Auxiliaries", desc: "do, does, don't, doesn't (40 Qs)" },
+                { id: "10_present_verbs", titulo: "Present Simple Verbs", desc: "3rd person -s/-es/-ies vs. base form (40 Qs)" },
+                { id: "11_irregular_past", titulo: "Irregular Past Simple Verbs", desc: "went, made, saw, bought, etc. (40 Qs)" },
+                { id: "12_modals", titulo: "Modal Verbs", desc: "should, must, have to, might (40 Qs)" },
+                { id: "13_can_could", titulo: "Can vs. Could", desc: "Ability, past & polite requests (40 Qs)" },
+                { id: "14_infinitive_gerund", titulo: "Infinitive vs. Gerund", desc: "to + verb vs. -ing (40 Qs)" },
+                { id: "15_confusing_verbs", titulo: "Confusing Everyday Verbs", desc: "make/do, say/tell, borrow/lend, see/watch (40 Qs)" },
+                { id: "16_phrasal_verbs", titulo: "Common Phrasal Verbs", desc: "get up, turn on, look for, give up, etc. (40 Qs)" }
+            ]
+        },
+        {
+            categoria: "4. Tenses & Advanced Structures",
+            items: [
+                { id: "17_tenses_superbank", titulo: "Verb Tenses Contrast (Superbank)", desc: "Present, Past & Present Perfect (100 Qs)" },
+                { id: "18_future", titulo: "Future: Will vs. Going to", desc: "Plans, promises & predictions (50 Qs)" },
+                { id: "19_passive_voice", titulo: "Passive Voice", desc: "Present, Past, Future & Perfect Passive (50 Qs)" },
+                { id: "20_conditionals", titulo: "Conditionals", desc: "Zero, First & Second Conditional (40 Qs)" }
+            ]
+        },
+		{
+            categoria: "5. Fluency & Connectors",
+            items: [
+                { id: "21_relative_pronouns", titulo: "Relative Pronouns", desc: "who, which, where, whose (40 Qs)" },
+                { id: "22_tag_questions", titulo: "Tag Questions", desc: "isn't it?, don't you?, didn't they? (40 Qs)" },
+                { id: "23_used_to", titulo: "Past Habits: Used to vs. Usually", desc: "Past habits vs. current routines (40 Qs)" },
+                { id: "24_adjectives_ed_ing", titulo: "Adjectives: -ed vs. -ing", desc: "bored/boring, tired/tiring, excited/exciting (40 Qs)" },
+                { id: "25_connectors", titulo: "Connectors of Cause & Contrast", desc: "because, so, although, despite, however (40 Qs)" }
+            ]
+        }
+
+    ];
+
+    let preguntasActuales = [];
+    let scriptCargado = null;
+
+    // Construir el menú visualmente al cargar la página
+    function renderizarMenu() {
+        const menuView = document.getElementById('menu-view');
+        menuView.innerHTML = '';
+
+        catalogoTemas.forEach(grupo => {
+            const h3 = document.createElement('h3');
+            h3.className = 'category-title';
+            h3.innerText = grupo.categoria;
+            menuView.appendChild(h3);
+
+            const grid = document.createElement('div');
+            grid.className = 'menu-grid';
+
+            grupo.items.forEach(tema => {
+                const card = document.createElement('div');
+                card.className = 'topic-card';
+                card.onclick = () => cargarTema(tema);
+                card.innerHTML = `
+                    <div class="topic-title">${tema.titulo}</div>
+                    <div class="topic-desc">${tema.desc}</div>
+                `;
+                grid.appendChild(card);
+            });
+
+            menuView.appendChild(grid);
+        });
+    }
+
+    // Invocar dinámicamente el archivo .js del tema elegido
+    function cargarTema(tema) {
+        window.speechSynthesis.cancel();
+        document.getElementById('menu-view').style.display = 'none';
+        document.getElementById('quiz-view').style.display = 'block';
+        document.getElementById('current-topic-title').innerText = tema.titulo;
+        document.getElementById('header-subtitle').innerText = tema.desc;
+        document.getElementById('quiz-container').innerHTML = '<p style="text-align:center;">Loading questions...</p>';
+        document.getElementById('score-box').style.display = 'none';
+
+        // Limpiar variable global anterior
+        window.bancoPreguntas = undefined;
+
+        if (scriptCargado) {
+            scriptCargado.remove();
+        }
+
+        scriptCargado = document.createElement('script');
+        scriptCargado.src = `${tema.id}.js`;
+        
+        scriptCargado.onload = () => {
+            document.getElementById('quiz-actions').style.display = 'flex';
+            prepararPreguntas();
+        };
+
+        scriptCargado.onerror = () => {
+            document.getElementById('quiz-actions').style.display = 'none';
+            document.getElementById('quiz-container').innerHTML = `
+                <div class="error-msg">
+                    File <strong>"${tema.id}.js"</strong> not found!<br><br>
+                    Make sure you created the file <code>${tema.id}.js</code> in the exact same folder as this HTML file and pasted the question bank inside it.
+                </div>
+            `;
+        };
+
+        document.body.appendChild(scriptCargado);
+    }
+
+    function volverAlMenu() {
+        window.speechSynthesis.cancel();
+        document.getElementById('quiz-view').style.display = 'none';
+        document.getElementById('menu-view').style.display = 'block';
+        document.getElementById('header-subtitle').innerText = "Select a grammar topic to start practicing";
+    }
+
+    function mezclarArray(array) {
+        let copia = [...array];
+        for (let i = copia.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copia[i], copia[j]] = [copia[j], copia[i]];
+        }
+        return copia;
+    }
+
+    function construirOracionCompleta(item, palabraElegida) {
+        const parte1 = item.antes ? item.antes + " " : "";
+        const espacioDespues = /^[.,?!;:]/.test(item.despues) ? "" : " ";
+        const parte2 = item.despues ? espacioDespues + item.despues : "";
+        const parte3 = item.despues2 ? " " + item.despues2 : "";
+        return `${parte1}${palabraElegida}${parte2}${parte3}`.trim();
+    }
+
+    function escucharOracion(index) {
+        window.speechSynthesis.cancel();
+        const item = preguntasActuales[index];
+        const oracionCompleta = construirOracionCompleta(item, item.correcta);
+
+        const mensaje = new SpeechSynthesisUtterance(oracionCompleta);
+        mensaje.lang = 'en-US';
+        mensaje.rate = 0.9;
+        window.speechSynthesis.speak(mensaje);
+    }
+
+    function prepararPreguntas() {
+        window.speechSynthesis.cancel();
+        if (!window.bancoPreguntas) return;
+
+        const limite = document.getElementById('limit-selector').value;
+        const container = document.getElementById('quiz-container');
+        const scoreBox = document.getElementById('score-box');
+        
+        container.innerHTML = '';
+        scoreBox.style.display = 'none';
+
+        let mezcladas = mezclarArray(window.bancoPreguntas);
+        preguntasActuales = (limite === '20' && mezcladas.length > 20) ? mezcladas.slice(0, 20) : mezcladas;
+
+        preguntasActuales.forEach((item, index) => {
+            let opcionesMezcladas = mezclarArray(item.opciones);
+            let opcionesHTML = `<option value="">-- select --</option>`;
+            opcionesMezcladas.forEach(op => {
+                opcionesHTML += `<option value="${op}">${op}</option>`;
+            });
+
+            const textoDespues = item.despues2 ? `${item.despues} ${item.despues2}` : item.despues;
+
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `card-${index}`;
+            card.innerHTML = `
+                <div class="question-header">
+                    <div class="question-text">
+                        <strong>${index + 1}.</strong> ${item.antes} 
+                        <select class="answer-select" id="select-${index}">
+                            ${opcionesHTML}
+                        </select> 
+                        ${textoDespues}
+                    </div>
+                    <button class="btn-audio" id="audio-${index}" onclick="escucharOracion(${index})">
+                        🔊 Listen
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            container.appendChild(card);
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function calificar() {
+        let aciertos = 0;
+
+        preguntasActuales.forEach((item, index) => {
+            const select = document.getElementById(`select-${index}`);
+            const card = document.getElementById(`card-${index}`);
+            const feedback = document.getElementById(`feedback-${index}`);
+            const audioBtn = document.getElementById(`audio-${index}`);
+            const respuestaUsuario = select.value;
+
+            card.classList.remove('correct', 'incorrect');
+            feedback.style.display = 'block';
+            audioBtn.style.display = 'inline-flex';
+
+            if (respuestaUsuario === item.correcta) {
+                aciertos++;
+                card.classList.add('correct');
+                feedback.className = 'feedback text-correct';
+                feedback.innerText = '✓ Correct!';
+            } else {
+                card.classList.add('incorrect');
+                feedback.className = 'feedback text-incorrect';
+                const textoUsuario = respuestaUsuario === "" ? "No answer" : respuestaUsuario;
+                feedback.innerText = `✗ Incorrect (${textoUsuario}). Correct answer: "${item.correcta}".`;
+            }
+        });
+
+        const scoreBox = document.getElementById('score-box');
+        const porcentaje = Math.round((aciertos / preguntasActuales.length) * 100);
+        scoreBox.style.display = 'block';
+        scoreBox.innerHTML = `Final Score: ${aciertos} / ${preguntasActuales.length} (${porcentaje}%)`;
+        scoreBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    window.onload = renderizarMenu;
+</script>
+
+</body>
+</html>
+
+

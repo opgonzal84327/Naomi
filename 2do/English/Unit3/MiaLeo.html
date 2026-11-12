@@ -151,7 +151,29 @@
     </style>
 </head>
 <body>
-
+    <!-- 👇 PEGA EL BOTÓN AQUÍ MISMO -->
+    <a href="../menuEnglish.html" style="
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 9999;
+        background-color: #ff9f1c;
+        color: #ffffff;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 800;
+        font-size: 0.9rem;
+        text-decoration: none;
+        padding: 10px 16px;
+        border-radius: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+    " onmouseover="this.style.backgroundColor='#e08200'; this.style.transform='scale(1.05)';" 
+        onmouseout="this.style.backgroundColor='#ff9f1c'; this.style.transform='scale(1)';">
+        ⬅ Units Menu
+    </a>
     <header>
         <h1 id="story-title"></h1>
         <p id="story-subtitle"></p>
@@ -203,7 +225,7 @@
         const storyData = {
             title: "🦁 Mia and Leo’s Market Picnic! 🐭",
             subtitle: "Unit 3: At the Market • Reading & Vocabulary Practice",
-            imageFile: "https://raw.githubusercontent.com/opgonzal84327/Naomi/main/images/MiaMouse.jpg",
+            imageFile: "../images/MiaMouse.jpg",
             paragraphs: [
                 "It is a sunny morning, and Mia Mouse and Leo Lion are very hungry. They want to make a big, yummy lunch, so they open the kitchen cupboard to check their food.",
                 "\"What's in the cupboard?\" asks Leo Lion.",

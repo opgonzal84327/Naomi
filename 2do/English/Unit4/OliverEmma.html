@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">English Story Practice</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff8c42;
+            --primary-dark: #e67329;
+            --secondary: #4caf50;
+            --secondary-light: #e8f5e9;
+            --accent: #ffd166;
+            --bg-color: #fffdf7;
+            --card-bg: #ffffff;
+            --text-main: #2d3142;
+            --text-muted: #5c6274;
+            --border-radius: 18px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#ffe8b3 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            color: var(--text-main);
+            line-height: 1.7;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto 25px auto;
+            background: var(--card-bg);
+            padding: 25px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+            border-bottom: 5px solid var(--primary);
+        }
+        header h1 { font-family: 'Fredoka', sans-serif; font-size: 2.3rem; color: var(--primary-dark); margin-bottom: 5px; }
+        header p { color: var(--text-muted); font-weight: 600; font-size: 1.05rem; }
+        .main-container {
+            display: grid;
+            grid-template-columns: 1.85fr 1.15fr;
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: start;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 28px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+            margin-bottom: 25px;
+        }
+        .story-image-box {
+            width: 100%;
+            margin-bottom: 22px;
+            border-radius: 14px;
+            overflow: hidden;
+            background-color: #fff5e4;
+            border: 3px dashed #ffd166;
+            text-align: center;
+        }
+        .story-image-box img { width: 100%; max-height: 380px; object-fit: cover; display: block; }
+        .paragraph-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            transition: background-color 0.25s ease;
+        }
+        .paragraph-row:hover { background-color: #fff9eb; }
+        .paragraph-row.speaking { background-color: #fff2cc; box-shadow: 0 0 0 2px var(--accent); }
+        .paragraph-row p { font-size: 1.15rem; flex: 1; }
+        .vocab-highlight { color: #d95d1e; font-weight: 700; }
+        .audio-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            flex-shrink: 0;
+            margin-top: 3px;
+            box-shadow: 0 3px 0 var(--primary-dark);
+        }
+        .audio-btn:hover { background-color: var(--primary-dark); }
+        .mini-audio-btn {
+            background: #ffe8cc;
+            border: none;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 4px;
+        }
+        .mini-audio-btn:hover { background: var(--accent); }
+		.sidebar { 
+			position: sticky; 
+			top: 20px; 
+			max-height: calc(100vh - 40px); 
+			overflow-y: auto; 
+		}
+		.sidebar .card { margin-bottom: 0; }
+        .sidebar h2 { font-family: 'Fredoka', sans-serif; color: var(--secondary); font-size: 1.4rem; margin-bottom: 12px; }
+        .helper-subtitle { font-family: 'Fredoka', sans-serif; font-size: 1.05rem; color: var(--primary-dark); margin: 16px 0 8px 0; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 18px;
+            font-size: 0.92rem;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        th { background-color: var(--secondary); color: white; font-family: 'Fredoka', sans-serif; text-align: left; padding: 10px 8px; font-size: 0.88rem; }
+        td { padding: 8px; border-bottom: 1px solid #edf2f7; }
+        tr:nth-child(even) { background-color: #f9fbf9; }
+        .badge-type { display: inline-block; background-color: #e3f2fd; color: #1565c0; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; }
+        .quiz-section h2 { font-family: 'Fredoka', sans-serif; color: var(--primary-dark); font-size: 1.7rem; margin-bottom: 18px; text-align: center; }
+        .question-block { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 14px; padding: 16px 20px; margin-bottom: 16px; }
+        .question-title { font-weight: 700; font-size: 1.08rem; margin-bottom: 10px; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .option-label { display: flex; align-items: center; gap: 8px; background: white; padding: 10px 14px; border-radius: 10px; border: 2px solid #e2e8f0; cursor: pointer; font-weight: 600; }
+        .option-label:hover { border-color: var(--primary); background-color: #fffaf0; }
+        .feedback-msg { margin-top: 10px; font-weight: 700; font-size: 0.98rem; display: none; }
+        .feedback-correct { color: #2e7d32; }
+        .feedback-incorrect { color: #c62828; }
+        .grade-btn { display: block; width: 100%; background-color: var(--secondary); color: white; font-family: 'Fredoka', sans-serif; font-size: 1.3rem; padding: 14px; border: none; border-radius: 14px; cursor: pointer; box-shadow: 0 4px 0 #388e3c; margin-top: 20px; }
+        #final-score { text-align: center; margin-top: 20px; padding: 18px; border-radius: 14px; background-color: var(--secondary-light); border: 2px solid var(--secondary); font-family: 'Fredoka', sans-serif; font-size: 1.35rem; color: #1b5e20; display: none; }
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+            .options-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 id="story-title"></h1>
+        <p id="story-subtitle"></p>
+    </header>
+
+    <div class="main-container">
+        <div class="left-column">
+            <div class="card">
+                <div class="story-image-box" id="image-container"></div>
+                <div id="story-paragraphs"></div>
+            </div>
+
+            <div class="card quiz-section">
+                <h2>📝 Quiz: Answer the Questions!</h2>
+                <div id="quiz-container"></div>
+                <button class="grade-btn" onclick="gradeQuiz()">Grade Quiz ✔</button>
+                <div id="final-score"></div>
+            </div>
+        </div>
+
+        <aside class="sidebar">
+            <div class="card">
+                <h2>📖 Word Helper</h2>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px;">Click 🔊 to listen to each word!</p>
+
+                <h3 class="helper-subtitle">🏃‍♂️ Action Words (Verbs)</h3>
+                <table>
+                    <thead>
+                        <tr><th>I / You / We / They</th><th>He / She / It</th><th>Meaning</th></tr>
+                    </thead>
+                    <tbody id="verbs-table-body"></tbody>
+                </table>
+
+                <h3 class="helper-subtitle">🌟 Other Helpful Words</h3>
+                <table>
+                    <thead>
+                        <tr><th>Word</th><th>Meaning</th><th>Type</th></tr>
+                    </thead>
+                    <tbody id="words-table-body"></tbody>
+                </table>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // =========================================================================
+        // 🟢 ZONA DE DATOS DEL CUENTO (SOLO REEMPLAZA ESTO EN CADA HISTORIA NUEVA)
+        // =========================================================================
+        const storyData = {
+            title: "🦉 Oliver and Emma’s Lunchtime Adventure! 🐘",
+            subtitle: "Unit 4: It's Lunchtime • Reading & Vocabulary Practice",
+            imageFile: "https://raw.githubusercontent.com/opgonzal84327/Naomi/main/images/EmmaOliver.jpg",
+            paragraphs: [
+                "Today is a sunny day, and Oliver Owl and Emma Elephant are at a cozy café for lunch. They sit at a big wooden table. On the table, there is a white <b>plate</b>, a <b>bowl</b>, a <b>glass</b>, a <b>napkin</b>, a <b>fork</b>, a <b>knife</b>, and a <b>spoon</b>.",
+                "Chef Bear walks up to their table with a friendly smile and asks:",
+                "\"Hello! Would you like to order? What would you like to eat?\"",
+                "Emma looks at the menu. She thinks carefully because she has clear food preferences.",
+                "\"Well, I love <b>soup</b> and <b>vegetables</b>. I don't like <b>burgers</b> or <b>fries</b>,\" says Emma. \"I'd like a hot <b>bowl</b> of <b>soup</b> and a fresh <b>salad</b>, please.\"",
+                "\"Great choice!\" says Chef Bear. \"And what about you, Oliver? What would you like to eat?\"",
+                "Oliver looks at two delicious pictures on the menu: <b>meatballs</b> with <b>potatoes</b>, and <b>sausages</b>.",
+                "\"Which one do you want?\" asks Emma.",
+                "Oliver points his wing and says:",
+                "\"That one! I love <b>meatballs</b> and <b>potatoes</b>! I don't want <b>sausages</b> today. I'd like <b>meatballs</b> and <b>potatoes</b>, please.\"",
+                "\"Would you like <b>fries</b> with that?\" asks Chef Bear.",
+                "\"No, thank you,\" answers Oliver politely.",
+                "\"What would you like to drink?\" asks Chef Bear.",
+                "\"I'd like a cold <b>glass</b> of <b>water</b>, please. I don't like <b>soda</b>,\" says Emma.",
+                "\"And I'd like a strawberry <b>milkshake</b>, please!\" says Oliver.",
+                "Chef Bear brings their food. Emma eats her <b>soup</b> with a <b>spoon</b> and uses her <b>napkin</b>. Oliver cuts his <b>meatballs</b> with a <b>knife</b> and a <b>fork</b>. Everything is yummy!",
+                "After lunch, Chef Bear comes back with a tray of desserts: <b>apple pie</b>, <b>chocolate cake</b>, <b>ice cream</b>, <b>fruit</b>, <b>yoghurt</b>, and <b>cheese and crackers</b>.",
+                "\"Which one do you want for dessert?\" asks Chef Bear.",
+                "\"I want <b>chocolate cake</b> and <b>ice cream</b>!\" says Oliver excitedly.",
+                "\"I don't want cake. I'd like <b>apple pie</b> and <b>yoghurt</b>, please,\" says Emma.",
+                "They finish their lunch and feel very happy. What a wonderful lunchtime! The end!"
+            ],
+            verbs: [
+                { base: "sit", third: "sits", meaning: "sentarse" },
+                { base: "walk up", third: "walks up", meaning: "acercarse caminando" },
+                { base: "order", third: "orders", meaning: "ordenar / pedir comida" },
+                { base: "think", third: "thinks", meaning: "pensar" },
+                { base: "point", third: "points", meaning: "señalar / apuntar" },
+                { base: "answer", third: "answers", meaning: "responder" },
+                { base: "drink", third: "drinks", meaning: "beber / tomar" },
+                { base: "bring", third: "brings", meaning: "traer" },
+                { base: "use", third: "uses", meaning: "usar" },
+                { base: "cut", third: "cuts", meaning: "cortar" },
+                { base: "come back", third: "comes back", meaning: "regresar / volver" },
+                { base: "finish", third: "finishes", meaning: "terminar" },
+                { base: "feel", third: "feels", meaning: "sentirse" }
+            ],
+            otherWords: [
+                { word: "lunchtime", meaning: "hora del almuerzo", type: "Time" },
+                { word: "wooden", meaning: "de madera", type: "Adjective" },
+                { word: "friendly", meaning: "amigable", type: "Adjective" },
+                { word: "carefully", meaning: "cuidadosamente", type: "Adverb" },
+                { word: "choice", meaning: "elección / opción", type: "Noun" },
+                { word: "wing", meaning: "ala", type: "Noun" },
+                { word: "tray", meaning: "charola / bandeja", type: "Noun" },
+                { word: "excitedly", meaning: "emocionadamente", type: "Adverb" },
+                { word: "wonderful", meaning: "maravilloso", type: "Adjective" }
+            ],
+            quiz: [
+                { q: "1. Where are Oliver Owl and Emma Elephant?", options: ["At a park", "At a cozy café", "At school", "In a kitchen"], answer: 1 },
+                { q: "2. What is on their wooden table?", options: ["Only a cup and a spoon", "A plate, bowl, glass, napkin, fork, knife, and spoon", "A red lunchbox", "Books and pencils"], answer: 1 },
+                { q: "3. Who is the chef at the café?", options: ["Chef Bear", "Mrs. Owl", "Sammy Squirrel", "Leo Lion"], answer: 0 },
+                { q: "4. What question does Chef Bear ask first?", options: ["Whose is it?", "Would you like to order? What would you like to eat?", "Where do you live?", "Are there any apples?"], answer: 1 },
+                { q: "5. What food does Emma love?", options: ["Burgers and fries", "Sausages and soda", "Soup and vegetables", "Chocolate cake"], answer: 2 },
+                { q: "6. What does Emma order to eat?", options: ["A hot bowl of soup and a fresh salad", "A big burger", "Meatballs and fries", "Cheese and crackers"], answer: 0 },
+                { q: "7. Which main dish does Oliver want?", options: ["Sausages", "Soup", "Meatballs and potatoes", "Salad"], answer: 2 },
+                { q: "8. Does Oliver want fries with his meal?", options: ["Yes, please.", "No, thank you.", "Yes, a big plate.", "Only two fries."], answer: 1 },
+                { q: "9. What does Emma order to drink?", options: ["A strawberry milkshake", "A cold soda", "A cold glass of water", "Orange juice"], answer: 2 },
+                { q: "10. What does Oliver order to drink?", options: ["Water", "Milk", "Soda", "A strawberry milkshake"], answer: 3 },
+                { q: "11. What does Emma use to eat her soup?", options: ["A fork", "A knife", "A spoon", "Her hands"], answer: 2 },
+                { q: "12. What does Oliver use to cut his meatballs?", options: ["A spoon and a bowl", "A knife and a fork", "A napkin and a glass", "Only a spoon"], answer: 1 },
+                { q: "13. What desserts are on Chef Bear's tray?", options: ["Only cookies", "Apple pie, chocolate cake, ice cream, fruit, yoghurt, and cheese and crackers", "Bananas and mangoes", "Soup and salad"], answer: 1 },
+                { q: "14. What does Oliver want for dessert?", options: ["Apple pie and yoghurt", "Fruit", "Chocolate cake and ice cream", "Cheese and crackers"], answer: 2 },
+                { q: "15. What does Emma order for dessert?", options: ["Apple pie and yoghurt", "Chocolate cake", "Ice cream", "Soda"], answer: 0 }
+            ]
+        };
+        // =========================================================================
+        // 🔴 FIN DE LA ZONA DE DATOS (NO ES NECESARIO MODIFICAR NADA DE AQUÍ ABAJO)
+        // =========================================================================
+
+        document.getElementById('page-title').innerText = storyData.title;
+        document.getElementById('story-title').innerText = storyData.title;
+        document.getElementById('story-subtitle').innerText = storyData.subtitle;
+
+        document.getElementById('image-container').innerHTML = `
+            <img src="${storyData.imageFile}" alt="${storyData.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div style="display:none; padding: 35px 20px; color: #b07d2b; font-weight: 700;">
+                🖼️ Espacio reservado para la imagen del cuento<br>
+                <small style="font-weight: 400;">(Cambia <code>imageFile: "${storyData.imageFile}"</code> por tu imagen)</small>
+            </div>
+        `;
+
+        const paragraphsDiv = document.getElementById('story-paragraphs');
+        storyData.paragraphs.forEach(text => {
+            const formattedText = text.replace(/<b>/g, '<span class="vocab-highlight">').replace(/<\/b>/g, '</span>');
+            paragraphsDiv.innerHTML += `
+                <div class="paragraph-row">
+                    <button class="audio-btn" onclick="speakParagraph(this)">🔊 Listen</button>
+                    <p>${formattedText}</p>
+                </div>
+            `;
+        });
+
+        const verbsBody = document.getElementById('verbs-table-body');
+        storyData.verbs.forEach(v => {
+            verbsBody.innerHTML += `
+                <tr>
+                    <td><button class="mini-audio-btn" onclick="speakWord('${v.base}')">🔊</button><strong>${v.base}</strong></td>
+                    <td><button class="mini-audio-btn" onclick="speakWord('${v.third}')">🔊</button><strong>${v.third}</strong></td>
+                    <td>${v.meaning}</td>
+                </tr>
+            `;
+        });
+
+        const wordsBody = document.getElementById('words-table-body');
+        storyData.otherWords.forEach(w => {
+            wordsBody.innerHTML += `
+                <tr>
+                    <td><button class="mini-audio-btn" onclick="speakWord('${w.word}')">🔊</button><strong>${w.word}</strong></td>
+                    <td>${w.meaning}</td>
+                    <td><span class="badge-type">${w.type}</span></td>
+                </tr>
+            `;
+        });
+
+        const quizContainer = document.getElementById('quiz-container');
+        const letters = ['A', 'B', 'C', 'D'];
+        storyData.quiz.forEach((item, index) => {
+            let optionsHTML = '<div class="options-grid">';
+            item.options.forEach((opt, optIdx) => {
+                optionsHTML += `
+                    <label class="option-label">
+                        <input type="radio" name="q${index}" value="${optIdx}">
+                        <span>${letters[optIdx]}) ${opt}</span>
+                    </label>
+                `;
+            });
+            optionsHTML += '</div>';
+            quizContainer.innerHTML += `
+                <div class="question-block">
+                    <div class="question-title">${item.q}</div>
+                    ${optionsHTML}
+                    <div class="feedback-msg" id="feedback-${index}"></div>
+                </div>
+            `;
+        });
+
+        function gradeQuiz() {
+            let score = 0;
+            storyData.quiz.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const feedback = document.getElementById(`feedback-${index}`);
+                feedback.style.display = 'block';
+                if (selected && parseInt(selected.value) === item.answer) {
+                    score++;
+                    feedback.className = 'feedback-msg feedback-correct';
+                    feedback.innerText = '✨ Correct!';
+                } else {
+                    feedback.className = 'feedback-msg feedback-incorrect';
+                    feedback.innerText = `❌ Incorrect (Correct: ${letters[item.answer]})`;
+                }
+            });
+            const finalScoreDiv = document.getElementById('final-score');
+            finalScoreDiv.style.display = 'block';
+            finalScoreDiv.innerHTML = score === storyData.quiz.length
+                ? `🎉 Super Reader! You got ${score} out of ${storyData.quiz.length} correct! ⭐`
+                : `👏 Great job! Your score is ${score} out of ${storyData.quiz.length}. Keep practicing!`;
+            finalScoreDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        let currentRow = null;
+        function getEnglishVoice() {
+            const voices = window.speechSynthesis.getVoices();
+            return voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) ||
+                   voices.find(v => v.lang.startsWith('en-US')) ||
+                   voices.find(v => v.lang.startsWith('en'));
+        }
+        function speakParagraph(btn) {
+            window.speechSynthesis.cancel();
+            if (currentRow) currentRow.classList.remove('speaking');
+            const row = btn.parentElement;
+            const utterance = new SpeechSynthesisUtterance(row.querySelector('p').innerText);
+            const voice = getEnglishVoice();
+            if (voice) utterance.voice = voice;
+            utterance.lang = 'en-US';
+            utterance.rate = 0.8;
+            row.classList.add('speaking');
+            currentRow = row;
+            utterance.onend = () => { row.classList.remove('speaking'); currentRow = null; };
+            window.speechSynthesis.speak(utterance);
+        }
+        function speakWord(word) {
+            window.speechSynthesis.cancel();
+            if (currentRow) currentRow.classList.remove('speaking');
+            const utterance = new SpeechSynthesisUtterance(word);
+            const voice = getEnglishVoice();
+            if (voice) utterance.voice = voice;
+            utterance.lang = 'en-US';
+            utterance.rate = 0.8;
+            window.speechSynthesis.speak(utterance);
+        }
+        window.speechSynthesis.onvoiceschanged = getEnglishVoice;
+    </script>
+</body>
+</html>
+

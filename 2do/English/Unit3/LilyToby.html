@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">English Story Practice</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff8c42;
+            --primary-dark: #e67329;
+            --secondary: #4caf50;
+            --secondary-light: #e8f5e9;
+            --accent: #ffd166;
+            --bg-color: #fffdf7;
+            --card-bg: #ffffff;
+            --text-main: #2d3142;
+            --text-muted: #5c6274;
+            --border-radius: 18px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#ffe8b3 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            color: var(--text-main);
+            line-height: 1.7;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto 25px auto;
+            background: var(--card-bg);
+            padding: 25px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+            border-bottom: 5px solid var(--primary);
+        }
+        header h1 { font-family: 'Fredoka', sans-serif; font-size: 2.3rem; color: var(--primary-dark); margin-bottom: 5px; }
+        header p { color: var(--text-muted); font-weight: 600; font-size: 1.05rem; }
+        .main-container {
+            display: grid;
+            grid-template-columns: 1.85fr 1.15fr;
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: start;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 28px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+            margin-bottom: 25px;
+        }
+        .story-image-box {
+            width: 100%;
+            margin-bottom: 22px;
+            border-radius: 14px;
+            overflow: hidden;
+            background-color: #fff5e4;
+            border: 3px dashed #ffd166;
+            text-align: center;
+        }
+        .story-image-box img { width: 100%; max-height: 380px; object-fit: cover; display: block; }
+        .paragraph-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            transition: background-color 0.25s ease;
+        }
+        .paragraph-row:hover { background-color: #fff9eb; }
+        .paragraph-row.speaking { background-color: #fff2cc; box-shadow: 0 0 0 2px var(--accent); }
+        .paragraph-row p { font-size: 1.15rem; flex: 1; }
+        .vocab-highlight { color: #d95d1e; font-weight: 700; }
+        .audio-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            flex-shrink: 0;
+            margin-top: 3px;
+            box-shadow: 0 3px 0 var(--primary-dark);
+        }
+        .audio-btn:hover { background-color: var(--primary-dark); }
+        .mini-audio-btn {
+            background: #ffe8cc;
+            border: none;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 4px;
+        }
+        .mini-audio-btn:hover { background: var(--accent); }
+		.sidebar { 
+			position: sticky; 
+			top: 20px; 
+			max-height: calc(100vh - 40px); 
+			overflow-y: auto; 
+		}
+		.sidebar .card { margin-bottom: 0; }
+        .sidebar h2 { font-family: 'Fredoka', sans-serif; color: var(--secondary); font-size: 1.4rem; margin-bottom: 12px; }
+        .helper-subtitle { font-family: 'Fredoka', sans-serif; font-size: 1.05rem; color: var(--primary-dark); margin: 16px 0 8px 0; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 18px;
+            font-size: 0.92rem;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        th { background-color: var(--secondary); color: white; font-family: 'Fredoka', sans-serif; text-align: left; padding: 10px 8px; font-size: 0.88rem; }
+        td { padding: 8px; border-bottom: 1px solid #edf2f7; }
+        tr:nth-child(even) { background-color: #f9fbf9; }
+        .badge-type { display: inline-block; background-color: #e3f2fd; color: #1565c0; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; }
+        .quiz-section h2 { font-family: 'Fredoka', sans-serif; color: var(--primary-dark); font-size: 1.7rem; margin-bottom: 18px; text-align: center; }
+        .question-block { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 14px; padding: 16px 20px; margin-bottom: 16px; }
+        .question-title { font-weight: 700; font-size: 1.08rem; margin-bottom: 10px; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .option-label { display: flex; align-items: center; gap: 8px; background: white; padding: 10px 14px; border-radius: 10px; border: 2px solid #e2e8f0; cursor: pointer; font-weight: 600; }
+        .option-label:hover { border-color: var(--primary); background-color: #fffaf0; }
+        .feedback-msg { margin-top: 10px; font-weight: 700; font-size: 0.98rem; display: none; }
+        .feedback-correct { color: #2e7d32; }
+        .feedback-incorrect { color: #c62828; }
+        .grade-btn { display: block; width: 100%; background-color: var(--secondary); color: white; font-family: 'Fredoka', sans-serif; font-size: 1.3rem; padding: 14px; border: none; border-radius: 14px; cursor: pointer; box-shadow: 0 4px 0 #388e3c; margin-top: 20px; }
+        #final-score { text-align: center; margin-top: 20px; padding: 18px; border-radius: 14px; background-color: var(--secondary-light); border: 2px solid var(--secondary); font-family: 'Fredoka', sans-serif; font-size: 1.35rem; color: #1b5e20; display: none; }
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+            .options-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 id="story-title"></h1>
+        <p id="story-subtitle"></p>
+    </header>
+
+    <div class="main-container">
+        <div class="left-column">
+            <div class="card">
+                <div class="story-image-box" id="image-container"></div>
+                <div id="story-paragraphs"></div>
+            </div>
+
+            <div class="card quiz-section">
+                <h2>📝 Quiz: Answer the Questions!</h2>
+                <div id="quiz-container"></div>
+                <button class="grade-btn" onclick="gradeQuiz()">Grade Quiz ✔</button>
+                <div id="final-score"></div>
+            </div>
+        </div>
+
+        <aside class="sidebar">
+            <div class="card">
+                <h2>📖 Word Helper</h2>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px;">Click 🔊 to listen to each word!</p>
+
+                <h3 class="helper-subtitle">🏃‍♂️ Action Words (Verbs)</h3>
+                <table>
+                    <thead>
+                        <tr><th>I / You / We / They</th><th>He / She / It</th><th>Meaning</th></tr>
+                    </thead>
+                    <tbody id="verbs-table-body"></tbody>
+                </table>
+
+                <h3 class="helper-subtitle">🌟 Other Helpful Words</h3>
+                <table>
+                    <thead>
+                        <tr><th>Word</th><th>Meaning</th><th>Type</th></tr>
+                    </thead>
+                    <tbody id="words-table-body"></tbody>
+                </table>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // =========================================================================
+        // 🟢 ZONA DE DATOS DEL CUENTO (SOLO REEMPLAZA ESTO EN CADA HISTORIA NUEVA)
+        // =========================================================================
+        const storyData = {
+            title: "🐰 Lily and Toby’s Rainbow Soup! 🐢",
+            subtitle: "Unit 3: At the Market • Reading & Vocabulary Practice",
+            imageFile: "https://raw.githubusercontent.com/opgonzal84327/Naomi/main/images/LilyToby.jpg",
+            paragraphs: [
+                "Today is a rainy afternoon, and Lily Rabbit and Toby Turtle are in the cozy kitchen. They want to cook a warm, delicious rainbow soup!",
+                "Lily opens the cupboard and checks the shelves.",
+                "\"Toby, what's in the cupboard?\" asks Lily.",
+                "Toby peeks inside and answers:",
+                "\"There are some <b>beans</b>, two <b>onions</b>, and one big <b>carrot</b>. Look! There is also a green <b>pepper</b> and a round <b>cabbage</b>.\"",
+                "\"Are there any <b>mushrooms</b> or <b>peas</b>?\" asks Lily.",
+                "\"No, there aren't. And there isn't any <b>corn</b> either,\" says Toby.",
+                "They put on their yellow raincoats and hop to the town market. At the vegetable stand, Mrs. Owl smiles and says:",
+                "\"Hello, little friends! Can I help you?\"",
+                "\"Yes, please! We need some <b>mushrooms</b>, some <b>peas</b>, and three ears of <b>corn</b>, please,\" says Lily politely.",
+                "Mrs. Owl puts the fresh vegetables into a green basket and hands it to them:",
+                "\"Here you are. Anything else?\"",
+                "Toby looks at the fruit stand next door. He sees yellow <b>lemons</b>, green <b>limes</b>, sweet <b>mangoes</b>, juicy <b>oranges</b>, <b>pears</b>, <b>kiwis</b>, <b>coconuts</b>, and a giant <b>pineapple</b>!",
+                "\"No, thanks! We have everything for our soup,\" says Toby.",
+                "On the way home, Toby finds a shiny red lunchbox near a bench. He stops and asks:",
+                "\"Whose is it?\"",
+                "A little frog jumps out from behind a bush and says:",
+                "\"It's <b>mine</b>! I always forget my things!\"",
+                "\"Here you are! And are these green <b>pears</b> <b>yours</b> too?\" asks Lily.",
+                "\"Yes, they are <b>mine</b>! Thank you very much!\" says the frog happily.",
+                "Lily and Toby arrive home, wash the vegetables, and cook the best rainbow soup ever. Yum! The end!"
+            ],
+            verbs: [
+                { base: "cook", third: "cooks", meaning: "cocinar" },
+                { base: "check", third: "checks", meaning: "revisar" },
+                { base: "peek", third: "peeks", meaning: "asomarse / echar un vistazo" },
+                { base: "put on", third: "puts on", meaning: "ponerse (ropa)" },
+                { base: "hop", third: "hops", meaning: "saltar / brincar" },
+                { base: "smile", third: "smiles", meaning: "sonreír" },
+                { base: "need", third: "needs", meaning: "necesitar" },
+                { base: "hand", third: "hands", meaning: "entregar / dar en la mano" },
+                { base: "find", third: "finds", meaning: "encontrar" },
+                { base: "stop", third: "stops", meaning: "detenerse / parar" },
+                { base: "jump out", third: "jumps out", meaning: "salir saltando" },
+                { base: "forget", third: "forgets", meaning: "olvidar" },
+                { base: "arrive", third: "arrives", meaning: "llegar" },
+                { base: "wash", third: "washes", meaning: "lavar" }
+            ],
+            otherWords: [
+                { word: "rainy", meaning: "lluvioso", type: "Adjective" },
+                { word: "afternoon", meaning: "tarde", type: "Time" },
+                { word: "cozy", meaning: "acogedor / calentito", type: "Adjective" },
+                { word: "shelves", meaning: "estantes / repisas", type: "Noun" },
+                { word: "raincoats", meaning: "impermeables", type: "Noun" },
+                { word: "town", meaning: "pueblo / ciudad", type: "Place" },
+                { word: "politely", meaning: "amablemente", type: "Adverb" },
+                { word: "next door", meaning: "de al lado", type: "Place" },
+                { word: "giant", meaning: "gigante", type: "Adjective" },
+                { word: "lunchbox", meaning: "lonchera", type: "Noun" },
+                { word: "bench", meaning: "banca", type: "Noun" },
+                { word: "behind", meaning: "detrás de", type: "Place" },
+                { word: "bush", meaning: "arbusto", type: "Noun" },
+                { word: "always", meaning: "siempre", type: "Time" }
+            ],
+            quiz: [
+                { q: "1. What is the weather like in the story?", options: ["Sunny", "Rainy", "Snowy", "Windy"], answer: 1 },
+                { q: "2. What do Lily and Toby want to cook?", options: ["A fruit salad", "A rainbow soup", "A carrot cake", "A tomato pizza"], answer: 1 },
+                { q: "3. Which vegetables are already in the cupboard?", options: ["Mushrooms and peas", "Corn and potatoes", "Beans, onions, a carrot, a pepper, and a cabbage", "Lemons and limes"], answer: 2 },
+                { q: "4. Are there any mushrooms or peas in the cupboard?", options: ["Yes, there are.", "No, there aren't.", "Only two mushrooms.", "Yes, there are many."], answer: 1 },
+                { q: "5. What color are Lily and Toby's raincoats?", options: ["Red", "Green", "Blue", "Yellow"], answer: 3 },
+                { q: "6. Who works at the vegetable stand?", options: ["Sammy Squirrel", "Mrs. Owl", "Pip Bird", "Leo Lion"], answer: 1 },
+                { q: "7. What does Mrs. Owl ask when Lily and Toby arrive?", options: ["Whose is it?", "What's in the cupboard?", "Can I help you?", "Are there any peas?"], answer: 2 },
+                { q: "8. How many ears of corn do Lily and Toby need?", options: ["One", "Two", "Three", "Five"], answer: 2 },
+                { q: "9. What does Mrs. Owl put the fresh vegetables into?", options: ["A brown paper bag", "A green basket", "A red lunchbox", "A big cupboard"], answer: 1 },
+                { q: "10. What does Toby see at the fruit stand next door?", options: ["Only apples and bananas", "Lemons, limes, mangoes, oranges, pears, kiwis, coconuts, and a pineapple", "Carrots and onions", "Mushrooms and beans"], answer: 1 },
+                { q: "11. What does Toby find on the ground near a bench?", options: ["A shiny red lunchbox", "A yellow raincoat", "A green lime", "A giant pineapple"], answer: 0 },
+                { q: "12. Who jumps out from behind a bush?", options: ["A little mouse", "A little frog", "A baby bear", "A small turtle"], answer: 1 },
+                { q: "13. Whose lunchbox is it?", options: ["It's Lily's.", "It's Toby's.", "It's the frog's (mine).", "It's Mrs. Owl's."], answer: 2 },
+                { q: "14. What fruit belongs to the little frog too?", options: ["Green pears", "Sweet mangoes", "Yellow lemons", "Juicy oranges"], answer: 0 },
+                { q: "15. What do Lily and Toby do before cooking the soup at home?", options: ["They go to sleep", "They wash the vegetables", "They eat dessert", "They read a book"], answer: 1 }
+            ]
+        };
+        // =========================================================================
+        // 🔴 FIN DE LA ZONA DE DATOS (NO ES NECESARIO MODIFICAR NADA DE AQUÍ ABAJO)
+        // =========================================================================
+
+
+        document.getElementById('page-title').innerText = storyData.title;
+        document.getElementById('story-title').innerText = storyData.title;
+        document.getElementById('story-subtitle').innerText = storyData.subtitle;
+
+        document.getElementById('image-container').innerHTML = `
+            <img src="${storyData.imageFile}" alt="${storyData.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div style="display:none; padding: 35px 20px; color: #b07d2b; font-weight: 700;">
+                🖼️ Espacio reservado para la imagen del cuento<br>
+                <small style="font-weight: 400;">(Cambia <code>imageFile: "${storyData.imageFile}"</code> por tu imagen)</small>
+            </div>
+        `;
+
+        const paragraphsDiv = document.getElementById('story-paragraphs');
+        storyData.paragraphs.forEach(text => {
+            const formattedText = text.replace(/<b>/g, '<span class="vocab-highlight">').replace(/<\/b>/g, '</span>');
+            paragraphsDiv.innerHTML += `
+                <div class="paragraph-row">
+                    <button class="audio-btn" onclick="speakParagraph(this)">🔊 Listen</button>
+                    <p>${formattedText}</p>
+                </div>
+            `;
+        });
+
+        const verbsBody = document.getElementById('verbs-table-body');
+        storyData.verbs.forEach(v => {
+            verbsBody.innerHTML += `
+                <tr>
+                    <td><button class="mini-audio-btn" onclick="speakWord('${v.base}')">🔊</button><strong>${v.base}</strong></td>
+                    <td><button class="mini-audio-btn" onclick="speakWord('${v.third}')">🔊</button><strong>${v.third}</strong></td>
+                    <td>${v.meaning}</td>
+                </tr>
+            `;
+        });
+
+        const wordsBody = document.getElementById('words-table-body');
+        storyData.otherWords.forEach(w => {
+            wordsBody.innerHTML += `
+                <tr>
+                    <td><button class="mini-audio-btn" onclick="speakWord('${w.word}')">🔊</button><strong>${w.word}</strong></td>
+                    <td>${w.meaning}</td>
+                    <td><span class="badge-type">${w.type}</span></td>
+                </tr>
+            `;
+        });
+
+        const quizContainer = document.getElementById('quiz-container');
+        const letters = ['A', 'B', 'C', 'D'];
+        storyData.quiz.forEach((item, index) => {
+            let optionsHTML = '<div class="options-grid">';
+            item.options.forEach((opt, optIdx) => {
+                optionsHTML += `
+                    <label class="option-label">
+                        <input type="radio" name="q${index}" value="${optIdx}">
+                        <span>${letters[optIdx]}) ${opt}</span>
+                    </label>
+                `;
+            });
+            optionsHTML += '</div>';
+            quizContainer.innerHTML += `
+                <div class="question-block">
+                    <div class="question-title">${item.q}</div>
+                    ${optionsHTML}
+                    <div class="feedback-msg" id="feedback-${index}"></div>
+                </div>
+            `;
+        });
+
+        function gradeQuiz() {
+            let score = 0;
+            storyData.quiz.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const feedback = document.getElementById(`feedback-${index}`);
+                feedback.style.display = 'block';
+                if (selected && parseInt(selected.value) === item.answer) {
+                    score++;
+                    feedback.className = 'feedback-msg feedback-correct';
+                    feedback.innerText = '✨ Correct!';
+                } else {
+                    feedback.className = 'feedback-msg feedback-incorrect';
+                    feedback.innerText = `❌ Incorrect (Correct: ${letters[item.answer]})`;
+                }
+            });
+            const finalScoreDiv = document.getElementById('final-score');
+            finalScoreDiv.style.display = 'block';
+            finalScoreDiv.innerHTML = score === storyData.quiz.length
+                ? `🎉 Super Reader! You got ${score} out of ${storyData.quiz.length} correct! ⭐`
+                : `👏 Great job! Your score is ${score} out of ${storyData.quiz.length}. Keep practicing!`;
+            finalScoreDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        let currentRow = null;
+        function getEnglishVoice() {
+            const voices = window.speechSynthesis.getVoices();
+            return voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) ||
+                   voices.find(v => v.lang.startsWith('en-US')) ||
+                   voices.find(v => v.lang.startsWith('en'));
+        }
+        function speakParagraph(btn) {
+            window.speechSynthesis.cancel();
+            if (currentRow) currentRow.classList.remove('speaking');
+            const row = btn.parentElement;
+            const utterance = new SpeechSynthesisUtterance(row.querySelector('p').innerText);
+            const voice = getEnglishVoice();
+            if (voice) utterance.voice = voice;
+            utterance.lang = 'en-US';
+            utterance.rate = 0.8;
+            row.classList.add('speaking');
+            currentRow = row;
+            utterance.onend = () => { row.classList.remove('speaking'); currentRow = null; };
+            window.speechSynthesis.speak(utterance);
+        }
+        function speakWord(word) {
+            window.speechSynthesis.cancel();
+            if (currentRow) currentRow.classList.remove('speaking');
+            const utterance = new SpeechSynthesisUtterance(word);
+            const voice = getEnglishVoice();
+            if (voice) utterance.voice = voice;
+            utterance.lang = 'en-US';
+            utterance.rate = 0.8;
+            window.speechSynthesis.speak(utterance);
+        }
+        window.speechSynthesis.onvoiceschanged = getEnglishVoice;
+    </script>
+</body>
+</html>
+

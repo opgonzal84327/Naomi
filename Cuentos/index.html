@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CAMBIA AQUÍ EL NOMBRE DE SU BIBLIOTECA -->
+    <title>El Rincón de los Cuentos</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --color-fondo: #FDF8F2;
+            --color-tarjeta: #FFFFFF;
+            --color-primario: #4A7C59;
+            --color-secundario: #E07A5F;
+            --color-texto: #2B2D42;
+            --color-suave: #6C757D;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .contenedor-principal {
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 20px 10px;
+        }
+
+        /* Encabezado de bienvenida */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 35px 20px;
+            background-color: var(--color-tarjeta);
+            border-radius: 28px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+        }
+
+        header h1 {
+            font-size: 2.6rem;
+            color: var(--color-primario);
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: var(--color-suave);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Botones de filtro por tema */
+        .filtros {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 35px;
+        }
+
+        .boton-filtro {
+            background-color: var(--color-tarjeta);
+            border: 2px solid #E2DDD5;
+            color: var(--color-texto);
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .boton-filtro:hover {
+            border-color: var(--color-primario);
+            color: var(--color-primario);
+        }
+
+        .boton-filtro.activo {
+            background-color: var(--color-primario);
+            border-color: var(--color-primario);
+            color: white;
+        }
+
+        /* Cuadrícula de cuentos */
+        .grid-cuentos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 28px;
+        }
+
+        /* Tarjeta individual de cada cuento */
+        .tarjeta-cuento {
+            background-color: var(--color-tarjeta);
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .tarjeta-cuento:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .tarjeta-imagen {
+            width: 100%;
+            height: 190px;
+            background-color: #F0ECE1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .tarjeta-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .tarjeta-contenido {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .etiqueta {
+            display: inline-block;
+            align-self: flex-start;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 5px 12px;
+            border-radius: 15px;
+            margin-bottom: 12px;
+        }
+
+        /* Colores según el tema */
+        .tema-empatia { background-color: #E8F3EC; color: #3A6B4C; }
+        .tema-valentia { background-color: #FCECE8; color: #C85A3F; }
+        .tema-frustracion { background-color: #EBF2FA; color: #3B6998; }
+		.tema-risa { background-color: #F3E8FF; color: #6B3FA0; }
+
+        .tarjeta-contenido h2 {
+            font-size: 1.4rem;
+            color: var(--color-texto);
+            margin-bottom: 10px;
+            line-height: 1.3;
+            font-weight: 800;
+        }
+
+        .tarjeta-contenido p {
+            font-size: 0.98rem;
+            color: var(--color-suave);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .leer-mas {
+            font-weight: 800;
+            color: var(--color-secundario);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--color-suave);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 2rem; }
+            .grid-cuentos { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor-principal">
+        
+        <!-- ENCABEZADO (Puedes poner el nombre de tu hija aquí) -->
+        <header>
+            <h1>📚 Nuestros Cuentos Especiales</h1>
+            <p>Historias creadas para descubrir emociones, ser valientes y entender el mundo juntos.</p>
+        </header>
+
+        <!-- BOTONES PARA FILTRAR POR TEMA -->
+        <div class="filtros">
+            <button class="boton-filtro activo" onclick="filtrarCuentos('todos', this)">Todos los cuentos</button>
+            <button class="boton-filtro" onclick="filtrarCuentos('valentia', this)">🦁 Valentía y Miedos</button>
+            <button class="boton-filtro" onclick="filtrarCuentos('empatia', this)">💛 Empatía y Amistad</button>
+            <button class="boton-filtro" onclick="filtrarCuentos('frustracion', this)">🌈 Paciencia y Calma</button>
+			<button class="boton-filtro" onclick="filtrarCuentos('risa', this)">✨ Aventuras y Risa</button>
+
+        </div>
+
+        <!-- LISTA DE CUENTOS (Copia y pega un bloque <a class="tarjeta-cuento"...> cada vez que agregues un cuento nuevo) -->
+        <main class="grid-cuentos" id="contenedor-cuentos">
+
+            <!-- CUENTO 1 -->
+            <a href="cuento-1.html" class="tarjeta-cuento" data-categoria="empatia">
+                <div class="tarjeta-imagen">
+                    <img src="imagenes/arboles.jpg" alt="El lenguaje secreto de los árboles" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:3rem;\'>🌳</span>';">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="etiqueta tema-empatia">Empatía y Amistad</span>
+                    <h2>El lenguaje secreto de los árboles</h2>
+					<p>Bram el tejón descubre que cuando guarda su trompeta de bellota, los sauces plateados le susurran dónde crecen las fresas más dulces.</p>
+                    <span class="leer-mas">Leer cuento →</span>
+                </div>
+            </a>
+
+            <!-- CUENTO 2 -->
+            <a href="cuento-2.html" class="tarjeta-cuento" data-categoria="valentia">
+                <div class="tarjeta-imagen">
+                    <img src="imagenes/monos.jpg" alt="El puente de los monos valientes" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:3rem;\'>🐒</span>';">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="etiqueta tema-valentia">Valentía y Miedos</span>
+					<h2>El puente de los monos valientes</h2>
+					<p>Para llegar a la Cascada de las Luciérnagas, el pequeño mono Milo aprende el secreto de una rana saltarina para cruzar un puente de lianas colgantes.</p>
+                    <span class="leer-mas">Leer cuento →</span>
+                </div>
+            </a>
+
+            <!-- CUENTO 3 -->
+            <a href="cuento-3.html" class="tarjeta-cuento" data-categoria="frustracion">
+                <div class="tarjeta-imagen">
+                    <img src="imagenes/castillo.jpg" alt="El castillo de las mil piezas" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:3rem;\'>🏰</span>';">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="etiqueta tema-frustracion">Paciencia y Calma</span>
+					<h2>El castillo de las mil piezas</h2>
+					<p>Cuando un abejorro despistado derrumba el palacio de bellotas de la ardilla Pip, los escombros esconden la pieza para crear un tobogán secreto.</p>
+
+                    <span class="leer-mas">Leer cuento →</span>
+                </div>
+            </a>
+
+            <!-- CUENTO 4 -->
+            <a href="cuento-4.html" class="tarjeta-cuento" data-categoria="valentia">
+                <div class="tarjeta-imagen">
+                    <img src="imagenes/patines.jpg" alt="La pista de las flechas invisibles" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:3rem;\'>🛼</span>';">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="etiqueta tema-valentia">Valentía y Miedos</span>
+					<h2>La pista de las flechas invisibles</h2>
+					<p>La nutria Lía aprende el truco de una libélula azul para dibujar su propio carril mágico y patinar feliz en un lago lleno de liebres veloces.</p>
+
+                    <span class="leer-mas">Leer cuento →</span>
+                </div>
+            </a>
+
+            <!-- CUENTO 5 -->
+            <a href="cuento-5.html" class="tarjeta-cuento" data-categoria="empatia">
+                <div class="tarjeta-imagen">
+                    <img src="imagenes/agujetas.jpg" alt="El secreto de las agujetas" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:3rem;\'>👟</span>';">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="etiqueta tema-empatia">Empatía y Amistad</span>
+					<h2>El secreto de las agujetas</h2>
+					<p>El veloz erizo Tadeo frena su carrera hacia el arroyo para enseñarle a un ericito bebé cómo domar las lianas rebeldes de sus botas.</p>
+					<span class="leer-mas">Leer cuento →</span>
+                </div>
+            </a>
+
+            <!-- CUENTO 6 -->
+            <a href="cuento-6.html" class="tarjeta-cuento" data-categoria="valentia">
+                <div class="tarjeta-imagen">
+                    <img src="imagenes/sombras.jpg" alt="El botón de las sombras traviesas" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:3rem;\'>🔦</span>';">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="etiqueta tema-valentia">Valentía y Miedos</span>
+					<h2>El botón de las sombras traviesas</h2>
+					<p>Con ayuda de su linterna de estrella, la gatita Clara descubre que las sombras gigantes de su cuarto solo quieren jugar al teatro nocturno.</p>
+
+                    <span class="leer-mas">Leer cuento →</span>
+                </div>
+            </a>
+
+            <!-- CUENTO 7 -->
+            <a href="cuento-7.html" class="tarjeta-cuento" data-categoria="empatia">
+                <div class="tarjeta-imagen">
+                    <img src="imagenes/orquesta.jpg" alt="La directora de la orquesta sin músicos" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:3rem;\'>🎨</span>';">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="etiqueta tema-empatia">Empatía y Amistad</span>
+					<h2>La directora de la orquesta sin músicos</h2>
+					<p>La nutria Oli guarda su batuta para descubrir que una banda sin reglas con un castor, un sapo y una cigarra toca las canciones más locas.</p>
+
+                    <span class="leer-mas">Leer cuento →</span>
+                </div>
+            </a>
+
+            <!-- CUENTO 8 -->
+            <a href="cuento-8.html" class="tarjeta-cuento" data-categoria="empatia">
+                <div class="tarjeta-imagen">
+                    <img src="imagenes/nubes.jpg" alt="El mapa de las nubes quietas" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:3rem;\'>☁️</span>';">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="etiqueta tema-empatia">Empatía y Amistad</span>
+					<h2>El mapa de las nubes quietas</h2>
+					<p>El halcón Rayo aprende a volar al paso tranquilo de un perezoso plateado para encontrar la escalera secreta hacia el Nido del Arcoíris.</p>
+                    <span class="leer-mas">Leer cuento →</span>
+                </div>
+            </a>
+
+            <!-- CUENTO 9 -->
+            <a href="cuento-9.html" class="tarjeta-cuento" data-categoria="empatia">
+                <div class="tarjeta-imagen">
+                    <img src="imagenes/semaforo.jpg" alt="El semáforo de las palabras" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:3rem;\'>🚦</span>';">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="etiqueta tema-empatia">Empatía y Amistad</span>
+					<h2>El semáforo de las palabras</h2>
+					<p>Una luciérnaga mágica convierte las palabras del mapache Roco en burbujas silenciosas para ayudarlo a escuchar el secreto de una cueva oculta.</p>
+                    <span class="leer-mas">Leer cuento →</span>
+                </div>
+            </a>
+
+            <!-- CUENTO 10 -->
+            <a href="cuento-10.html" class="tarjeta-cuento" data-categoria="frustracion">
+                <div class="tarjeta-imagen">
+                    <img src="imagenes/cohetes.jpg" alt="El secreto de los cohetes antes de despegar" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:3rem;\'>🚀</span>';">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="etiqueta tema-frustracion">Paciencia y Calma</span>
+					<h2>El secreto de los cohetes antes de despegar</h2>
+					<p>El zorro piloto Astro despierta los propulsores congelados de su nave espacial para hacer acrobacias entre los anillos de Saturno.</p>
+                    <span class="leer-mas">Leer cuento →</span>
+                </div>
+            </a>
+
+            <!-- CUENTO 11 -->
+            <a href="cuento-11.html" class="tarjeta-cuento" data-categoria="frustracion">
+                <div class="tarjeta-imagen">
+                    <img src="imagenes/puente-tablas.jpg" alt="El puente al que le faltaban tres tablas" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:3rem;\'>🌉</span>';">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="etiqueta tema-frustracion">Paciencia y Calma</span>
+					<h2>El puente al que le faltaban tres tablas</h2>
+					<p>El castor Beni corre por su martillo para poner las últimas piezas de su puente antes de que comience el Desfile de los Caracoles Luminosos.</p>
+
+                    <span class="leer-mas">Leer cuento →</span>
+                </div>
+            </a>
+
+            <!-- CUENTO 12 -->
+            <a href="cuento-12.html" class="tarjeta-cuento" data-categoria="frustracion">
+                <div class="tarjeta-imagen">
+                    <img src="imagenes/lentes-maya.jpg" alt="Los dos pares de lentes de Maya" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:3rem;\'>👓</span>';">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="etiqueta tema-frustracion">Paciencia y Calma</span>
+					<h2>Los dos pares de lentes de Maya</h2>
+					<p>La zorrita Maya encuentra una cajita misteriosa con dos pares de lentes mágicos que cambian por completo el color de sus aventuras diarias.</p>
+
+                    <span class="leer-mas">Leer cuento →</span>
+                </div>
+            </a>
+            <!-- CUENTO 13 -->
+            <a href="cuento-13.html" class="tarjeta-cuento" data-categoria="valentia">
+                <div class="tarjeta-imagen">
+                    <img src="imagenes/mochila.jpg" alt="La mochila de las herramientas invisibles" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:3rem;\'>🎒</span>';">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="etiqueta tema-valentia">Valentía y Miedos</span>
+					<h2>La mochila de las herramientas invisibles</h2>
+					<p>La tejón exploradora Kira descubre que su mochila de hojas de plata guarda superpoderes secretos cada vez que intenta cruzar un obstáculo sola.</p>
+
+                    <span class="leer-mas">Leer cuento →</span>
+                </div>
+            </a>
+
+            <!-- CUENTO 14 -->
+            <a href="cuento-14.html" class="tarjeta-cuento" data-categoria="valentia">
+                <div class="tarjeta-imagen">
+                    <img src="imagenes/medallas-ruedas.jpg" alt="El salto del pequeño saltamontes de cristal" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:3rem;\'>🦗</span>';">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="etiqueta tema-valentia">Valentía y Miedos</span>
+					<h2>Las medallas de los exploradores de ruedas</h2>
+					<p>Una ardilla acróbata le enseña al pequeño pangolín Bruno que los raspones en sus rodilleras son en realidad medallas de valentía sobre ruedas.</p>
+
+                    <span class="leer-mas">Leer cuento →</span>
+                </div>
+            </a>
+            <!-- CUENTO COMODÍN -->
+            <a href="cuento-15.html" class="tarjeta-cuento" data-categoria="risa">
+                <div class="tarjeta-imagen">
+                    <img src="imagenes/nube-hipo.jpg" alt="La nube que tenía hipo" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:3rem;\'>☁️</span>';">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="etiqueta tema-risa">Aventuras y Risa</span>
+					<h2>La nube que tenía hipo</h2>
+					<p>Tras comerse tres rayos de sol demasiado rápido, a la nube Nubarrón le da un ataque de hipo que hace llover calcetines rayados y burbujas de fresa.</p>
+
+                    <span class="leer-mas">Leer cuento →</span>
+                </div>
+            </a>
+        </main>
+
+        <footer>
+            Hecho con mucho amor para leer juntos cada noche ✨
+        </footer>
+
+    </div>
+
+    <script>
+        function filtrarCuentos(categoria, botonSeleccionado) {
+            const botones = document.querySelectorAll('.boton-filtro');
+            botones.forEach(btn => btn.classList.remove('activo'));
+            botonSeleccionado.classList.add('activo');
+
+            const tarjetas = document.querySelectorAll('.tarjeta-cuento');
+            tarjetas.forEach(tarjeta => {
+                if (categoria === 'todos' || tarjeta.getAttribute('data-categoria') === categoria) {
+                    tarjeta.style.display = 'flex';
+                } else {
+                    tarjeta.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
+

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CAMBIA AQUÍ EL TÍTULO DE LA PESTAÑA -->
+    <title>El secreto de las agujetas - Cuentos para ti</title>
+    <!-- Tipografía amigable para niños -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --color-fondo: #FDF8F2;       /* Crema cálido tipo papel */
+            --color-tarjeta: #FFFFFF;     /* Blanco limpio */
+            --color-primario: #4A7C59;    /* Verde bosque suave */
+            --color-secundario: #E07A5F;  /* Terracota amigable */
+            --color-texto: #2B2D42;       /* Gris oscuro suave (cansa menos la vista que el negro puro) */
+            --color-caja-preguntas: #F2EFE9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.8;
+            padding: 20px;
+        }
+
+        .contenedor-libro {
+            max-width: 780px;
+            margin: 20px auto;
+            background-color: var(--color-tarjeta);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            padding: 40px 50px;
+        }
+
+        /* Etiqueta de tema o valor */
+        .etiqueta-tema {
+            display: inline-block;
+            background-color: #E8F3EC;
+            color: var(--color-primario);
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            color: var(--color-primario);
+            line-height: 1.25;
+            margin-bottom: 25px;
+            font-weight: 800;
+        }
+
+        /* Espacio para la ilustración */
+        .marco-imagen {
+            width: 100%;
+            height: 340px;
+            background-color: #F4F1EA;
+            border: 3px dashed #D3CBB8;
+            border-radius: 18px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marco-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Texto del cuento */
+        .contenido-cuento p {
+            font-size: 1.2rem; /* Tamaño grande ideal para lectura a los 7 años */
+            margin-bottom: 20px;
+        }
+
+        .dialogo {
+            color: #1D3557;
+            font-weight: 600;
+        }
+
+        /* Separador decorativo */
+        .separador {
+            text-align: center;
+            margin: 35px 0;
+            color: var(--color-secundario);
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+        }
+
+        /* Sección de reflexión */
+        .seccion-preguntas {
+            background-color: var(--color-caja-preguntas);
+            border-left: 6px solid var(--color-secundario);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-top: 30px;
+        }
+
+        .seccion-preguntas h2 {
+            color: var(--color-secundario);
+            font-size: 1.4rem;
+            margin-bottom: 18px;
+            font-weight: 800;
+        }
+
+        .lista-preguntas {
+            list-style: none;
+        }
+
+        .lista-preguntas li {
+            margin-bottom: 16px;
+            font-size: 1.08rem;
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .lista-preguntas li::before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        .lista-preguntas strong {
+            color: var(--color-primario);
+        }
+
+        /* Pie de página / Navegación */
+        .pie-pagina {
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 1px solid #EAEAEA;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #777;
+        }
+
+        .boton-nav {
+            text-decoration: none;
+            background-color: var(--color-primario);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .boton-nav:hover {
+            background-color: #3A6346;
+        }
+
+        /* Adaptación para celulares o tablets */
+        @media (max-width: 600px) {
+            .contenedor-libro {
+                padding: 25px 20px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .marco-imagen {
+                height: 220px;
+            }
+            .contenido-cuento p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="contenedor-libro">
+         <!-- 5. TEMA DEL CUENTO -->
+        <span class="etiqueta-tema">Paciencia y Compañerismo</span>
+        <h1>El secreto de las agujetas</h1>
+
+        <div class="marco-imagen">
+            <img src="imagenes/agujetas.jpg" alt="El secreto de las agujetas" onerror="this.style.display='none'; this.parentElement.innerHTML='<p style=\'color:#8C8270; text-align:center; padding:20px;\'>🖼️ <strong>Espacio para tu imagen</strong><br>Guarda tu imagen como <code>imagenes/agujetas.jpg</code></p>';">
+        </div>
+
+        <article class="contenido-cuento">
+            <p>En la Aldea de los Erizos Saltarines vivía Tadeo, un erizo veloz que sabía trepar árboles en tres segundos, hacer volteretas hacia atrás y atar las lianas de sus botas con los ojos cerrados.</p>
+            <p>Una tarde, Tadeo quería ir rápido al Arroyo de las Burbujas para probar su barco de corteza. Pero le pidieron que llevara consigo a Nino, un ericito muy pequeño al que apenas le estaban saliendo sus primeras púas suaves.</p>
+            <p>Tadeo caminaba dando zancadas largas y rápidas. Cada diez pasos, volteaba y veía a Nino muy atrás, mirando una piedra o enredándose con las lianas de sus propias botitas.</p>
+            <p class="dialogo">—¡Vamos, Nino, pareces un caracol con sueño! —resopló Tadeo, golpeando el suelo con su pata, impaciente por llegar al arroyo.</p>
+            <p>Nino se detuvo, miró sus botas desatadas con las orejas bajas y se sentó en el pasto. Intentó hacer un nudo, pero sus patitas cortas se hacían bolas y el cordón terminaba más enredado que al principio.</p>
+            <p>Tadeo se acercó bufando, listo para atárselas de un tirón y seguir corriendo. Pero al agacharse y ver de cerca las patitas chiquitas de Nino luchando con el cordón, Tadeo sintió un cosquilleo en la memoria. Recordó la primera vez que él mismo intentó hacer un nudo: las lianas parecían serpientes resbaladizas que nunca obedecían, y cada vez que alguien lo apuraba, sus patas temblaban más y todo salía peor.</p>
+            <p>Tadeo soltó un suspiro suave y se sentó junto a Nino en el pasto.</p>
+            <p class="dialogo">—¿Sabes qué? —dijo Tadeo con una sonrisa traviesa—. Estas lianas son como orejas de conejo rebeldes. Mira, primero hacemos una cueva...</p>
+            <p>Tadeo le enseñó el truco despacio, dejando que Nino metiera la punta por el agujero con sus propias patas. Tardaron un buen rato y el moño quedó un poco chueco, pero Nino dio un salto de alegría al lograrlo solo. Al final llegaron al arroyo un poco más tarde, pero navegar el barco juntos fue el doble de divertido.</p>
+        </article>
+
+        <div class="separador">• • •</div>
+
+        <section class="seccion-preguntas">
+            <h2>Para seguir imaginando juntos</h2>
+            <ul class="lista-preguntas">
+                <li><strong>Orejas de conejo:</strong> ¿Recuerdas algo que antes te costaba mucho trabajo hacer (como nadar, patinar o atarte las agujetas) y que ahora ya sabes hacer súper bien?</li>
+                <li><strong>Maestros mágicos:</strong> Si tuvieras que enseñarle un truco divertido a un animalito bebé del bosque, ¿qué le enseñarías?</li>
+                <li><strong>Paso de erizo:</strong> ¿Qué juegos divertidos se pueden inventar mientras caminamos despacio con alguien más chiquito?</li>
+            </ul>
+        </section>
+
+        <footer class="pie-pagina">
+            <span>Cuento #05 • Biblioteca de papá y mamá</span>
+            <a href="index.html" class="boton-nav">← Volver al índice</a>
+        </footer>
+
+
+    </main>
+
+</body>
+</html>

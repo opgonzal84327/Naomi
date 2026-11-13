@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CAMBIA AQUÍ EL TÍTULO DE LA PESTAÑA -->
+    <title>Los dos pares de lentes de Maya - Cuentos para ti</title>
+    <!-- Tipografía amigable para niños -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --color-fondo: #FDF8F2;       /* Crema cálido tipo papel */
+            --color-tarjeta: #FFFFFF;     /* Blanco limpio */
+            --color-primario: #4A7C59;    /* Verde bosque suave */
+            --color-secundario: #E07A5F;  /* Terracota amigable */
+            --color-texto: #2B2D42;       /* Gris oscuro suave (cansa menos la vista que el negro puro) */
+            --color-caja-preguntas: #F2EFE9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.8;
+            padding: 20px;
+        }
+
+        .contenedor-libro {
+            max-width: 780px;
+            margin: 20px auto;
+            background-color: var(--color-tarjeta);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            padding: 40px 50px;
+        }
+
+        /* Etiqueta de tema o valor */
+        .etiqueta-tema {
+            display: inline-block;
+            background-color: #E8F3EC;
+            color: var(--color-primario);
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            color: var(--color-primario);
+            line-height: 1.25;
+            margin-bottom: 25px;
+            font-weight: 800;
+        }
+
+        /* Espacio para la ilustración */
+        .marco-imagen {
+            width: 100%;
+            height: 340px;
+            background-color: #F4F1EA;
+            border: 3px dashed #D3CBB8;
+            border-radius: 18px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marco-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Texto del cuento */
+        .contenido-cuento p {
+            font-size: 1.2rem; /* Tamaño grande ideal para lectura a los 7 años */
+            margin-bottom: 20px;
+        }
+
+        .dialogo {
+            color: #1D3557;
+            font-weight: 600;
+        }
+
+        /* Separador decorativo */
+        .separador {
+            text-align: center;
+            margin: 35px 0;
+            color: var(--color-secundario);
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+        }
+
+        /* Sección de reflexión */
+        .seccion-preguntas {
+            background-color: var(--color-caja-preguntas);
+            border-left: 6px solid var(--color-secundario);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-top: 30px;
+        }
+
+        .seccion-preguntas h2 {
+            color: var(--color-secundario);
+            font-size: 1.4rem;
+            margin-bottom: 18px;
+            font-weight: 800;
+        }
+
+        .lista-preguntas {
+            list-style: none;
+        }
+
+        .lista-preguntas li {
+            margin-bottom: 16px;
+            font-size: 1.08rem;
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .lista-preguntas li::before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        .lista-preguntas strong {
+            color: var(--color-primario);
+        }
+
+        /* Pie de página / Navegación */
+        .pie-pagina {
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 1px solid #EAEAEA;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #777;
+        }
+
+        .boton-nav {
+            text-decoration: none;
+            background-color: var(--color-primario);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .boton-nav:hover {
+            background-color: #3A6346;
+        }
+
+        /* Adaptación para celulares o tablets */
+        @media (max-width: 600px) {
+            .contenedor-libro {
+                padding: 25px 20px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .marco-imagen {
+                height: 220px;
+            }
+            .contenido-cuento p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="contenedor-libro">
+        <!-- 12. TEMA DEL CUENTO -->
+        <span class="etiqueta-tema">Actitud Positiva</span>
+        <h1>Los dos pares de lentes de Maya</h1>
+
+        <div class="marco-imagen">
+            <img src="imagenes/lentes-maya.jpg" alt="Los dos pares de lentes de Maya" onerror="this.style.display='none'; this.parentElement.innerHTML='<p style=\'color:#8C8270; text-align:center; padding:20px;\'>🖼️ <strong>Espacio para tu imagen</strong><br>Guarda tu imagen como <code>imagenes/lentes-maya.jpg</code></p>';">
+        </div>
+
+        <article class="contenido-cuento">
+            <p>En la Aldea de las Flores de Cristal vivía Maya, una pequeña zorrita con una cola esponjosa a la que le encantaba explorar. Un día, mientras buscaba piedras brillantes cerca de una cueva de cuarzo, encontró una cajita de madera tallada que tenía adentro dos pares de lentes mágicos: unos con cristales de color gris nublado y otros con cristales de color amarillo sol.</p>
+            <p>A la mañana siguiente, Maya se despertó con mucha flojera. Tenía que ayudar a recoger las bellotas caídas del patio antes de ir a la Escuela de Acrobacias del Bosque. Decidió probarse los lentes de color gris nublado.</p>
+            <p>Al ponérselos, todo a su alrededor se volvió pesado y aburrido. Las bellotas del patio parecían piedras gigantes imposibles de levantar; su mochila pesaba como si llevara rocas dentro; y el camino a la escuela parecía una montaña interminable y gris. Maya caminó arrastrando las patas y resoplando a cada paso.</p>
+            <p>Al llegar a la puerta de la escuela, Maya se quitó los lentes grises y se puso los de color amarillo sol.</p>
+            <p>¡Vaya cambio! De pronto, el mundo entero parecía brillar con chispas doradas. La clase de acrobacias que antes le daba flojera ahora parecía una pista de aventuras llena de trampolines divertidos. Al regresar a casa, decidió dejarse puestos los lentes amarillos mientras ayudaba a guardar sus cosas. Ahora, recoger las bellotas se sentía como una búsqueda de tesoros dorados, y terminó tan rápido que le sobró tiempo para inventar un juego nuevo en el jardín. Maya guardó los lentes grises en el fondo de un cajón y descubrió que ella misma podía elegir con qué lentes mirar cada día.</p>
+        </article>
+
+        <div class="separador">• • •</div>
+
+        <section class="seccion-preguntas">
+            <h2>Para seguir imaginando juntos</h2>
+            <ul class="lista-preguntas">
+                <li><strong>Tus lentes mágicos:</strong> Si tuvieras unos lentes de color "amarillo sol", ¿qué actividad del día se volvería un juego o una aventura?</li>
+                <li><strong>Cazadores de tesoros:</strong> ¿Cómo podríamos convertir la hora de recoger los juguetes o preparar la mochila en una misión secreta divertida?</li>
+                <li><strong>Poder de elección:</strong> ¿De qué color serían unos lentes mágicos inventados por ti (por ejemplo, lentes de chispas de arcoíris o lentes de risa)?</li>
+            </ul>
+        </section>
+
+        <footer class="pie-pagina">
+            <span>Cuento #12 • Biblioteca de papá y mamá</span>
+            <a href="index.html" class="boton-nav">← Volver al índice</a>
+        </footer>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CAMBIA AQUÍ EL TÍTULO DE LA PESTAÑA -->
+    <title>La directora de la orquesta sin músicos - Cuentos para ti</title>
+    <!-- Tipografía amigable para niños -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --color-fondo: #FDF8F2;       /* Crema cálido tipo papel */
+            --color-tarjeta: #FFFFFF;     /* Blanco limpio */
+            --color-primario: #4A7C59;    /* Verde bosque suave */
+            --color-secundario: #E07A5F;  /* Terracota amigable */
+            --color-texto: #2B2D42;       /* Gris oscuro suave (cansa menos la vista que el negro puro) */
+            --color-caja-preguntas: #F2EFE9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.8;
+            padding: 20px;
+        }
+
+        .contenedor-libro {
+            max-width: 780px;
+            margin: 20px auto;
+            background-color: var(--color-tarjeta);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            padding: 40px 50px;
+        }
+
+        /* Etiqueta de tema o valor */
+        .etiqueta-tema {
+            display: inline-block;
+            background-color: #E8F3EC;
+            color: var(--color-primario);
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            color: var(--color-primario);
+            line-height: 1.25;
+            margin-bottom: 25px;
+            font-weight: 800;
+        }
+
+        /* Espacio para la ilustración */
+        .marco-imagen {
+            width: 100%;
+            height: 340px;
+            background-color: #F4F1EA;
+            border: 3px dashed #D3CBB8;
+            border-radius: 18px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marco-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Texto del cuento */
+        .contenido-cuento p {
+            font-size: 1.2rem; /* Tamaño grande ideal para lectura a los 7 años */
+            margin-bottom: 20px;
+        }
+
+        .dialogo {
+            color: #1D3557;
+            font-weight: 600;
+        }
+
+        /* Separador decorativo */
+        .separador {
+            text-align: center;
+            margin: 35px 0;
+            color: var(--color-secundario);
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+        }
+
+        /* Sección de reflexión */
+        .seccion-preguntas {
+            background-color: var(--color-caja-preguntas);
+            border-left: 6px solid var(--color-secundario);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-top: 30px;
+        }
+
+        .seccion-preguntas h2 {
+            color: var(--color-secundario);
+            font-size: 1.4rem;
+            margin-bottom: 18px;
+            font-weight: 800;
+        }
+
+        .lista-preguntas {
+            list-style: none;
+        }
+
+        .lista-preguntas li {
+            margin-bottom: 16px;
+            font-size: 1.08rem;
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .lista-preguntas li::before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        .lista-preguntas strong {
+            color: var(--color-primario);
+        }
+
+        /* Pie de página / Navegación */
+        .pie-pagina {
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 1px solid #EAEAEA;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #777;
+        }
+
+        .boton-nav {
+            text-decoration: none;
+            background-color: var(--color-primario);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .boton-nav:hover {
+            background-color: #3A6346;
+        }
+
+        /* Adaptación para celulares o tablets */
+        @media (max-width: 600px) {
+            .contenedor-libro {
+                padding: 25px 20px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .marco-imagen {
+                height: 220px;
+            }
+            .contenido-cuento p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="contenedor-libro">
+        <!-- 7. TEMA DEL CUENTO -->
+        <span class="etiqueta-tema">Trabajo en Equipo</span>
+        <h1>La directora de la orquesta sin músicos</h1>
+
+        <div class="marco-imagen">
+            <img src="imagenes/orquesta.jpg" alt="La directora de la orquesta sin músicos" onerror="this.style.display='none'; this.parentElement.innerHTML='<p style=\'color:#8C8270; text-align:center; padding:20px;\'>🖼️ <strong>Espacio para tu imagen</strong><br>Guarda tu imagen como <code>imagenes/orquesta.jpg</code></p>';">
+        </div>
+
+        <article class="contenido-cuento">
+            <p>En el Bosque de las Campanas vivía Oli, una pequeña nutria con una batuta hecha de rama de sauce. Oli era brillante inventando juegos y canciones. En su madriguera, donde jugaba sola con sus caracoles y piedras pintadas, ella decidía exactamente cómo sonaba cada nota y cuándo empezaba el concierto.</p>
+            <p>Una tarde, varios animales del bosque se reunieron en el claro para tocar música juntos: Beto, un castor con un tambor de tronco hueco; Susi, una cigarra con violín de hoja; y Pipo, un sapo que hacía sonidos graves con sus mejillas infladas.</p>
+            <p>Oli saltó al centro con su batuta, emocionada por dirigir la gran orquesta.</p>
+            <p class="dialogo">—¡Atención! —dijo agitando su rama—. Beto, tú tocas exactamente tres golpes así. Susi, tú solo cuando yo levante la oreja izquierda. Y Pipo, tú no hagas ese ruido todavía, espera a que yo diga "ya".</p>
+            <p>Empezaron a tocar, pero cada vez que Beto agregaba un redoble divertido o Susi inventaba una melodía alegre, Oli golpeaba el suelo con su batuta y detenía todo.</p>
+            <p class="dialogo">—¡No, así no era! Yo lo pensé diferente. Otra vez desde el principio.</p>
+            <p>Después de detener la canción cinco veces, Beto dejó sus baquetas en el pasto y bostezó. Susi guardó su violín y Pipo empezó a atrapar moscas.</p>
+            <p class="dialogo">—Mejor vamos a saltar al río —dijo Beto—. Así no es divertido.</p>
+            <p>Oli se quedó sola en el centro del claro con su batuta en la pata. Miró a sus amigos alejarse hacia el río. Si ella controlaba cada sonido, la orquesta sonaba exactamente como ella quería, pero... ¡ya no había orquesta!</p>
+            <p>Oli corrió tras ellos hasta la orilla. Guardó su batuta en su cinturón de hojas y se acercó a Beto.</p>
+            <p class="dialogo">—Oigan... ¿y si tocamos una canción sin reglas? Que cada quien invente su propio pedazo —propuso Oli.</p>
+            <p>Volvieron al claro. Beto empezó un ritmo rápido en su tronco, Susi le siguió con una melodía saltarina, Pipo metió sus <em>¡croac-croac!</em> en los espacios vacíos, y Oli empezó a aplaudir y silbar siguiendo el ritmo de los demás. La canción no sonaba nada parecida a lo que Oli había planeado en su cabeza; era muchísimo más loca, alegre y llena de sorpresas.</p>
+        </article>
+
+        <div class="separador">• • •</div>
+
+        <section class="seccion-preguntas">
+            <h2>Para seguir imaginando juntos</h2>
+            <ul class="lista-preguntas">
+                <li><strong>Tu instrumento del bosque:</strong> Si entraras a la orquesta de Oli, ¿qué instrumento hecho con cosas de la naturaleza tocarías?</li>
+                <li><strong>Juegos inventados:</strong> ¿Cuál es tu juego favorito para jugar con amigos en el recreo donde todos pueden dar ideas?</li>
+                <li><strong>Directora sorpresa:</strong> ¿Qué canción chistosa crees que sonaría si un sapo, un castor y una cigarra tocaran juntos?</li>
+            </ul>
+        </section>
+
+        <footer class="pie-pagina">
+            <span>Cuento #07 • Biblioteca de papá y mamá</span>
+            <a href="index.html" class="boton-nav">← Volver al índice</a>
+        </footer>
+
+    </main>
+
+</body>
+</html>

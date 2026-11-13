@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CAMBIA AQUÍ EL TÍTULO DE LA PESTAÑA -->
+    <title>El puente de los monos valientes - Cuentos para ti</title>
+    <!-- Tipografía amigable para niños -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --color-fondo: #FDF8F2;       /* Crema cálido tipo papel */
+            --color-tarjeta: #FFFFFF;     /* Blanco limpio */
+            --color-primario: #4A7C59;    /* Verde bosque suave */
+            --color-secundario: #E07A5F;  /* Terracota amigable */
+            --color-texto: #2B2D42;       /* Gris oscuro suave (cansa menos la vista que el negro puro) */
+            --color-caja-preguntas: #F2EFE9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.8;
+            padding: 20px;
+        }
+
+        .contenedor-libro {
+            max-width: 780px;
+            margin: 20px auto;
+            background-color: var(--color-tarjeta);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            padding: 40px 50px;
+        }
+
+        /* Etiqueta de tema o valor */
+        .etiqueta-tema {
+            display: inline-block;
+            background-color: #E8F3EC;
+            color: var(--color-primario);
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            color: var(--color-primario);
+            line-height: 1.25;
+            margin-bottom: 25px;
+            font-weight: 800;
+        }
+
+        /* Espacio para la ilustración */
+        .marco-imagen {
+            width: 100%;
+            height: 340px;
+            background-color: #F4F1EA;
+            border: 3px dashed #D3CBB8;
+            border-radius: 18px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marco-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Texto del cuento */
+        .contenido-cuento p {
+            font-size: 1.2rem; /* Tamaño grande ideal para lectura a los 7 años */
+            margin-bottom: 20px;
+        }
+
+        .dialogo {
+            color: #1D3557;
+            font-weight: 600;
+        }
+
+        /* Separador decorativo */
+        .separador {
+            text-align: center;
+            margin: 35px 0;
+            color: var(--color-secundario);
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+        }
+
+        /* Sección de reflexión */
+        .seccion-preguntas {
+            background-color: var(--color-caja-preguntas);
+            border-left: 6px solid var(--color-secundario);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-top: 30px;
+        }
+
+        .seccion-preguntas h2 {
+            color: var(--color-secundario);
+            font-size: 1.4rem;
+            margin-bottom: 18px;
+            font-weight: 800;
+        }
+
+        .lista-preguntas {
+            list-style: none;
+        }
+
+        .lista-preguntas li {
+            margin-bottom: 16px;
+            font-size: 1.08rem;
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .lista-preguntas li::before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        .lista-preguntas strong {
+            color: var(--color-primario);
+        }
+
+        /* Pie de página / Navegación */
+        .pie-pagina {
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 1px solid #EAEAEA;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #777;
+        }
+
+        .boton-nav {
+            text-decoration: none;
+            background-color: var(--color-primario);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .boton-nav:hover {
+            background-color: #3A6346;
+        }
+
+        /* Adaptación para celulares o tablets */
+        @media (max-width: 600px) {
+            .contenedor-libro {
+                padding: 25px 20px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .marco-imagen {
+                height: 220px;
+            }
+            .contenido-cuento p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="contenedor-libro">
+        <!-- 2. TEMA DEL CUENTO -->
+        <span class="etiqueta-tema">Valentía y Confianza</span>
+        <h1>El puente de los monos valientes</h1>
+
+        <div class="marco-imagen">
+            <img src="imagenes/monos.jpg" alt="El puente de los monos valientes" onerror="this.style.display='none'; this.parentElement.innerHTML='<p style=\'color:#8C8270; text-align:center; padding:20px;\'>🖼️ <strong>Espacio para tu imagen</strong><br>Guarda tu imagen como <code>imagenes/monos.jpg</code></p>';">
+        </div>
+
+        <article class="contenido-cuento">
+            <p>En la selva de las lianas doradas, Milo, un pequeño mono tití de cola anillada, tenía un secreto: sus patas eran muy rápidas en el suelo, pero cuando miraba hacia las ramas altas, su panza se llenaba de mariposas nerviosas.</p>
+            <p>Para llegar a la Cascada de las Luciérnagas, había que cruzar el Puente de las Lianas Colgantes, una fila de lianas gruesas que colgaban sobre un río de espuma suave y almohadas de musgo. Todos los monos cruzaban balanceándose de una liana a otra, soltando una mano para atrapar la siguiente.</p>
+            <p>Milo se acercó a la primera liana y la agarró con tanta fuerza que sus nudillos se pusieron blancos. Miró hacia abajo. Aunque el musgo parecía esponjoso, la idea de estar en el aire por un segundo le hacía temblar la cola. Intentó dar un paso, pero no se atrevió a soltar su mano izquierda.</p>
+            <p>Entonces, observó a una pequeña rana de cristal que saltaba de hoja en hoja. La rana no se quedaba pegada; apretaba con fuerza, daba un pequeño impulso y confiaba en que sus patas atraparían la siguiente hoja.</p>
+            <p>Milo respiró hondo. Decidió hacer una prueba pequeñita. No cruzaría todo el puente; solo intentaría tocar la segunda liana con la punta de un dedo. Se impulsó un poquito, rozó la liana y regresó.</p>
+            <p class="dialogo">—¡Ey, no pasó nada! —pensó con sorpresa.</p>
+            <p>En el segundo intento, agarró la segunda liana con una mano mientras la otra seguía en la primera. Sintió cómo sus brazos eran fuertes y lo sostenían bien. Con una sonrisa traviesa, soltó la primera liana. Se balanceó en el aire como un péndulo suave. ¡Era divertido!</p>
+            <p>Casi sin darse cuenta, fue atrapando liana tras liana: agarrar, balancear, soltar. Cuando llegó al otro lado, las luciérnagas iluminaron su pelaje como pequeñas estrellas de premio.</p>
+        </article>
+
+        <div class="separador">• • •</div>
+
+        <section class="seccion-preguntas">
+            <h2>Para seguir imaginando juntos</h2>
+            <ul class="lista-preguntas">
+                <li><strong>La prueba pequeñita:</strong> ¿Alguna vez sentiste mariposas en la panza antes de intentar algo nuevo, como Milo? ¿Qué hiciste para dar el primer pasito?</li>
+                <li><strong>Superpoderes de mono:</strong> Si pudieras cruzar un puente mágico en la selva, ¿qué habría al otro lado esperándote (una cascada de luciérnagas, un castillo de nubes o una cueva de cristales)?</li>
+                <li><strong>Brazos fuertes:</strong> ¿Qué acrobacia o movimiento divertido te gustaría inventar si fueras un mono tití?</li>
+            </ul>
+        </section>
+
+        <footer class="pie-pagina">
+            <span>Cuento #02 • Biblioteca de papá y mamá</span>
+            <a href="index.html" class="boton-nav">← Volver al índice</a>
+        </footer>
+
+    </main>
+
+</body>
+</html>

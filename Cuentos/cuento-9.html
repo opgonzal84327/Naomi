@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CAMBIA AQUÍ EL TÍTULO DE LA PESTAÑA -->
+    <title>El semáforo de las palabras - Cuentos para ti</title>
+    <!-- Tipografía amigable para niños -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --color-fondo: #FDF8F2;       /* Crema cálido tipo papel */
+            --color-tarjeta: #FFFFFF;     /* Blanco limpio */
+            --color-primario: #4A7C59;    /* Verde bosque suave */
+            --color-secundario: #E07A5F;  /* Terracota amigable */
+            --color-texto: #2B2D42;       /* Gris oscuro suave (cansa menos la vista que el negro puro) */
+            --color-caja-preguntas: #F2EFE9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.8;
+            padding: 20px;
+        }
+
+        .contenedor-libro {
+            max-width: 780px;
+            margin: 20px auto;
+            background-color: var(--color-tarjeta);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            padding: 40px 50px;
+        }
+
+        /* Etiqueta de tema o valor */
+        .etiqueta-tema {
+            display: inline-block;
+            background-color: #E8F3EC;
+            color: var(--color-primario);
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            color: var(--color-primario);
+            line-height: 1.25;
+            margin-bottom: 25px;
+            font-weight: 800;
+        }
+
+        /* Espacio para la ilustración */
+        .marco-imagen {
+            width: 100%;
+            height: 340px;
+            background-color: #F4F1EA;
+            border: 3px dashed #D3CBB8;
+            border-radius: 18px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marco-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Texto del cuento */
+        .contenido-cuento p {
+            font-size: 1.2rem; /* Tamaño grande ideal para lectura a los 7 años */
+            margin-bottom: 20px;
+        }
+
+        .dialogo {
+            color: #1D3557;
+            font-weight: 600;
+        }
+
+        /* Separador decorativo */
+        .separador {
+            text-align: center;
+            margin: 35px 0;
+            color: var(--color-secundario);
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+        }
+
+        /* Sección de reflexión */
+        .seccion-preguntas {
+            background-color: var(--color-caja-preguntas);
+            border-left: 6px solid var(--color-secundario);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-top: 30px;
+        }
+
+        .seccion-preguntas h2 {
+            color: var(--color-secundario);
+            font-size: 1.4rem;
+            margin-bottom: 18px;
+            font-weight: 800;
+        }
+
+        .lista-preguntas {
+            list-style: none;
+        }
+
+        .lista-preguntas li {
+            margin-bottom: 16px;
+            font-size: 1.08rem;
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .lista-preguntas li::before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        .lista-preguntas strong {
+            color: var(--color-primario);
+        }
+
+        /* Pie de página / Navegación */
+        .pie-pagina {
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 1px solid #EAEAEA;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #777;
+        }
+
+        .boton-nav {
+            text-decoration: none;
+            background-color: var(--color-primario);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .boton-nav:hover {
+            background-color: #3A6346;
+        }
+
+        /* Adaptación para celulares o tablets */
+        @media (max-width: 600px) {
+            .contenedor-libro {
+                padding: 25px 20px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .marco-imagen {
+                height: 220px;
+            }
+            .contenido-cuento p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="contenedor-libro">
+        <span class="etiqueta-tema">Empatía y Amistad</span>
+        <h1>El semáforo de las palabras</h1>
+
+        <div class="marco-imagen">
+            <img src="imagenes/semaforo.jpg" alt="El semáforo de las palabras" onerror="this.style.display='none'; this.parentElement.innerHTML='<p style=\'color:#8C8270; text-align:center; padding:20px;\'>🖼️ <strong>Espacio para tu imagen</strong><br>Guarda tu imagen como <code>imagenes/semaforo.jpg</code></p>';">
+        </div>
+
+        <article class="contenido-cuento">
+            <p>A Jimena le encantaba la hora en que se abría la puerta principal. Cuando ella se quedaba en casa con su papá, esperaba toda la tarde el sonido de las llaves de su mamá. Y cuando se quedaba con su mamá, contaba los minutos para escuchar los pasos de su papá llegando del trabajo.</p>
+            <p>Un jueves por la tarde, Jimena se había quedado con su papá. Habían hecho una torre de cartas gigantes y habían comido sopa de letras. A las seis de la tarde, <em>¡clic-clac!</em>, se abrió la puerta. Era su mamá.</p>
+            <p class="dialogo">—¡Mamá! ¡Llegaste! —gritó Jimena corriendo a abrazarla—. ¡Mira, hicimos una torre enorme y hoy me comí toda la sopa!</p>
+            <p>Su mamá le dio un beso enorme, dejó su bolso en la silla y le preguntó con mucho cariño cómo le había ido en la escuela. Jimena le contó sobre su dibujo del recreo y sobre un perro chistoso que vieron en la ventana.</p>
+            <p>Después de escucharla con atención, su mamá miró al papá de Jimena y le sonrió.</p>
+            <p class="dialogo">—Hola, amor, ¿cómo estuvo tu día en la oficina? —le preguntó su mamá.</p>
+            <p>El papá de Jimena apenas alcanzó a abrir la boca para responder:</p>
+            <p class="dialogo">—Pues hoy tuvimos una junta muy...</p>
+            <p class="dialogo">—¡Y mamá, también te quería decir que mañana tengo que llevar mis crayolas nuevas! —interrumpió Jimena, jalando la manga del suéter de su mamá—. ¡Mira, ven a ver cómo las guardé en mi mochila!</p>
+            <p class="dialogo">—Un segundito, mi vida, estoy escuchando a papá —dijo su mamá con voz amable.</p>
+            <p class="dialogo">—Bueno, como te decía, en la junta... —volvió a intentar el papá.</p>
+            <p class="dialogo">—¡Papá! ¿Verdad que la torre de cartas tenía cinco pisos? ¡Dile a mamá! —volvió a hablar Jimena encima de la voz de su papá, saltando frente a ellos.</p>
+            <p>Su papá soltó un suspiro tranquilo y su mamá miró a Jimena con ternura. Se dieron cuenta de que Jimena no lo hacía por ser grosera; estaba tan emocionada de tenerlos a los dos juntos que quería que todas las palabras fueran para ella.</p>
+            <p>El papá de Jimena se agachó un poquito y puso su mano abierta frente a ellos, como si fuera un alto.</p>
+            <p class="dialogo">—Jimena, ¿sabes cómo funciona un semáforo en la calle? —le preguntó su papá.</p>
+            <p class="dialogo">—Sí —respondió Jimena—. El verde es para avanzar y el rojo es para esperar.</p>
+            <p class="dialogo">—Exacto —dijo su mamá sonriendo—. En nuestra casa también necesitamos un semáforo para las palabras. Cuando yo llegué, el semáforo estuvo en <strong>verde</strong> para ti, y me encantó escuchar todo lo que hiciste hoy. Pero ahora papá y yo llevamos todo el día sin vernos y necesitamos cinco minutos de semáforo en <strong>verde</strong> para nosotros, para contarnos cómo nos fue.</p>
+            <p>Jimena miró a su mamá y luego a su papá. Nunca había pensado que ellos también se extrañaban durante el día y querían platicar.</p>
+            <p class="dialogo">—¿Y qué hago mientras su semáforo está en verde? —preguntó Jimena.</p>
+            <p class="dialogo">—Para ti el semáforo está en <strong>amarillo de espera</strong> —explicó su papá—. Si te acuerdas de algo súper importante que quieres contarnos, puedes poner tu mano suavemente sobre mi brazo o el de mamá, sin hablar. Así nosotros sabemos que tienes algo que decirnos, y en cuanto terminemos nuestra idea, ponemos el semáforo en verde para ti.</p>
+            <p>Jimena quiso probar el truco de inmediato. Se quedó calladita mirando cómo su papá le contaba a su mamá sobre su trabajo. A la mitad, Jimena se acordó de un chiste buenísimo. Estuvo a punto de gritarlo, pero se acordó del semáforo. Caminó despacito y puso su mano sobre el brazo de su papá.</p>
+            <p>Su papá la miró de reojo, le dio unas palmaditas cariñosas en la mano para decirle <em>"ya te vi, espera un poquito"</em>, y terminó su frase con su mamá.</p>
+            <p class="dialogo">—Listo, ya nos pusimos al día —dijo su mamá mirando a Jimena—. ¡Luz verde para Jimena! ¿Qué nos querías contar?</p>
+            <p>Jimena soltó una risita y les contó su chiste. Se sintió muy orgullosa de haber esperado su turno como niña grande, y notó que cuando esperaba a que terminaran de hablar, su mamá y su papá la escuchaban con muchísima más alegría.</p>
+        </article>
+
+        <div class="separador">• • •</div>
+
+        <section class="seccion-preguntas">
+            <h2>Preguntas para conversar y reflexionar juntos</h2>
+            <ul class="lista-preguntas">
+                <li><strong>Para entender la historia:</strong> ¿Por qué Jimena interrumpía a sus papás cuando querían platicar entre ellos, y qué juego inventaron para respetar los turnos al hablar?</li>
+                <li><strong>Para conectar con sus emociones:</strong> Cuando llega papá o mamá a la casa y tú quieres contarles todo al mismo tiempo, ¿qué sientes si te pedimos que esperes un ratito para que nosotros podamos platicar?</li>
+                <li><strong>Para practicar la empatía:</strong> Mamá y papá también se extrañan durante el día y necesitan unos minutos para contarse cómo les fue. ¿Qué señal secreta (como poner la mano en el brazo o hacer una seña con los dedos) te gustaría que usemos en casa cuando necesites decirnos algo mientras estamos hablando?</li>
+            </ul>
+        </section>
+
+        <footer class="pie-pagina">
+            <span>Cuento #09 • Biblioteca de papá y mamá</span>
+            <a href="index.html" class="boton-nav">← Volver al índice</a>
+        </footer>
+
+    </main>
+
+</body>
+</html>

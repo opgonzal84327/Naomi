@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CAMBIA AQUÍ EL TÍTULO DE LA PESTAÑA -->
+    <title>El misterio del calcetín izquierdo - Cuentos para ti</title>
+    <!-- Tipografía amigable para niños -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --color-fondo: #FDF8F2;       /* Crema cálido tipo papel */
+            --color-tarjeta: #FFFFFF;     /* Blanco limpio */
+            --color-primario: #4A7C59;    /* Verde bosque suave */
+            --color-secundario: #E07A5F;  /* Terracota amigable */
+            --color-texto: #2B2D42;       /* Gris oscuro suave (cansa menos la vista que el negro puro) */
+            --color-caja-preguntas: #F2EFE9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.8;
+            padding: 20px;
+        }
+
+        .contenedor-libro {
+            max-width: 780px;
+            margin: 20px auto;
+            background-color: var(--color-tarjeta);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            padding: 40px 50px;
+        }
+
+        /* Etiqueta de tema o valor */
+        .etiqueta-tema {
+            display: inline-block;
+            background-color: #E8F3EC;
+            color: var(--color-primario);
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            color: var(--color-primario);
+            line-height: 1.25;
+            margin-bottom: 25px;
+            font-weight: 800;
+        }
+
+        /* Espacio para la ilustración */
+        .marco-imagen {
+            width: 100%;
+            height: 340px;
+            background-color: #F4F1EA;
+            border: 3px dashed #D3CBB8;
+            border-radius: 18px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marco-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Texto del cuento */
+        .contenido-cuento p {
+            font-size: 1.2rem; /* Tamaño grande ideal para lectura a los 7 años */
+            margin-bottom: 20px;
+        }
+
+        .dialogo {
+            color: #1D3557;
+            font-weight: 600;
+        }
+
+        /* Separador decorativo */
+        .separador {
+            text-align: center;
+            margin: 35px 0;
+            color: var(--color-secundario);
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+        }
+
+        /* Sección de reflexión */
+        .seccion-preguntas {
+            background-color: var(--color-caja-preguntas);
+            border-left: 6px solid var(--color-secundario);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-top: 30px;
+        }
+
+        .seccion-preguntas h2 {
+            color: var(--color-secundario);
+            font-size: 1.4rem;
+            margin-bottom: 18px;
+            font-weight: 800;
+        }
+
+        .lista-preguntas {
+            list-style: none;
+        }
+
+        .lista-preguntas li {
+            margin-bottom: 16px;
+            font-size: 1.08rem;
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .lista-preguntas li::before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        .lista-preguntas strong {
+            color: var(--color-primario);
+        }
+
+        /* Pie de página / Navegación */
+        .pie-pagina {
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 1px solid #EAEAEA;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #777;
+        }
+
+        .boton-nav {
+            text-decoration: none;
+            background-color: var(--color-primario);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .boton-nav:hover {
+            background-color: #3A6346;
+        }
+
+        /* Adaptación para celulares o tablets */
+        @media (max-width: 600px) {
+            .contenedor-libro {
+                padding: 25px 20px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .marco-imagen {
+                height: 220px;
+            }
+            .contenido-cuento p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="contenedor-libro">
+        <!-- 21. TEMA DEL CUENTO -->
+        <span class="etiqueta-tema">Autoestima y Confianza</span>
+        <h1>El cuadro de las mil pinceladas</h1>
+
+        <div class="marco-imagen">
+            <img src="imagenes/cuadro-pinceladas.jpg" alt="El cuadro de las mil pinceladas" onerror="this.style.display='none'; this.parentElement.innerHTML='<p style=\'color:#8C8270; text-align:center; padding:20px;\'>🖼️ <strong>Espacio para tu imagen</strong><br>Guarda tu imagen como <code>imagenes/cuadro-pinceladas.jpg</code></p>';">
+        </div>
+
+        <article class="contenido-cuento">
+            <p>En el Taller del Arroyo Pintado vivía Vega, una pequeña nutria artista que amaba pintar paisajes del bosque. Vega sabía mezclar colores mágicos: hacía verde hoja con musgo, azul río con moras y dorado sol con polen de flores.</p>
+            <p>Un día se celebró la Gran Exposición del Bosque. Todos los animales debían pintar un retrato de la Luna Llena. Vega trabajó con mucha ilusión, pero justo cuando iba a terminar, una gota de agua cayó de una rama y manchó una esquina de su dibujo, haciendo que la luna saliera un poco ovalada.</p>
+            <p>Cuando pasó el jurado de búhos a revisar los dibujos, le pusieron a su cuadro una pequeña etiqueta con una estrella plateada, mientras que a otros cuadros les pusieron estrellas doradas.</p>
+            <p>Vega miró la etiqueta plateada y sintió un nudo en la garganta. Guardó sus pinceles en su caja de madera y pensó: <em>«Seguro no soy buena pintando. Esta etiqueta dice que me equivoqué»</em>.</p>
+            <p>Mientras caminaba hacia el río con su cuadro bajo el brazo, pasó frente a un charco cristalino. Al mirar el reflejo, vio algo curioso: la etiqueta plateada era apenas un cuadrito diminuto en la esquina del marco, tan chiquito como una hormiga, mientras que todo el resto del cuadro estaba lleno de estrellas brillantes, reflejos en el agua y colores que ella misma había inventado.</p>
+            <p>Además, recordó que la semana anterior había pintado un arcoíris gigante, que sabía nadar más rápido que cualquier castor y que siempre ayudaba a sus amigos. Una pequeña etiqueta de papel sobre un solo dibujo no podía contar ni una milésima parte de todo lo que ella era.</p>
+            <p>Vega despegó la etiqueta, la guardó en su bolsillo como un recuerdo más y sacó una hoja nueva para pintar un bosque nocturno con luciérnagas.</p>
+        </article>
+
+        <div class="separador">• • •</div>
+
+        <section class="seccion-preguntas">
+            <h2>Para seguir imaginando juntos</h2>
+            <ul class="lista-preguntas">
+                <li><strong>Tu galería de talentos:</strong> Si hiciéramos una exposición con todas las cosas increíbles que sabes hacer (en el agua, patinando, dibujando o en la escuela), ¿qué pondrías en el centro?</li>
+                <li><strong>La gota traviesa:</strong> Si te cae una mancha por accidente en un dibujo, ¿en qué figura divertida la podrías transformar?</li>
+                <li><strong>Colores mágicos:</strong> Si pudieras inventar un color nuevo usando cosas de la naturaleza, ¿cómo se llamaría y de qué estaría hecho?</li>
+            </ul>
+        </section>
+
+        <footer class="pie-pagina">
+            <span>Cuento #21 • Biblioteca de papá y mamá</span>
+            <a href="index.html" class="boton-nav">← Volver al índice</a>
+        </footer>
+
+    </main>
+
+</body>
+</html>

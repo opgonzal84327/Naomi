@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CAMBIA AQUÍ EL TÍTULO DE LA PESTAÑA -->
+    <title>El castillo de las mil piezas - Cuentos para ti</title>
+    <!-- Tipografía amigable para niños -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --color-fondo: #FDF8F2;       /* Crema cálido tipo papel */
+            --color-tarjeta: #FFFFFF;     /* Blanco limpio */
+            --color-primario: #4A7C59;    /* Verde bosque suave */
+            --color-secundario: #E07A5F;  /* Terracota amigable */
+            --color-texto: #2B2D42;       /* Gris oscuro suave (cansa menos la vista que el negro puro) */
+            --color-caja-preguntas: #F2EFE9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.8;
+            padding: 20px;
+        }
+
+        .contenedor-libro {
+            max-width: 780px;
+            margin: 20px auto;
+            background-color: var(--color-tarjeta);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            padding: 40px 50px;
+        }
+
+        /* Etiqueta de tema o valor */
+        .etiqueta-tema {
+            display: inline-block;
+            background-color: #E8F3EC;
+            color: var(--color-primario);
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            color: var(--color-primario);
+            line-height: 1.25;
+            margin-bottom: 25px;
+            font-weight: 800;
+        }
+
+        /* Espacio para la ilustración */
+        .marco-imagen {
+            width: 100%;
+            height: 340px;
+            background-color: #F4F1EA;
+            border: 3px dashed #D3CBB8;
+            border-radius: 18px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marco-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Texto del cuento */
+        .contenido-cuento p {
+            font-size: 1.2rem; /* Tamaño grande ideal para lectura a los 7 años */
+            margin-bottom: 20px;
+        }
+
+        .dialogo {
+            color: #1D3557;
+            font-weight: 600;
+        }
+
+        /* Separador decorativo */
+        .separador {
+            text-align: center;
+            margin: 35px 0;
+            color: var(--color-secundario);
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+        }
+
+        /* Sección de reflexión */
+        .seccion-preguntas {
+            background-color: var(--color-caja-preguntas);
+            border-left: 6px solid var(--color-secundario);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-top: 30px;
+        }
+
+        .seccion-preguntas h2 {
+            color: var(--color-secundario);
+            font-size: 1.4rem;
+            margin-bottom: 18px;
+            font-weight: 800;
+        }
+
+        .lista-preguntas {
+            list-style: none;
+        }
+
+        .lista-preguntas li {
+            margin-bottom: 16px;
+            font-size: 1.08rem;
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .lista-preguntas li::before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        .lista-preguntas strong {
+            color: var(--color-primario);
+        }
+
+        /* Pie de página / Navegación */
+        .pie-pagina {
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 1px solid #EAEAEA;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #777;
+        }
+
+        .boton-nav {
+            text-decoration: none;
+            background-color: var(--color-primario);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .boton-nav:hover {
+            background-color: #3A6346;
+        }
+
+        /* Adaptación para celulares o tablets */
+        @media (max-width: 600px) {
+            .contenedor-libro {
+                padding: 25px 20px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .marco-imagen {
+                height: 220px;
+            }
+            .contenido-cuento p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="contenedor-libro">
+        <!-- 3. TEMA DEL CUENTO -->
+        <span class="etiqueta-tema">Paciencia y Creatividad</span>
+        <h1>El castillo de las mil piezas</h1>
+
+        <div class="marco-imagen">
+            <img src="imagenes/castillo.jpg" alt="El castillo de las mil piezas" onerror="this.style.display='none'; this.parentElement.innerHTML='<p style=\'color:#8C8270; text-align:center; padding:20px;\'>🖼️ <strong>Espacio para tu imagen</strong><br>Guarda tu imagen como <code>imagenes/castillo.jpg</code></p>';">
+        </div>
+
+        <article class="contenido-cuento">
+            <p>En la colina de los vientos suaves vivía Pip, una ardilla arquitecta famosa por construir los palacios de bellotas, ramitas y piedras de río más altos del bosque.</p>
+            <p>Una mañana, Pip decidió levantar su obra maestra: el Castillo de las Mil Piezas, con tres torres, un puente levadizo de corteza y una bandera hecha con el pétalo de una amapola. Trabajó toda la mañana colocando cada piedrita con mucho cuidado.</p>
+            <p>Justo cuando iba a poner el pétalo rojo en la punta de la torre más alta, un abejorro despistado pasó zumbando tan cerca que movió el aire. <em>¡Bzzz!</em> La torre se tambaleó y... <em>¡CRAC, PLOF, RODAR!</em> Todo el castillo se vino abajo, convirtiéndose en una montaña revuelta de ramitas y bellotas.</p>
+            <p>Pip sintió que las orejas se le ponían calientes y rojas como tomates. Apretó los puños, pateó una hoja seca y estuvo a punto de dar un grito de enojo y deshacer el resto de las piezas. Se sentó de brazos cruzados, mirando el desastre con el ceño fruncido.</p>
+            <p>Mientras resoplaba, notó algo curioso entre los escombros. Al caerse, dos cortezas curvas habían quedado encajadas una sobre otra formando un túnel perfecto, y una piedra plana había aterrizado justo encima de dos tronquitos, creando un balcón que antes no existía.</p>
+            <p>Pip dejó de fruncir el ceño. Se acercó despacio y tocó el túnel accidental.</p>
+            <p class="dialogo">—Mmm... esto parece un tobogán secreto —pensó con curiosidad.</p>
+            <p>Con una sonrisa traviesa, empezó a recoger las piezas de nuevo. Esta vez no intentó copiar el castillo anterior; usó el túnel accidental como entrada, puso el balcón de piedra y construyó torres más anchas en la base para que el viento de los abejorros no las tirara. Cuando terminó, su nuevo castillo tenía un tobogán secreto y era mucho más resistente y divertido que el primero.</p>
+        </article>
+
+        <div class="separador">• • •</div>
+
+        <section class="seccion-preguntas">
+            <h2>Para seguir imaginando juntos</h2>
+            <ul class="lista-preguntas">
+                <li><strong>Arquitectos del bosque:</strong> Si construyeras un castillo mágico en el bosque, ¿qué pasadizo secreto o habitación divertida le pondrías?</li>
+                <li><strong>Orejas calientes:</strong> ¿Qué haces tú cuando algo que estás armando o dibujando se cae o no sale a la primera?</li>
+                <li><strong>Piezas mágicas:</strong> ¿De qué materiales del bosque te gustaría construir una casita (hojas gigantes, piedras brillantes, piñas de pino)?</li>
+            </ul>
+        </section>
+
+        <footer class="pie-pagina">
+            <span>Cuento #03 • Biblioteca de papá y mamá</span>
+            <a href="index.html" class="boton-nav">← Volver al índice</a>
+        </footer>
+
+    </main>
+
+</body>
+</html>

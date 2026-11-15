@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive English Story</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fef9c3; color: #1e293b; line-height: 1.6; margin: 0; padding: 20px; }
+        .top-controls { max-width: 1320px; margin: 0 auto 15px auto; display: flex; justify-content: flex-end; }
+        .btn-swap { background-color: #ffffff; color: #854d0e; border: 2px solid #fde047; border-radius: 10px; padding: 8px 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: all 0.2s; }
+        .btn-swap:hover { background-color: #fef08a; }
+
+        .main-layout { max-width: 1320px; margin: 0 auto; display: flex; gap: 24px; align-items: flex-start; }
+        .main-layout.swapped { flex-direction: row-reverse; }
+
+        .story-column { flex: 1.8; min-width: 0; background: #ffffff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 3px solid #fde047; }
+        .vocab-sidebar {
+            flex: 1;
+            min-width: 320px;
+            max-width: 380px;
+            background: #ffffff;
+            padding: 22px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 3px solid #bbf7d0;
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 95px);
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+
+        h1 { text-align: center; color: #b45309; margin: 0 0 5px 0; font-size: 2em; }
+        .subtitle { text-align: center; color: #64748b; font-weight: 600; margin-bottom: 20px; font-size: 1.05em; }
+        .story-img { display: block; max-width: 100%; max-height: 320px; margin: 0 auto 25px auto; border-radius: 12px; border: 2px solid #fde047; object-fit: cover; }
+        h2 { color: #15803d; border-bottom: 2px solid #bbf7d0; padding-bottom: 8px; margin-top: 35px; }
+        .vocab-sidebar h2 { margin-top: 0; font-size: 1.15em; }
+        .vocab-sidebar h2.second-heading { margin-top: 24px; }
+
+        .story-paragraph-box { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 12px; padding: 12px 15px; border-radius: 10px; background-color: #f8fafc; border: 1px solid #e2e8f0; font-size: 1.08em; }
+        .story-paragraph-box b { color: #b45309; }
+
+        .vocab-grid { display: flex; flex-direction: column; gap: 8px; }
+        .vocab-card { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px; border-radius: 10px; background-color: #f8fafc; border: 1px solid #e2e8f0; font-size: 0.95em; }
+        .badge { display: inline-block; background-color: #fef08a; color: #854d0e; font-size: 0.72em; font-weight: bold; padding: 2px 6px; border-radius: 6px; margin-left: 5px; }
+
+        .btn-read-p { background-color: #0284c7; color: white; border: none; border-radius: 8px; padding: 6px 11px; font-size: 0.85em; font-weight: bold; cursor: pointer; flex-shrink: 0; }
+        .btn-read-p:hover { background-color: #0369a1; }
+
+        .question-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 15px 20px; margin-bottom: 15px; }
+        .question-title { font-weight: bold; margin-bottom: 10px; font-size: 1.05em; }
+        .option-label { display: block; margin: 6px 0; cursor: pointer; padding: 6px 10px; border-radius: 6px; }
+        .option-label:hover { background-color: #dcfce7; }
+        .feedback { margin-top: 8px; font-weight: bold; display: none; }
+        .correct { color: #15803d; } .incorrect { color: #b91c1c; }
+
+        .actions { display: flex; gap: 15px; margin-top: 25px; flex-wrap: wrap; }
+        .btn-grade, .btn-retry { flex: 1; min-width: 200px; padding: 15px; font-size: 1.1em; font-weight: bold; color: white; border: none; border-radius: 10px; cursor: pointer; }
+        .btn-grade { background-color: #16a34a; } .btn-grade:hover { background-color: #15803d; }
+        .btn-retry { background-color: #0284c7; } .btn-retry:hover { background-color: #0369a1; }
+        #result-box { display: none; margin-top: 20px; padding: 20px; border-radius: 12px; text-align: center; font-size: 1.3em; font-weight: bold; background-color: #fef08a; color: #854d0e; border: 2px solid #facc15; }
+
+        @media (max-width: 900px) {
+            .top-controls { display: none; }
+            .main-layout, .main-layout.swapped { flex-direction: column; }
+            .vocab-sidebar { position: static; max-width: 100%; max-height: none; width: 100%; box-sizing: border-box; }
+        }
+    </style>
+</head>
+<body>
+<div class="top-controls" style="gap: 10px; align-items: center; flex-wrap: wrap;">
+    <label for="voice-speed" style="font-weight: bold; color: #854d0e; background: #fff; padding: 7px 12px; border-radius: 10px; border: 2px solid #fde047;">
+        🐢 Velocidad de voz:
+        <select id="voice-speed" style="border: none; font-weight: bold; color: #0284c7; background: transparent; cursor: pointer; font-size: 0.95em;">
+            <option value="0.55">Muy lento (0.55x)</option>
+            <option value="0.75" selected>Lento (0.75x)</option>
+            <option value="0.9">Casi normal (0.9x)</option>
+            <option value="1.0">Normal (1.0x)</option>
+        </select>
+    </label>
+
+    <button type="button" class="btn-swap" onclick="document.getElementById('main-layout').classList.toggle('swapped')">
+        ⇄ Cambiar posición del vocabulario
+    </button>
+</div>
+
+
+<div id="main-layout" class="main-layout">
+    <main class="story-column">
+        <h1 id="story-title"></h1>
+        <div id="story-subtitle" class="subtitle"></div>
+        <img id="story-image" class="story-img" style="display:none;" alt="Story illustration">
+        <div id="story-container"></div>
+
+        <h2 id="quiz-heading">📝 Quiz: Answer the Questions!</h2>
+        <div id="quiz-container"></div>
+
+        <div class="actions">
+            <button class="btn-grade" onclick="gradeQuiz()">Grade Quiz ✔</button>
+            <button class="btn-retry" onclick="buildQuiz(true)">🔄 Try Again (New Order)</button>
+        </div>
+        <div id="result-box"></div>
+    </main>
+
+    <aside class="vocab-sidebar">
+        <h2>🏃 Action Verbs (Base / 3rd)</h2>
+        <div id="verbs-container" class="vocab-grid"></div>
+
+        <h2 class="second-heading">🔑 Other Key Words</h2>
+        <div id="words-container" class="vocab-grid"></div>
+    </aside>
+</div>
+
+<script>
+
+    // =========================================================================
+    // 🟢 ZONA DE DATOS DEL CUENTO (SOLO REEMPLAZA ESTO EN CADA HISTORIA NUEVA)
+    // =========================================================================
+    const storyData = {
+        title: "🐵 Milo and Maya’s Jungle Picnic! 🦜",
+        subtitle: "Unit 3: At the Market • Reading & Vocabulary Practice",
+        imageFile: "../images/MiloMaya.jpg",
+        paragraphs: [
+            "It is a bright Saturday morning, and Milo Monkey and Maya Parrot want to prepare a colorful picnic. They open the wooden cupboard in their treehouse to check what food they have.",
+            "\"What's in the cupboard, Milo?\" asks Maya.",
+            "\"There is a big green <b>cabbage</b>, some sweet yellow <b>corn</b>, and a bag of green <b>peas</b>,\" says Milo. \"There are also four crunchy <b>carrots</b>.\"",
+            "\"Are there any <b>pineapples</b> or <b>kiwis</b>?\" asks Maya. \"I really want fresh tropical fruit!\"",
+            "\"No, there aren't. And there aren't any <b>limes</b> or <b>mangoes</b> either. Let's visit Mr. Toucan's market stand!\" says Milo.",
+            "At the market, Mr. Toucan greets them with a big smile: \"Good morning! Can I help you?\"",
+            "\"Yes, please! One big <b>pineapple</b>, six green <b>kiwis</b>, and four juicy <b>mangoes</b>, please,\" says Maya.",
+            "\"Here you are. Anything else?\" asks Mr. Toucan.",
+            "\"Two green <b>limes</b>, please!\" says Milo.",
+            "Suddenly, Maya spots two lunchboxes on a bench near the exit. One lunchbox has a picture of a <b>pear</b>, and the other has a picture of a <b>carrot</b>.",
+            "\"Whose are these lunchboxes?\" asks Milo.",
+            "A little turtle walks over and says: \"The <b>pear</b> lunchbox is <b>his</b>,\" pointing to her brother Tim, \"and the <b>carrot</b> lunchbox is <b>mine</b>! Thank you so much!\"",
+            "\"You're welcome!\" says Maya. Then Mr. Toucan runs out holding a basket of <b>pears</b> and calls: \"Wait, Milo and Maya! This basket of <b>pears</b> is <b>yours</b>! You forgot it!\"",
+            "\"Oh, thank you! Now this delicious picnic is all <b>ours</b>!\" laughs Milo. They fly back to their treehouse and enjoy a wonderful meal together. The end!"
+        ],
+        verbs: [
+            { base: "prepare", third: "prepares", meaning: "preparar" },
+            { base: "check", third: "checks", meaning: "revisar" },
+            { base: "greet", third: "greets", meaning: "saludar" },
+            { base: "spot", third: "spots", meaning: "ver / notar" },
+            { base: "walk over", third: "walks over", meaning: "acercarse caminando" },
+            { base: "run out", third: "runs out", meaning: "salir corriendo" },
+            { base: "hold", third: "holds", meaning: "sostener" },
+            { base: "forget", third: "forgets", meaning: "olvidar" },
+            { base: "fly back", third: "flies back", meaning: "regresar volando" },
+            { base: "enjoy", third: "enjoys", meaning: "disfrutar" }
+        ],
+        otherWords: [
+            { word: "bright", meaning: "brillante / despejado", type: "Adjective" },
+            { word: "crunchy", meaning: "crujiente", type: "Adjective" },
+            { word: "treehouse", meaning: "casa del árbol", type: "Noun" },
+            { word: "lunchbox", meaning: "lonchera", type: "Noun" },
+            { word: "together", meaning: "juntos", type: "Adverb" }
+        ],
+        quiz: [
+            { q: "Who are the two main characters in the story?", options: ["Milo Monkey and Maya Parrot", "Toby Rabbit and Bella", "Mia Mouse and Leo Lion", "Barnaby Bear and Sammy"], answer: 0 },
+            { q: "Where do Milo and Maya live?", options: ["In a big red barn", "In a treehouse", "Near a blue pond", "Inside a cave"], answer: 1 },
+            { q: "Which vegetables are in the wooden cupboard?", options: ["Beans, onions, and peppers", "Cabbage, corn, peas, and carrots", "Mushrooms and tomatoes", "Potatoes and broccoli"], answer: 1 },
+            { q: "How many crunchy carrots are in the cupboard?", options: ["Two", "Three", "Four", "Six"], answer: 2 },
+            { q: "Are there any pineapples or kiwis in the cupboard?", options: ["Yes, there are.", "No, there aren't.", "Only one pineapple.", "Only two kiwis."], answer: 1 },
+            { q: "Who works at the market stand?", options: ["Mrs. Owl", "Sammy Squirrel", "Mr. Toucan", "Farmer Ben"], answer: 2 },
+            { q: "How many green kiwis does Maya ask for?", options: ["Four", "Five", "Six", "Two"], answer: 2 },
+            { q: "What does Milo ask for when Mr. Toucan says \"Anything else?\"", options: ["Two green limes", "Three yellow lemons", "Five red apples", "One brown coconut"], answer: 0 },
+            { q: "What does Maya see on a bench near the exit?", options: ["Two baskets of oranges", "Two lunchboxes", "Two bags of corn", "Two green pears"], answer: 1 },
+            { q: "What pictures are on the two lunchboxes?", options: ["A mango and a kiwi", "A pear and a carrot", "A lime and a lemon", "A cabbage and a pea"], answer: 1 },
+            { q: "Whose is the pear lunchbox?", options: ["It's his (Tim's).", "It's hers (Maya's).", "It's theirs (Milo and Maya's).", "It's yours (Mr. Toucan's)."], answer: 0 },
+            { q: "Whose is the carrot lunchbox?", options: ["The little turtle's (mine)", "Milo's", "Mr. Toucan's", "Tim's"], answer: 0 },
+            { q: "What did Milo and Maya forget at the market stand?", options: ["A bag of limes", "A basket of pears", "A box of mangoes", "A sweet pineapple"], answer: 1 },
+            { q: "What does Mr. Toucan say when he brings the basket?", options: ["Whose is it?", "Can I help you?", "This basket of pears is yours!", "There aren't any pears."], answer: 2 },
+            { q: "How do Milo and Maya get back to their treehouse?", options: ["They walk slowly.", "They swim across the river.", "They fly back.", "They ride a bicycle."], answer: 2 }
+        ]
+    };
+    // =========================================================================
+    // 🔴 FIN DE LA ZONA DE DATOS (NO ES NECESARIO MODIFICAR NADA DE AQUÍ ABAJO)
+    // =========================================================================
+
+
+    function leerTexto(texto) {
+        window.speechSynthesis.cancel();
+        const mensaje = new SpeechSynthesisUtterance(texto);
+        mensaje.lang = 'en-US';
+        const speedSelect = document.getElementById('voice-speed');
+        mensaje.rate = speedSelect ? parseFloat(speedSelect.value) : 0.75;
+        window.speechSynthesis.speak(mensaje);
+    }
+
+    function initPage() {
+        document.title = storyData.title;
+        document.getElementById('story-title').innerText = storyData.title;
+        document.getElementById('story-subtitle').innerText = storyData.subtitle || "";
+
+        const imgEl = document.getElementById('story-image');
+        if (storyData.imageFile) {
+            imgEl.src = storyData.imageFile;
+            imgEl.style.display = 'block';
+            imgEl.onerror = () => { imgEl.style.display = 'none'; };
+        }
+
+        const storyContainer = document.getElementById('story-container');
+        storyData.paragraphs.forEach(htmlTexto => {
+            const box = document.createElement('div');
+            box.className = 'story-paragraph-box';
+            const span = document.createElement('span');
+            span.innerHTML = htmlTexto;
+            const textoLimpio = span.innerText;
+
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn-read-p';
+            btn.innerText = '🔊 Listen';
+            btn.onclick = () => leerTexto(textoLimpio);
+
+            box.appendChild(span);
+            box.appendChild(btn);
+            storyContainer.appendChild(box);
+        });
+
+        const verbsContainer = document.getElementById('verbs-container');
+        (storyData.verbs || []).forEach(v => {
+            const card = document.createElement('div');
+            card.className = 'vocab-card';
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn-read-p';
+            btn.innerText = '🔊';
+            btn.onclick = () => leerTexto(`${v.base}, ${v.third}`);
+
+            card.innerHTML = `<span><b>${v.base}</b> / <b>${v.third}</b><br><small>${v.meaning}</small></span>`;
+            card.appendChild(btn);
+            verbsContainer.appendChild(card);
+        });
+
+        const wordsContainer = document.getElementById('words-container');
+        (storyData.otherWords || []).forEach(w => {
+            const card = document.createElement('div');
+            card.className = 'vocab-card';
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn-read-p';
+            btn.innerText = '🔊';
+            btn.onclick = () => leerTexto(w.word);
+
+            card.innerHTML = `<span><b>${w.word}</b> <span class="badge">${w.type}</span><br><small>${w.meaning}</small></span>`;
+            card.appendChild(btn);
+            wordsContainer.appendChild(card);
+        });
+
+        buildQuiz(false);
+    }
+
+    const letras = ["A", "B", "C", "D"];
+    let shuffledQuiz = [];
+
+    function shuffleArray(arr) {
+        const copy = [...arr];
+        for (let i = copy.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+    }
+
+    function buildQuiz(scrollToQuiz = false) {
+        const quizContainer = document.getElementById('quiz-container');
+        const resultBox = document.getElementById('result-box');
+        quizContainer.innerHTML = '';
+        resultBox.style.display = 'none';
+
+        shuffledQuiz = shuffleArray(storyData.quiz).map((item, idx) => {
+            const cleanQuestion = item.q.replace(/^\d+\.\s*/, '');
+            const correctText = item.options[item.answer];
+            const mixedOptions = shuffleArray(item.options);
+            return {
+                q: `${idx + 1}. ${cleanQuestion}`,
+                options: mixedOptions,
+                answer: mixedOptions.indexOf(correctText)
+            };
+        });
+
+        shuffledQuiz.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            let opcionesHTML = '';
+            item.options.forEach((opt, i) => {
+                opcionesHTML += `<label class="option-label"><input type="radio" name="q${index}" value="${i}"> ${letras[i]}) ${opt}</label>`;
+            });
+            card.innerHTML = `<div class="question-title">${item.q}</div>${opcionesHTML}<div class="feedback" id="fb-${index}"></div>`;
+            quizContainer.appendChild(card);
+        });
+
+        if (scrollToQuiz) {
+            document.getElementById('quiz-heading').scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    function gradeQuiz() {
+        let score = 0;
+        shuffledQuiz.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            const fb = document.getElementById(`fb-${index}`);
+            fb.style.display = 'block';
+            if (selected && parseInt(selected.value) === item.answer) {
+                score++;
+                fb.className = 'feedback correct';
+                fb.innerText = '✨ Correct!';
+            } else {
+                fb.className = 'feedback incorrect';
+                fb.innerText = `❌ Incorrect (Correct: ${letras[item.answer]})`;
+            }
+        });
+
+        const resultBox = document.getElementById('result-box');
+        resultBox.style.display = 'block';
+        resultBox.innerText = score === shuffledQuiz.length
+            ? `🎉 Super Reader! You answered all ${score} / ${shuffledQuiz.length} questions correctly! ⭐`
+            : `You got ${score} out of ${shuffledQuiz.length} questions right! Keep practicing! 💪`;
+        resultBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    initPage();
+</script>
+</body>
+</html>

@@ -3,150 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">English Story Practice</title>
-    <link href="https://googleapis.com" rel="stylesheet">
+    <title>Interactive English Story</title>
     <style>
-        :root {
-            --primary: #ff8c42;
-            --primary-dark: #e67329;
-            --secondary: #4caf50;
-            --secondary-light: #e8f5e9;
-            --accent: #ffd166;
-            --bg-color: #fffdf7;
-            --card-bg: #ffffff;
-            --text-main: #2d3142;
-            --text-muted: #5c6274;
-            --border-radius: 18px;
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fef9c3; color: #1e293b; line-height: 1.6; margin: 0; padding: 20px; }
+        .top-controls { max-width: 1320px; margin: 0 auto 15px auto; display: flex; justify-content: flex-end; }
+        .btn-swap { background-color: #ffffff; color: #854d0e; border: 2px solid #fde047; border-radius: 10px; padding: 8px 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: all 0.2s; }
+        .btn-swap:hover { background-color: #fef08a; }
+
+        .main-layout { max-width: 1320px; margin: 0 auto; display: flex; gap: 24px; align-items: flex-start; }
+        .main-layout.swapped { flex-direction: row-reverse; }
+
+        .story-column { flex: 1.8; min-width: 0; background: #ffffff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 3px solid #fde047; }
+        .vocab-sidebar {
+            flex: 1;
+            min-width: 320px;
+            max-width: 380px;
+            background: #ffffff;
+            padding: 22px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 3px solid #bbf7d0;
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 95px);
+            box-sizing: border-box;
+            overflow-y: auto;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Nunito', sans-serif;
-            background-color: var(--bg-color);
-            background-image: radial-gradient(#ffe8b3 1.5px, transparent 1.5px);
-            background-size: 24px 24px;
-            color: var(--text-main);
-            line-height: 1.7;
-            padding: 20px;
-        }
-        header {
-            text-align: center;
-            max-width: 1200px;
-            margin: 0 auto 25px auto;
-            background: var(--card-bg);
-            padding: 25px 20px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-            border-bottom: 5px solid var(--primary);
-        }
-        header h1 { font-family: 'Fredoka', sans-serif; font-size: 2.3rem; color: var(--primary-dark); margin-bottom: 5px; }
-        header p { color: var(--text-muted); font-weight: 600; font-size: 1.05rem; }
-        .main-container {
-            display: grid;
-            grid-template-columns: 1.85fr 1.15fr;
-            gap: 25px;
-            max-width: 1200px;
-            margin: 0 auto;
-            align-items: start;
-        }
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            padding: 28px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-            margin-bottom: 25px;
-        }
-        .story-image-box {
-            width: 100%;
-            margin-bottom: 22px;
-            border-radius: 14px;
-            overflow: hidden;
-            background-color: #fff5e4;
-            border: 3px dashed #ffd166;
-            text-align: center;
-        }
-        .story-image-box img { width: 100%; max-height: 380px; object-fit: cover; display: block; }
-        .paragraph-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 16px;
-            padding: 10px 14px;
-            border-radius: 12px;
-            transition: background-color 0.25s ease;
-        }
-        .paragraph-row:hover { background-color: #fff9eb; }
-        .paragraph-row.speaking { background-color: #fff2cc; box-shadow: 0 0 0 2px var(--accent); }
-        .paragraph-row p { font-size: 1.15rem; flex: 1; }
-        .vocab-highlight { color: #d95d1e; font-weight: 700; }
-        .audio-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 6px 12px;
-            font-family: 'Fredoka', sans-serif;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            flex-shrink: 0;
-            margin-top: 3px;
-            box-shadow: 0 3px 0 var(--primary-dark);
-        }
-        .audio-btn:hover { background-color: var(--primary-dark); }
-        .mini-audio-btn {
-            background: #ffe8cc;
-            border: none;
-            border-radius: 50%;
-            width: 26px;
-            height: 26px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 4px;
-        }
-        .mini-audio-btn:hover { background: var(--accent); }
-		.sidebar { 
-			position: sticky; 
-			top: 20px; 
-			max-height: calc(100vh - 40px); 
-			overflow-y: auto; 
-		}
-		.sidebar .card { margin-bottom: 0; }
-        .sidebar h2 { font-family: 'Fredoka', sans-serif; color: var(--secondary); font-size: 1.4rem; margin-bottom: 12px; }
-        .helper-subtitle { font-family: 'Fredoka', sans-serif; font-size: 1.05rem; color: var(--primary-dark); margin: 16px 0 8px 0; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 18px;
-            font-size: 0.92rem;
-            background: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-        th { background-color: var(--secondary); color: white; font-family: 'Fredoka', sans-serif; text-align: left; padding: 10px 8px; font-size: 0.88rem; }
-        td { padding: 8px; border-bottom: 1px solid #edf2f7; }
-        tr:nth-child(even) { background-color: #f9fbf9; }
-        .badge-type { display: inline-block; background-color: #e3f2fd; color: #1565c0; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; }
-        .quiz-section h2 { font-family: 'Fredoka', sans-serif; color: var(--primary-dark); font-size: 1.7rem; margin-bottom: 18px; text-align: center; }
-        .question-block { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 14px; padding: 16px 20px; margin-bottom: 16px; }
-        .question-title { font-weight: 700; font-size: 1.08rem; margin-bottom: 10px; }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .option-label { display: flex; align-items: center; gap: 8px; background: white; padding: 10px 14px; border-radius: 10px; border: 2px solid #e2e8f0; cursor: pointer; font-weight: 600; }
-        .option-label:hover { border-color: var(--primary); background-color: #fffaf0; }
-        .feedback-msg { margin-top: 10px; font-weight: 700; font-size: 0.98rem; display: none; }
-        .feedback-correct { color: #2e7d32; }
-        .feedback-incorrect { color: #c62828; }
-        .grade-btn { display: block; width: 100%; background-color: var(--secondary); color: white; font-family: 'Fredoka', sans-serif; font-size: 1.3rem; padding: 14px; border: none; border-radius: 14px; cursor: pointer; box-shadow: 0 4px 0 #388e3c; margin-top: 20px; }
-        #final-score { text-align: center; margin-top: 20px; padding: 18px; border-radius: 14px; background-color: var(--secondary-light); border: 2px solid var(--secondary); font-family: 'Fredoka', sans-serif; font-size: 1.35rem; color: #1b5e20; display: none; }
+
+
+        h1 { text-align: center; color: #b45309; margin: 0 0 5px 0; font-size: 2em; }
+        .subtitle { text-align: center; color: #64748b; font-weight: 600; margin-bottom: 20px; font-size: 1.05em; }
+        .story-img { display: block; max-width: 100%; max-height: 320px; margin: 0 auto 25px auto; border-radius: 12px; border: 2px solid #fde047; object-fit: cover; }
+        h2 { color: #15803d; border-bottom: 2px solid #bbf7d0; padding-bottom: 8px; margin-top: 35px; }
+        .vocab-sidebar h2 { margin-top: 0; font-size: 1.15em; }
+        .vocab-sidebar h2.second-heading { margin-top: 24px; }
+
+        .story-paragraph-box { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 12px; padding: 12px 15px; border-radius: 10px; background-color: #f8fafc; border: 1px solid #e2e8f0; font-size: 1.08em; }
+        .story-paragraph-box b { color: #b45309; }
+
+        .vocab-grid { display: flex; flex-direction: column; gap: 8px; }
+        .vocab-card { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px; border-radius: 10px; background-color: #f8fafc; border: 1px solid #e2e8f0; font-size: 0.95em; }
+        .badge { display: inline-block; background-color: #fef08a; color: #854d0e; font-size: 0.72em; font-weight: bold; padding: 2px 6px; border-radius: 6px; margin-left: 5px; }
+
+        .btn-read-p { background-color: #0284c7; color: white; border: none; border-radius: 8px; padding: 6px 11px; font-size: 0.85em; font-weight: bold; cursor: pointer; flex-shrink: 0; }
+        .btn-read-p:hover { background-color: #0369a1; }
+
+        .question-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 15px 20px; margin-bottom: 15px; }
+        .question-title { font-weight: bold; margin-bottom: 10px; font-size: 1.05em; }
+        .option-label { display: block; margin: 6px 0; cursor: pointer; padding: 6px 10px; border-radius: 6px; }
+        .option-label:hover { background-color: #dcfce7; }
+        .feedback { margin-top: 8px; font-weight: bold; display: none; }
+        .correct { color: #15803d; } .incorrect { color: #b91c1c; }
+
+        .actions { display: flex; gap: 15px; margin-top: 25px; flex-wrap: wrap; }
+        .btn-grade, .btn-retry { flex: 1; min-width: 200px; padding: 15px; font-size: 1.1em; font-weight: bold; color: white; border: none; border-radius: 10px; cursor: pointer; }
+        .btn-grade { background-color: #16a34a; } .btn-grade:hover { background-color: #15803d; }
+        .btn-retry { background-color: #0284c7; } .btn-retry:hover { background-color: #0369a1; }
+        #result-box { display: none; margin-top: 20px; padding: 20px; border-radius: 12px; text-align: center; font-size: 1.3em; font-weight: bold; background-color: #fef08a; color: #854d0e; border: 2px solid #facc15; }
+
         @media (max-width: 900px) {
-            .main-container { grid-template-columns: 1fr; }
-            .sidebar { position: static; }
-            .options-grid { grid-template-columns: 1fr; }
+            .top-controls { display: none; }
+            .main-layout, .main-layout.swapped { flex-direction: column; }
+            .vocab-sidebar { position: static; max-width: 100%; max-height: none; width: 100%; box-sizing: border-box; }
         }
     </style>
 </head>
@@ -174,259 +92,272 @@
         onmouseout="this.style.backgroundColor='#ff9f1c'; this.style.transform='scale(1)';">
         ⬅ Units Menu
     </a>
-    <header>
+<div class="top-controls" style="gap: 10px; align-items: center; flex-wrap: wrap;">
+    <label for="voice-speed" style="font-weight: bold; color: #854d0e; background: #fff; padding: 7px 12px; border-radius: 10px; border: 2px solid #fde047;">
+        🐢 Velocidad de voz:
+        <select id="voice-speed" style="border: none; font-weight: bold; color: #0284c7; background: transparent; cursor: pointer; font-size: 0.95em;">
+            <option value="0.55">Muy lento (0.55x)</option>
+            <option value="0.75" selected>Lento (0.75x)</option>
+            <option value="0.9">Casi normal (0.9x)</option>
+            <option value="1.0">Normal (1.0x)</option>
+        </select>
+    </label>
+
+    <button type="button" class="btn-swap" onclick="document.getElementById('main-layout').classList.toggle('swapped')">
+        ⇄ Cambiar posición del vocabulario
+    </button>
+</div>
+
+
+<div id="main-layout" class="main-layout">
+    <main class="story-column">
         <h1 id="story-title"></h1>
-        <p id="story-subtitle"></p>
-    </header>
+        <div id="story-subtitle" class="subtitle"></div>
+        <img id="story-image" class="story-img" style="display:none;" alt="Story illustration">
+        <div id="story-container"></div>
 
-    <div class="main-container">
-        <div class="left-column">
-            <div class="card">
-                <div class="story-image-box" id="image-container"></div>
-                <div id="story-paragraphs"></div>
-            </div>
+        <h2 id="quiz-heading">📝 Quiz: Answer the Questions!</h2>
+        <div id="quiz-container"></div>
 
-            <div class="card quiz-section">
-                <h2>📝 Quiz: Answer the Questions!</h2>
-                <div id="quiz-container"></div>
-                <button class="grade-btn" onclick="gradeQuiz()">Grade Quiz ✔</button>
-                <div id="final-score"></div>
-            </div>
+        <div class="actions">
+            <button class="btn-grade" onclick="gradeQuiz()">Grade Quiz ✔</button>
+            <button class="btn-retry" onclick="buildQuiz(true)">🔄 Try Again (New Order)</button>
         </div>
+        <div id="result-box"></div>
+    </main>
 
-        <aside class="sidebar">
-            <div class="card">
-                <h2>📖 Word Helper</h2>
-                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px;">Click 🔊 to listen to each word!</p>
+    <aside class="vocab-sidebar">
+        <h2>🏃 Action Verbs (Base / 3rd)</h2>
+        <div id="verbs-container" class="vocab-grid"></div>
 
-                <h3 class="helper-subtitle">🏃‍♂️ Action Words (Verbs)</h3>
-                <table>
-                    <thead>
-                        <tr><th>I / You / We / They</th><th>He / She / It</th><th>Meaning</th></tr>
-                    </thead>
-                    <tbody id="verbs-table-body"></tbody>
-                </table>
+        <h2 class="second-heading">🔑 Other Key Words</h2>
+        <div id="words-container" class="vocab-grid"></div>
+    </aside>
+</div>
 
-                <h3 class="helper-subtitle">🌟 Other Helpful Words</h3>
-                <table>
-                    <thead>
-                        <tr><th>Word</th><th>Meaning</th><th>Type</th></tr>
-                    </thead>
-                    <tbody id="words-table-body"></tbody>
-                </table>
-            </div>
-        </aside>
-    </div>
+<script>
+    // =========================================================================
+    // 🟢 ZONA DE DATOS DEL CUENTO (SOLO REEMPLAZA ESTO EN CADA HISTORIA NUEVA)
+    // =========================================================================
+    const storyData = {
+        title: "🐰 Lily and Toby’s Rainbow Soup! 🐢",
+        subtitle: "Unit 3: At the Market • Reading & Vocabulary Practice",
+        imageFile: "../images/LilyToby.jpg",
+        paragraphs: [
+            "It is a cool, breezy morning, and Lily Rabbit and Toby Turtle want to make a colorful rainbow soup for lunch. They open the kitchen cupboard to check what vegetables they have.",
+            "\"What's in the cupboard, Lily?\" asks Toby.",
+            "\"There are some orange <b>carrots</b>, some green <b>peas</b>, and two white <b>onions</b>,\" says Lily. \"There is also a big green <b>cabbage</b>.\"",
+            "\"Are there any <b>beans</b> or <b>peppers</b>?\" asks Toby. \"We need red and yellow colors for our rainbow soup!\"",
+            "\"No, there aren't. And there aren't any <b>mushrooms</b> or sweet <b>corn</b> either. Let's go to the market!\" says Lily.",
+            "At the market, Mrs. Duck greets them happily at her stand: \"Good morning! Can I help you?\"",
+            "\"Yes, please! Some red <b>beans</b>, two yellow <b>peppers</b>, and five fresh <b>mushrooms</b>, please,\" says Lily.",
+            "\"Here you are. Anything else?\" asks Mrs. Duck.",
+            "\"One yellow <b>corn</b> and two green <b>limes</b>, please!\" says Toby.",
+            "Suddenly, Toby sees a small blue bag next to a crate of <b>pineapples</b>. He picks it up and asks:",
+            "\"Whose is it?\"",
+            "Two little frogs hop over and say: \"It's <b>ours</b>! Thank you, Toby!\"",
+            "\"You're welcome! And look, these green <b>kiwis</b> are <b>yours</b> too, right?\" asks Lily.",
+            "\"Yes, they are <b>ours</b>!\" say the frogs happily.",
+            "Lily and Toby walk home with their full basket. They cook a delicious rainbow soup with <b>carrots</b>, <b>peas</b>, <b>beans</b>, <b>corn</b>, and <b>peppers</b>, and drink fresh <b>lime</b> juice. What a yummy meal! The end!"
+        ],
+                verbs: [
+            { base: "make", third: "makes", meaning: "hacer / preparar" },
+            { base: "open", third: "opens", meaning: "abrir" },
+            { base: "check", third: "checks", meaning: "revisar" },
+            { base: "need", third: "needs", meaning: "necesitar" },
+            { base: "go", third: "goes", meaning: "ir" },
+            { base: "greet", third: "greets", meaning: "saludar" },
+            { base: "ask", third: "asks", meaning: "preguntar / pedir" },
+            { base: "see", third: "sees", meaning: "ver" },
+            { base: "pick up", third: "picks up", meaning: "recoger" },
+            { base: "hop over", third: "hops over", meaning: "acercarse saltando" },
+            { base: "walk", third: "walks", meaning: "caminar" },
+            { base: "cook", third: "cooks", meaning: "cocinar" },
+            { base: "drink", third: "drinks", meaning: "beber / tomar" }
+        ],
+        otherWords: [
+            { word: "cool", meaning: "fresco", type: "Adjective" },
+            { word: "breezy", meaning: "con brisa", type: "Adjective" },
+            { word: "colorful", meaning: "colorido", type: "Adjective" },
+            { word: "fresh", meaning: "fresco", type: "Adjective" },
+            { word: "delicious", meaning: "delicioso", type: "Adjective" },
+            { word: "rainbow", meaning: "arcoíris", type: "Noun" },
+            { word: "cupboard", meaning: "alacena", type: "Noun" },
+            { word: "stand", meaning: "puesto de mercado", type: "Place" },
+            { word: "crate", meaning: "caja de madera / huacal", type: "Noun" },
+            { word: "basket", meaning: "canasta", type: "Noun" },
+            { word: "meal", meaning: "comida", type: "Noun" },
+            { word: "next to", meaning: "al lado de", type: "Place" },
+            { word: "suddenly", meaning: "de repente", type: "Time" },
+            { word: "happily", meaning: "felizmente", type: "Adverb" },
+            { word: "can I help you?", meaning: "¿puedo ayudarte?", type: "Phrase" },
+            { word: "anything else?", meaning: "¿algo más?", type: "Phrase" }
+        ],
+        quiz: [
+            { q: "Who are the main characters in the story?", options: ["Lily Rabbit and Toby Turtle", "Mia Mouse and Leo Lion", "Barnaby Bear and Sammy", "Milo Monkey and Maya"], answer: 0 },
+            { q: "What do Lily and Toby want to make for lunch?", options: ["A fruit salad", "A colorful rainbow soup", "A carrot cake", "A mango smoothie"], answer: 1 },
+            { q: "Which vegetables are in the kitchen cupboard?", options: ["Beans, peppers, and corn", "Carrots, peas, onions, and cabbage", "Mushrooms and potatoes", "Tomatoes and broccoli"], answer: 1 },
+            { q: "Why do Lily and Toby need beans and peppers?", options: ["For red and yellow colors", "For dessert", "For Mrs. Duck", "For breakfast"], answer: 0 },
+            { q: "Are there any mushrooms or corn in the cupboard?", options: ["Yes, there are.", "No, there aren't.", "Only one corn.", "Only two mushrooms."], answer: 1 },
+            { q: "Who works at the market stand?", options: ["Mrs. Owl", "Mr. Toucan", "Mrs. Duck", "Sammy Squirrel"], answer: 2 },
+            { q: "How many fresh mushrooms does Lily ask for?", options: ["Two", "Three", "Five", "Six"], answer: 2 },
+            { q: "What does Toby ask for when Mrs. Duck says \"Anything else?\"", options: ["One yellow corn and two green limes", "Three sweet mangoes", "Four green pears", "Two brown coconuts"], answer: 0 },
+            { q: "What does Toby see next to a crate of pineapples?", options: ["A big basket of oranges", "A small blue bag", "A yellow lemon", "A brown paper bag"], answer: 1 },
+            { q: "What question does Toby ask when he picks up the blue bag?", options: ["What is this?", "Can I help you?", "Whose is it?", "Are there any kiwis?"], answer: 2 },
+            { q: "Who owns the small blue bag?", options: ["Two little frogs", "Mrs. Duck", "Lily Rabbit", "Toby Turtle"], answer: 0 },
+            { q: "What fruit belongs to the two little frogs?", options: ["Pineapples", "Green kiwis", "Yellow lemons", "Red apples"], answer: 1 },
+            { q: "What possessive pronoun do the frogs use to say the bag is theirs?", options: ["It's mine!", "It's his!", "It's ours!", "It's hers!"], answer: 2 },
+            { q: "What do Lily and Toby drink with their rainbow soup?", options: ["Orange juice", "Fresh lime juice", "Cold water", "Coconut milk"], answer: 1 },
+            { q: "How do Lily and Toby carry their groceries home?", options: ["In a wooden crate", "In a full basket", "In a blue box", "In a plastic bag"], answer: 1 }
+        ]
+    };
+    // =========================================================================
+    // 🔴 FIN DE LA ZONA DE DATOS (NO ES NECESARIO MODIFICAR NADA DE AQUÍ ABAJO)
+    // =========================================================================
 
-    <script>
-        // =========================================================================
-        // 🟢 ZONA DE DATOS DEL CUENTO (SOLO REEMPLAZA ESTO EN CADA HISTORIA NUEVA)
-        // =========================================================================
-        const storyData = {
-            title: "🐰 Lily and Toby’s Rainbow Soup! 🐢",
-            subtitle: "Unit 3: At the Market • Reading & Vocabulary Practice",
-            imageFile: "../images/LilyToby.jpg",
-            paragraphs: [
-                "Today is a rainy afternoon, and Lily Rabbit and Toby Turtle are in the cozy kitchen. They want to cook a warm, delicious rainbow soup!",
-                "Lily opens the cupboard and checks the shelves.",
-                "\"Toby, what's in the cupboard?\" asks Lily.",
-                "Toby peeks inside and answers:",
-                "\"There are some <b>beans</b>, two <b>onions</b>, and one big <b>carrot</b>. Look! There is also a green <b>pepper</b> and a round <b>cabbage</b>.\"",
-                "\"Are there any <b>mushrooms</b> or <b>peas</b>?\" asks Lily.",
-                "\"No, there aren't. And there isn't any <b>corn</b> either,\" says Toby.",
-                "They put on their yellow raincoats and hop to the town market. At the vegetable stand, Mrs. Owl smiles and says:",
-                "\"Hello, little friends! Can I help you?\"",
-                "\"Yes, please! We need some <b>mushrooms</b>, some <b>peas</b>, and three ears of <b>corn</b>, please,\" says Lily politely.",
-                "Mrs. Owl puts the fresh vegetables into a green basket and hands it to them:",
-                "\"Here you are. Anything else?\"",
-                "Toby looks at the fruit stand next door. He sees yellow <b>lemons</b>, green <b>limes</b>, sweet <b>mangoes</b>, juicy <b>oranges</b>, <b>pears</b>, <b>kiwis</b>, <b>coconuts</b>, and a giant <b>pineapple</b>!",
-                "\"No, thanks! We have everything for our soup,\" says Toby.",
-                "On the way home, Toby finds a shiny red lunchbox near a bench. He stops and asks:",
-                "\"Whose is it?\"",
-                "A little frog jumps out from behind a bush and says:",
-                "\"It's <b>mine</b>! I always forget my things!\"",
-                "\"Here you are! And are these green <b>pears</b> <b>yours</b> too?\" asks Lily.",
-                "\"Yes, they are <b>mine</b>! Thank you very much!\" says the frog happily.",
-                "Lily and Toby arrive home, wash the vegetables, and cook the best rainbow soup ever. Yum! The end!"
-            ],
-            verbs: [
-                { base: "cook", third: "cooks", meaning: "cocinar" },
-                { base: "check", third: "checks", meaning: "revisar" },
-                { base: "peek", third: "peeks", meaning: "asomarse / echar un vistazo" },
-                { base: "put on", third: "puts on", meaning: "ponerse (ropa)" },
-                { base: "hop", third: "hops", meaning: "saltar / brincar" },
-                { base: "smile", third: "smiles", meaning: "sonreír" },
-                { base: "need", third: "needs", meaning: "necesitar" },
-                { base: "hand", third: "hands", meaning: "entregar / dar en la mano" },
-                { base: "find", third: "finds", meaning: "encontrar" },
-                { base: "stop", third: "stops", meaning: "detenerse / parar" },
-                { base: "jump out", third: "jumps out", meaning: "salir saltando" },
-                { base: "forget", third: "forgets", meaning: "olvidar" },
-                { base: "arrive", third: "arrives", meaning: "llegar" },
-                { base: "wash", third: "washes", meaning: "lavar" }
-            ],
-            otherWords: [
-                { word: "rainy", meaning: "lluvioso", type: "Adjective" },
-                { word: "afternoon", meaning: "tarde", type: "Time" },
-                { word: "cozy", meaning: "acogedor / calentito", type: "Adjective" },
-                { word: "shelves", meaning: "estantes / repisas", type: "Noun" },
-                { word: "raincoats", meaning: "impermeables", type: "Noun" },
-                { word: "town", meaning: "pueblo / ciudad", type: "Place" },
-                { word: "politely", meaning: "amablemente", type: "Adverb" },
-                { word: "next door", meaning: "de al lado", type: "Place" },
-                { word: "giant", meaning: "gigante", type: "Adjective" },
-                { word: "lunchbox", meaning: "lonchera", type: "Noun" },
-                { word: "bench", meaning: "banca", type: "Noun" },
-                { word: "behind", meaning: "detrás de", type: "Place" },
-                { word: "bush", meaning: "arbusto", type: "Noun" },
-                { word: "always", meaning: "siempre", type: "Time" }
-            ],
-            quiz: [
-                { q: "1. What is the weather like in the story?", options: ["Sunny", "Rainy", "Snowy", "Windy"], answer: 1 },
-                { q: "2. What do Lily and Toby want to cook?", options: ["A fruit salad", "A rainbow soup", "A carrot cake", "A tomato pizza"], answer: 1 },
-                { q: "3. Which vegetables are already in the cupboard?", options: ["Mushrooms and peas", "Corn and potatoes", "Beans, onions, a carrot, a pepper, and a cabbage", "Lemons and limes"], answer: 2 },
-                { q: "4. Are there any mushrooms or peas in the cupboard?", options: ["Yes, there are.", "No, there aren't.", "Only two mushrooms.", "Yes, there are many."], answer: 1 },
-                { q: "5. What color are Lily and Toby's raincoats?", options: ["Red", "Green", "Blue", "Yellow"], answer: 3 },
-                { q: "6. Who works at the vegetable stand?", options: ["Sammy Squirrel", "Mrs. Owl", "Pip Bird", "Leo Lion"], answer: 1 },
-                { q: "7. What does Mrs. Owl ask when Lily and Toby arrive?", options: ["Whose is it?", "What's in the cupboard?", "Can I help you?", "Are there any peas?"], answer: 2 },
-                { q: "8. How many ears of corn do Lily and Toby need?", options: ["One", "Two", "Three", "Five"], answer: 2 },
-                { q: "9. What does Mrs. Owl put the fresh vegetables into?", options: ["A brown paper bag", "A green basket", "A red lunchbox", "A big cupboard"], answer: 1 },
-                { q: "10. What does Toby see at the fruit stand next door?", options: ["Only apples and bananas", "Lemons, limes, mangoes, oranges, pears, kiwis, coconuts, and a pineapple", "Carrots and onions", "Mushrooms and beans"], answer: 1 },
-                { q: "11. What does Toby find on the ground near a bench?", options: ["A shiny red lunchbox", "A yellow raincoat", "A green lime", "A giant pineapple"], answer: 0 },
-                { q: "12. Who jumps out from behind a bush?", options: ["A little mouse", "A little frog", "A baby bear", "A small turtle"], answer: 1 },
-                { q: "13. Whose lunchbox is it?", options: ["It's Lily's.", "It's Toby's.", "It's the frog's (mine).", "It's Mrs. Owl's."], answer: 2 },
-                { q: "14. What fruit belongs to the little frog too?", options: ["Green pears", "Sweet mangoes", "Yellow lemons", "Juicy oranges"], answer: 0 },
-                { q: "15. What do Lily and Toby do before cooking the soup at home?", options: ["They go to sleep", "They wash the vegetables", "They eat dessert", "They read a book"], answer: 1 }
-            ]
-        };
-        // =========================================================================
-        // 🔴 FIN DE LA ZONA DE DATOS (NO ES NECESARIO MODIFICAR NADA DE AQUÍ ABAJO)
-        // =========================================================================
+    function leerTexto(texto) {
+        window.speechSynthesis.cancel();
+        const mensaje = new SpeechSynthesisUtterance(texto);
+        mensaje.lang = 'en-US';
+        const speedSelect = document.getElementById('voice-speed');
+        mensaje.rate = speedSelect ? parseFloat(speedSelect.value) : 0.75;
+        window.speechSynthesis.speak(mensaje);
+    }
 
-
-        document.getElementById('page-title').innerText = storyData.title;
+    function initPage() {
+        document.title = storyData.title;
         document.getElementById('story-title').innerText = storyData.title;
-        document.getElementById('story-subtitle').innerText = storyData.subtitle;
+        document.getElementById('story-subtitle').innerText = storyData.subtitle || "";
 
-        document.getElementById('image-container').innerHTML = `
-            <img src="${storyData.imageFile}" alt="${storyData.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <div style="display:none; padding: 35px 20px; color: #b07d2b; font-weight: 700;">
-                🖼️ Espacio reservado para la imagen del cuento<br>
-                <small style="font-weight: 400;">(Cambia <code>imageFile: "${storyData.imageFile}"</code> por tu imagen)</small>
-            </div>
-        `;
+        const imgEl = document.getElementById('story-image');
+        if (storyData.imageFile) {
+            imgEl.src = storyData.imageFile;
+            imgEl.style.display = 'block';
+            imgEl.onerror = () => { imgEl.style.display = 'none'; };
+        }
 
-        const paragraphsDiv = document.getElementById('story-paragraphs');
-        storyData.paragraphs.forEach(text => {
-            const formattedText = text.replace(/<b>/g, '<span class="vocab-highlight">').replace(/<\/b>/g, '</span>');
-            paragraphsDiv.innerHTML += `
-                <div class="paragraph-row">
-                    <button class="audio-btn" onclick="speakParagraph(this)">🔊 Listen</button>
-                    <p>${formattedText}</p>
-                </div>
-            `;
+        const storyContainer = document.getElementById('story-container');
+        storyData.paragraphs.forEach(htmlTexto => {
+            const box = document.createElement('div');
+            box.className = 'story-paragraph-box';
+            const span = document.createElement('span');
+            span.innerHTML = htmlTexto;
+            const textoLimpio = span.innerText;
+
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn-read-p';
+            btn.innerText = '🔊 Listen';
+            btn.onclick = () => leerTexto(textoLimpio);
+
+            box.appendChild(span);
+            box.appendChild(btn);
+            storyContainer.appendChild(box);
         });
 
-        const verbsBody = document.getElementById('verbs-table-body');
-        storyData.verbs.forEach(v => {
-            verbsBody.innerHTML += `
-                <tr>
-                    <td><button class="mini-audio-btn" onclick="speakWord('${v.base}')">🔊</button><strong>${v.base}</strong></td>
-                    <td><button class="mini-audio-btn" onclick="speakWord('${v.third}')">🔊</button><strong>${v.third}</strong></td>
-                    <td>${v.meaning}</td>
-                </tr>
-            `;
+        const verbsContainer = document.getElementById('verbs-container');
+        (storyData.verbs || []).forEach(v => {
+            const card = document.createElement('div');
+            card.className = 'vocab-card';
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn-read-p';
+            btn.innerText = '🔊';
+            btn.onclick = () => leerTexto(`${v.base}, ${v.third}`);
+
+            card.innerHTML = `<span><b>${v.base}</b> / <b>${v.third}</b><br><small>${v.meaning}</small></span>`;
+            card.appendChild(btn);
+            verbsContainer.appendChild(card);
         });
 
-        const wordsBody = document.getElementById('words-table-body');
-        storyData.otherWords.forEach(w => {
-            wordsBody.innerHTML += `
-                <tr>
-                    <td><button class="mini-audio-btn" onclick="speakWord('${w.word}')">🔊</button><strong>${w.word}</strong></td>
-                    <td>${w.meaning}</td>
-                    <td><span class="badge-type">${w.type}</span></td>
-                </tr>
-            `;
+        const wordsContainer = document.getElementById('words-container');
+        (storyData.otherWords || []).forEach(w => {
+            const card = document.createElement('div');
+            card.className = 'vocab-card';
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn-read-p';
+            btn.innerText = '🔊';
+            btn.onclick = () => leerTexto(w.word);
+
+            card.innerHTML = `<span><b>${w.word}</b> <span class="badge">${w.type}</span><br><small>${w.meaning}</small></span>`;
+            card.appendChild(btn);
+            wordsContainer.appendChild(card);
         });
 
+        buildQuiz(false);
+    }
+
+    const letras = ["A", "B", "C", "D"];
+    let shuffledQuiz = [];
+
+    function shuffleArray(arr) {
+        const copy = [...arr];
+        for (let i = copy.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+    }
+
+    function buildQuiz(scrollToQuiz = false) {
         const quizContainer = document.getElementById('quiz-container');
-        const letters = ['A', 'B', 'C', 'D'];
-        storyData.quiz.forEach((item, index) => {
-            let optionsHTML = '<div class="options-grid">';
-            item.options.forEach((opt, optIdx) => {
-                optionsHTML += `
-                    <label class="option-label">
-                        <input type="radio" name="q${index}" value="${optIdx}">
-                        <span>${letters[optIdx]}) ${opt}</span>
-                    </label>
-                `;
-            });
-            optionsHTML += '</div>';
-            quizContainer.innerHTML += `
-                <div class="question-block">
-                    <div class="question-title">${item.q}</div>
-                    ${optionsHTML}
-                    <div class="feedback-msg" id="feedback-${index}"></div>
-                </div>
-            `;
+        const resultBox = document.getElementById('result-box');
+        quizContainer.innerHTML = '';
+        resultBox.style.display = 'none';
+
+        shuffledQuiz = shuffleArray(storyData.quiz).map((item, idx) => {
+            const cleanQuestion = item.q.replace(/^\d+\.\s*/, '');
+            const correctText = item.options[item.answer];
+            const mixedOptions = shuffleArray(item.options);
+            return {
+                q: `${idx + 1}. ${cleanQuestion}`,
+                options: mixedOptions,
+                answer: mixedOptions.indexOf(correctText)
+            };
         });
 
-        function gradeQuiz() {
-            let score = 0;
-            storyData.quiz.forEach((item, index) => {
-                const selected = document.querySelector(`input[name="q${index}"]:checked`);
-                const feedback = document.getElementById(`feedback-${index}`);
-                feedback.style.display = 'block';
-                if (selected && parseInt(selected.value) === item.answer) {
-                    score++;
-                    feedback.className = 'feedback-msg feedback-correct';
-                    feedback.innerText = '✨ Correct!';
-                } else {
-                    feedback.className = 'feedback-msg feedback-incorrect';
-                    feedback.innerText = `❌ Incorrect (Correct: ${letters[item.answer]})`;
-                }
+        shuffledQuiz.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            let opcionesHTML = '';
+            item.options.forEach((opt, i) => {
+                opcionesHTML += `<label class="option-label"><input type="radio" name="q${index}" value="${i}"> ${letras[i]}) ${opt}</label>`;
             });
-            const finalScoreDiv = document.getElementById('final-score');
-            finalScoreDiv.style.display = 'block';
-            finalScoreDiv.innerHTML = score === storyData.quiz.length
-                ? `🎉 Super Reader! You got ${score} out of ${storyData.quiz.length} correct! ⭐`
-                : `👏 Great job! Your score is ${score} out of ${storyData.quiz.length}. Keep practicing!`;
-            finalScoreDiv.scrollIntoView({ behavior: 'smooth' });
-        }
+            card.innerHTML = `<div class="question-title">${item.q}</div>${opcionesHTML}<div class="feedback" id="fb-${index}"></div>`;
+            quizContainer.appendChild(card);
+        });
 
-        let currentRow = null;
-        function getEnglishVoice() {
-            const voices = window.speechSynthesis.getVoices();
-            return voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) ||
-                   voices.find(v => v.lang.startsWith('en-US')) ||
-                   voices.find(v => v.lang.startsWith('en'));
+        if (scrollToQuiz) {
+            document.getElementById('quiz-heading').scrollIntoView({ behavior: 'smooth' });
         }
-        function speakParagraph(btn) {
-            window.speechSynthesis.cancel();
-            if (currentRow) currentRow.classList.remove('speaking');
-            const row = btn.parentElement;
-            const utterance = new SpeechSynthesisUtterance(row.querySelector('p').innerText);
-            const voice = getEnglishVoice();
-            if (voice) utterance.voice = voice;
-            utterance.lang = 'en-US';
-            utterance.rate = 0.8;
-            row.classList.add('speaking');
-            currentRow = row;
-            utterance.onend = () => { row.classList.remove('speaking'); currentRow = null; };
-            window.speechSynthesis.speak(utterance);
-        }
-        function speakWord(word) {
-            window.speechSynthesis.cancel();
-            if (currentRow) currentRow.classList.remove('speaking');
-            const utterance = new SpeechSynthesisUtterance(word);
-            const voice = getEnglishVoice();
-            if (voice) utterance.voice = voice;
-            utterance.lang = 'en-US';
-            utterance.rate = 0.8;
-            window.speechSynthesis.speak(utterance);
-        }
-        window.speechSynthesis.onvoiceschanged = getEnglishVoice;
-    </script>
+    }
+
+    function gradeQuiz() {
+        let score = 0;
+        shuffledQuiz.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            const fb = document.getElementById(`fb-${index}`);
+            fb.style.display = 'block';
+            if (selected && parseInt(selected.value) === item.answer) {
+                score++;
+                fb.className = 'feedback correct';
+                fb.innerText = '✨ Correct!';
+            } else {
+                fb.className = 'feedback incorrect';
+                fb.innerText = `❌ Incorrect (Correct: ${letras[item.answer]})`;
+            }
+        });
+
+        const resultBox = document.getElementById('result-box');
+        resultBox.style.display = 'block';
+        resultBox.innerText = score === shuffledQuiz.length
+            ? `🎉 Super Reader! You answered all ${score} / ${shuffledQuiz.length} questions correctly! ⭐`
+            : `You got ${score} out of ${shuffledQuiz.length} questions right! Keep practicing! 💪`;
+        resultBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    initPage();
+</script>
 </body>
 </html>
-

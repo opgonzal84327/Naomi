@@ -14,7 +14,22 @@
         .main-layout.swapped { flex-direction: row-reverse; }
 
         .story-column { flex: 1.8; min-width: 0; background: #ffffff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 3px solid #fde047; }
-        .vocab-sidebar { flex: 1; min-width: 320px; max-width: 380px; background: #ffffff; padding: 22px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 3px solid #bbf7d0; position: sticky; top: 20px; max-height: calc(100vh - 40px); overflow-y: auto; }
+        .vocab-sidebar {
+            flex: 1;
+            min-width: 320px;
+            max-width: 380px;
+            background: #ffffff;
+            padding: 22px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 3px solid #bbf7d0;
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 95px);
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
 
         h1 { text-align: center; color: #b45309; margin: 0 0 5px 0; font-size: 2em; }
         .subtitle { text-align: center; color: #64748b; font-weight: 600; margin-bottom: 20px; font-size: 1.05em; }
@@ -149,22 +164,38 @@
         ],
         verbs: [
             { base: "make", third: "makes", meaning: "hacer / preparar" },
-            { base: "shake", third: "shakes", meaning: "mover / sacudir" },
-            { base: "buy", third: "buys", meaning: "comprar" },
-            { base: "see", third: "sees", meaning: "ver" },
-            { base: "pick it up", third: "picks it up", meaning: "recogerlo" },
+            { base: "open", third: "opens", meaning: "abrir" },
+            { base: "check", third: "checks", meaning: "revisar" },
             { base: "ask", third: "asks", meaning: "preguntar / pedir" },
+            { base: "look", third: "looks", meaning: "mirar" },
+            { base: "love", third: "loves", meaning: "encantar / amar" },
+            { base: "shake", third: "shakes", meaning: "mover / sacudir" },
+            { base: "go", third: "goes", meaning: "ir" },
+            { base: "see", third: "sees", meaning: "ver" },
+            { base: "buy", third: "buys", meaning: "comprar" },
+            { base: "pick up", third: "picks up", meaning: "recoger" },
             { base: "fly down", third: "flies down", meaning: "bajar volando" },
             { base: "chirp", third: "chirps", meaning: "piar (pajarito)" },
-            { base: "walk", third: "walks", meaning: "caminar" },
-            { base: "look", third: "looks", meaning: "mirar" }
+            { base: "walk back", third: "walks back", meaning: "regresar caminando" },
+            { base: "eat", third: "eats", meaning: "comer" }
         ],
         otherWords: [
             { word: "sunny", meaning: "soleado", type: "Adjective" },
+            { word: "hungry", meaning: "hambriento", type: "Adjective" },
+            { word: "yummy", meaning: "rico / delicioso", type: "Adjective" },
             { word: "colorful", meaning: "colorido", type: "Adjective" },
+            { word: "juicy", meaning: "jugoso", type: "Adjective" },
+            { word: "shiny", meaning: "brillante", type: "Adjective" },
             { word: "cupboard", meaning: "alacena", type: "Noun" },
+            { word: "stands", meaning: "puestos de mercado", type: "Place" },
+            { word: "ground", meaning: "suelo", type: "Place" },
+            { word: "basket", meaning: "canasta", type: "Noun" },
+            { word: "dessert", meaning: "postre", type: "Noun" },
             { word: "inside", meaning: "adentro", type: "Place" },
-            { word: "suddenly", meaning: "de repente", type: "Time" }
+            { word: "next to", meaning: "al lado de", type: "Place" },
+            { word: "suddenly", meaning: "de repente", type: "Time" },
+            { word: "whose is it?", meaning: "¿de quién es?", type: "Phrase" },
+            { word: "you're welcome", meaning: "de nada", type: "Phrase" }
         ],
         quiz: [
             { q: "Who are the main characters in the story?", options: ["Mia Mouse and Leo Lion", "Barnaby Bear and Sammy", "Pip Bird and Toby", "Lily Rabbit and Tom"], answer: 0 },

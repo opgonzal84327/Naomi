@@ -3,192 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐻 Barnaby's Fruit Adventure! 🐿️</title>
+    <title>Interactive English Story</title>
     <style>
-        :root {
-            --primary: #4cc9f0;
-            --success: #2ec4b6;
-            --error: #e63946;
-            --background: #fdf0d5;
-            --text: #2b2d42;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fef9c3; color: #1e293b; line-height: 1.6; margin: 0; padding: 20px; }
+        .top-controls { max-width: 1320px; margin: 0 auto 15px auto; display: flex; justify-content: flex-end; }
+        .btn-swap { background-color: #ffffff; color: #854d0e; border: 2px solid #fde047; border-radius: 10px; padding: 8px 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: all 0.2s; }
+        .btn-swap:hover { background-color: #fef08a; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background);
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        .main-layout { max-width: 1320px; margin: 0 auto; display: flex; gap: 24px; align-items: flex-start; }
+        .main-layout.swapped { flex-direction: row-reverse; }
 
-        .container {
-            max-width: 800px;
-            width: 100%;
-            background: white;
-            padding: 30px;
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-            margin-bottom: 40px;
+        .story-column { flex: 1.8; min-width: 0; background: #ffffff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 3px solid #fde047; }
+        .vocab-sidebar {
+            flex: 1;
+            min-width: 320px;
+            max-width: 380px;
+            background: #ffffff;
+            padding: 22px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 3px solid #bbf7d0;
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 95px);
             box-sizing: border-box;
+            overflow-y: auto;
         }
 
-        h1 { text-align: center; color: #6c5ce7; font-size: 2.3rem; margin-bottom: 20px; }
-        h2 { font-size: 1.7rem; color: #4a4e69; margin-top: 40px; border-bottom: 3px solid var(--primary); padding-bottom: 10px; }
 
-        /* Audio Button */
-        .audio-control {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
+        h1 { text-align: center; color: #b45309; margin: 0 0 5px 0; font-size: 2em; }
+        .subtitle { text-align: center; color: #64748b; font-weight: 600; margin-bottom: 20px; font-size: 1.05em; }
+        .story-img { display: block; max-width: 100%; max-height: 320px; margin: 0 auto 25px auto; border-radius: 12px; border: 2px solid #fde047; object-fit: cover; }
+        h2 { color: #15803d; border-bottom: 2px solid #bbf7d0; padding-bottom: 8px; margin-top: 35px; }
+        .vocab-sidebar h2 { margin-top: 0; font-size: 1.15em; }
+        .vocab-sidebar h2.second-heading { margin-top: 24px; }
+
+        .story-paragraph-box { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 12px; padding: 12px 15px; border-radius: 10px; background-color: #f8fafc; border: 1px solid #e2e8f0; font-size: 1.08em; }
+        .story-paragraph-box b { color: #b45309; }
+
+        .vocab-grid { display: flex; flex-direction: column; gap: 8px; }
+        .vocab-card { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px; border-radius: 10px; background-color: #f8fafc; border: 1px solid #e2e8f0; font-size: 0.95em; }
+        .badge { display: inline-block; background-color: #fef08a; color: #854d0e; font-size: 0.72em; font-weight: bold; padding: 2px 6px; border-radius: 6px; margin-left: 5px; }
+
+        .btn-read-p { background-color: #0284c7; color: white; border: none; border-radius: 8px; padding: 6px 11px; font-size: 0.85em; font-weight: bold; cursor: pointer; flex-shrink: 0; }
+        .btn-read-p:hover { background-color: #0369a1; }
+
+        .question-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 15px 20px; margin-bottom: 15px; }
+        .question-title { font-weight: bold; margin-bottom: 10px; font-size: 1.05em; }
+        .option-label { display: block; margin: 6px 0; cursor: pointer; padding: 6px 10px; border-radius: 6px; }
+        .option-label:hover { background-color: #dcfce7; }
+        .feedback { margin-top: 8px; font-weight: bold; display: none; }
+        .correct { color: #15803d; } .incorrect { color: #b91c1c; }
+
+        .actions { display: flex; gap: 15px; margin-top: 25px; flex-wrap: wrap; }
+        .btn-grade, .btn-retry { flex: 1; min-width: 200px; padding: 15px; font-size: 1.1em; font-weight: bold; color: white; border: none; border-radius: 10px; cursor: pointer; }
+        .btn-grade { background-color: #16a34a; } .btn-grade:hover { background-color: #15803d; }
+        .btn-retry { background-color: #0284c7; } .btn-retry:hover { background-color: #0369a1; }
+        #result-box { display: none; margin-top: 20px; padding: 20px; border-radius: 12px; text-align: center; font-size: 1.3em; font-weight: bold; background-color: #fef08a; color: #854d0e; border: 2px solid #facc15; }
+
+        @media (max-width: 900px) {
+            .top-controls { display: none; }
+            .main-layout, .main-layout.swapped { flex-direction: column; }
+            .vocab-sidebar { position: static; max-width: 100%; max-height: none; width: 100%; box-sizing: border-box; }
         }
-
-        .speak-btn {
-            background-color: #6c5ce7;
-            color: white;
-            border: none;
-            font-size: 1.2rem;
-            font-weight: bold;
-            padding: 12px 25px;
-            border-radius: 50px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
-            transition: all 0.2s;
-        }
-
-        .speak-btn:hover { transform: translateY(-2px); background-color: #5b4cc4; }
-
-        /* Story Section */
-        .story-box {
-            background: #f8fafc;
-            border: 2px solid #edf2f7;
-            padding: 25px;
-            border-radius: 20px;
-            font-size: 1.3rem;
-            line-height: 1.7;
-        }
-
-        .dialogue {
-            background: #fff;
-            padding: 8px 15px;
-            border-radius: 10px;
-            margin: 10px 0;
-            border-left: 5px solid #cbd5e1;
-            font-weight: 500;
-        }
-        .squirrel-line { border-left-color: #0284c7; background: #f0f9ff; }
-        .bear-line { border-left-color: #d97706; background: #fffbeb; }
-
-        /* Quiz Section */
-        .quiz-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-top: 25px;
-        }
-
-        .question-card {
-            background: #f1f5f9;
-            padding: 20px;
-            border-radius: 15px;
-            border-left: 6px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .question-text {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 12px;
-        }
-
-        .options-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .option-label {
-            background: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            border: 2px solid #e2e8f0;
-            transition: all 0.2s;
-            user-select: none;
-        }
-
-        .option-label:hover { border-color: var(--primary); background: #f0f9ff; }
-        .option-label input { transform: scale(1.2); cursor: pointer; }
-
-        /* Evaluation Styles */
-        .card-correct { background-color: #ecfdf5; border-left-color: var(--success); }
-        .card-wrong { background-color: #fff5f5; border-left-color: var(--error); }
-
-        .feedback-text {
-            font-weight: bold;
-            margin-top: 10px;
-            font-size: 1.1rem;
-            display: none;
-        }
-        .text-correct { color: var(--success); }
-        .text-wrong { color: var(--error); }
-
-        /* Action Buttons */
-        .btn-container { display: flex; justify-content: center; margin-top: 35px; }
-        .check-btn {
-            background-color: var(--success);
-            color: white;
-            border: none;
-            font-size: 1.4rem;
-            font-weight: bold;
-            padding: 15px 40px;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(46, 196, 182, 0.3);
-        }
-        .check-btn:hover { transform: translateY(-2px); }
-
-        .win-message {
-            text-align: center;
-            font-size: 2rem;
-            color: var(--success);
-            margin-top: 30px;
-            display: none;
-            font-weight: bold;
-        }
-		.story-paragraph-box {
-			display: flex;
-			align-items: flex-start;
-			justify-content: space-between;
-			gap: 12px;
-			margin-bottom: 12px;
-			padding: 8px 12px;
-			border-radius: 8px;
-			background-color: #f8fafc;
-		}
-		.btn-read-p {
-			background-color: #0284c7;
-			color: white;
-			border: none;
-			border-radius: 6px;
-			padding: 5px 10px;
-			font-size: 0.85em;
-			font-weight: bold;
-			cursor: pointer;
-			flex-shrink: 0;
-		}
-		.btn-read-p:hover {
-			background-color: #0369a1;
-		}
     </style>
 </head>
 <body>
@@ -215,323 +92,267 @@
         onmouseout="this.style.backgroundColor='#ff9f1c'; this.style.transform='scale(1)';">
         ⬅ Units Menu
     </a>
-    <div class="container">
-        <h1>🐻 Barnaby's Fruit Adventure! 🐿️</h1>
-        
-        <div class="audio-control">
-            <!--<button class="speak-btn" onclick="readStory()">🔊 Read Story (Slow Voice)</button>-->
+<div class="top-controls" style="gap: 10px; align-items: center; flex-wrap: wrap;">
+    <label for="voice-speed" style="font-weight: bold; color: #854d0e; background: #fff; padding: 7px 12px; border-radius: 10px; border: 2px solid #fde047;">
+        🐢 Velocidad de voz:
+        <select id="voice-speed" style="border: none; font-weight: bold; color: #0284c7; background: transparent; cursor: pointer; font-size: 0.95em;">
+            <option value="0.55">Muy lento (0.55x)</option>
+            <option value="0.75" selected>Lento (0.75x)</option>
+            <option value="0.9">Casi normal (0.9x)</option>
+            <option value="1.0">Normal (1.0x)</option>
+        </select>
+    </label>
+
+    <button type="button" class="btn-swap" onclick="document.getElementById('main-layout').classList.toggle('swapped')">
+        ⇄ Cambiar posición del vocabulario
+    </button>
+</div>
+
+
+<div id="main-layout" class="main-layout">
+    <main class="story-column">
+        <h1 id="story-title"></h1>
+        <div id="story-subtitle" class="subtitle"></div>
+        <img id="story-image" class="story-img" style="display:none;" alt="Story illustration">
+        <div id="story-container"></div>
+
+        <h2 id="quiz-heading">📝 Quiz: Answer the Questions!</h2>
+        <div id="quiz-container"></div>
+
+        <div class="actions">
+            <button class="btn-grade" onclick="gradeQuiz()">Grade Quiz ✔</button>
+            <button class="btn-retry" onclick="buildQuiz(true)">🔄 Try Again (New Order)</button>
         </div>
+        <div id="result-box"></div>
+    </main>
 
-        <div class="story-box" id="story-content">
-			<img src="../images/ShoppingForFood.jpg" alt="Barnaby Bear" style="display: block; max-width: 100%; height: auto; margin: 0 auto 20px auto; border-radius: 15px;">
-            <p>Once upon a time, Barnaby Bear was very hungry. He walked to the sunny forest market to buy some fresh food. 
-            His friend, Sammy Squirrel, was working at the big fruit stand. Sammy had many red apples, green pears, oranges, and yellow bananas.
-            </p>
-            <p>When Barnaby Bear arrived, Sammy Squirrel smiled big and asked:</p>
-            <div class="dialogue squirrel-line"><p>"Hello, Barnaby! Can I help you?"</p></div>
-            
-            <p>Barnaby Bear pointed at the top shelf and answered nicely:</p>
-            <div class="dialogue bear-line"><p>"Yes, please! Six pears, please."</p></div>
-            
-            <p>Sammy Squirrel quickly climbed up the tall tree, picked six juicy green pears, and put them inside a brown paper bag. 
-            He came down, handed the bag to the big bear, and said:</p>
-            <div class="dialogue squirrel-line"><p>"Here you are."</p></div>
-            
-            <p>Barnaby Bear took the bag and counted the fruit: "One, two, three, four, five, six. Perfect!"</p>
-            
-            <p>Then, Sammy Squirrel looked around the stand and asked:</p>
-            <div class="dialogue squirrel-line"><p>"Anything else? We have delicious mangoes and sweet carrots today!"</p></div>
-            
-            <p>Barnaby Bear checked his small pocket, found no more coins, and smiled:</p>
-            <div class="dialogue bear-line"><p>"No, thanks. I have my favorite fruit now! Goodbye, Sammy!"</p></div>
-            
-            <p>Barnaby Bear was extremely happy. He walked back home under the green trees, singing a happy song and eating a sweet, juicy green pear. The end!</p>
-        </div>
+    <aside class="vocab-sidebar">
+        <h2>🏃 Action Verbs (Base / 3rd)</h2>
+        <div id="verbs-container" class="vocab-grid"></div>
 
-        <h2>📝 Quiz: Answer the 15 Questions!</h2>
-        
-        <div class="quiz-container">
-            <!-- Q1 -->
-            <div class="question-card" data-correct="A">
-                <div class="question-text">1. Who is the main character of the story?</div>
-                <div class="options-list">
-                    <label class="option-label"><input type="radio" name="q1" value="A"> A) Barnaby Bear</label>
-                    <label class="option-label"><input type="radio" name="q1" value="B"> B) Sammy Squirrel</label>
-                    <label class="option-label"><input type="radio" name="q1" value="C"> C) Leo Lion</label>
-                    <label class="option-label"><input type="radio" name="q1" value="D"> D) Lily Rabbit</label>
-                </div>
-                <div class="feedback-text text-correct">✨ Correct!</div>
-                <div class="feedback-text text-wrong">❌ Incorrect (Correct: A)</div>
-            </div>
+        <h2 class="second-heading">🔑 Other Key Words</h2>
+        <div id="words-container" class="vocab-grid"></div>
+    </aside>
+</div>
 
-            <!-- Q2 -->
-            <div class="question-card" data-correct="B">
-                <div class="question-text">2. How did Barnaby Bear feel at the beginning?</div>
-                <div class="options-list">
-                    <label class="option-label"><input type="radio" name="q2" value="A"> A) Tired</label>
-                    <label class="option-label"><input type="radio" name="q2" value="B"> B) Hungry</label>
-                    <label class="option-label"><input type="radio" name="q2" value="C"> C) Sad</label>
-                    <label class="option-label"><input type="radio" name="q2" value="D"> D) Scared</label>
-                </div>
-                <div class="feedback-text text-correct">✨ Correct!</div>
-                <div class="feedback-text text-wrong">❌ Incorrect (Correct: B)</div>
-            </div>
+<script>
+    // =========================================================================
+    // 🟢 ZONA DE DATOS DEL CUENTO (SOLO REEMPLAZA ESTO EN CADA HISTORIA NUEVA)
+    // =========================================================================
+    const storyData = {
+        title: "🐻 Barnaby’s Fruit Adventure! 🐿️",
+        subtitle: "Unit 3: At the Market • Reading & Vocabulary Practice",
+        imageFile: "../images/BarnabyBear.jpg",
+        paragraphs: [
+            "It is a sunny morning, and Barnaby Bear wakes up feeling very hungry. He decides to walk to the forest market to buy some fresh food.",
+            "At the market, his friend Sammy Squirrel works at a colorful fruit stand. When Barnaby arrives, Sammy smiles and asks:",
+            "\"Hello, Barnaby! Can I help you?\"",
+            "\"Yes, please!\" says Barnaby. \"I love green fruit. Six green <b>pears</b>, please.\"",
+            "Sammy Squirrel climbs quickly to the top shelf of the tall tree and finds six juicy green <b>pears</b>. He puts them carefully into a brown paper bag and gives it to Barnaby:",
+            "\"Here you are. Anything else?\" asks Sammy.",
+            "Barnaby checks his pocket, but he has no more coins left for sweet <b>mangoes</b> or crunchy <b>carrots</b>.",
+            "\"No, thanks!\" replies Barnaby politely.",
+            "Barnaby Bear waves goodbye to Sammy and walks back home, eating a delicious green <b>pear</b> and singing a happy song. The end!"
+        ],
+        verbs: [
+            { base: "wake up", third: "wakes up", meaning: "despertarse" },
+            { base: "decide", third: "decides", meaning: "decidir" },
+            { base: "walk", third: "walks", meaning: "caminar" },
+            { base: "buy", third: "buys", meaning: "comprar" },
+            { base: "work", third: "works", meaning: "trabajar" },
+            { base: "arrive", third: "arrives", meaning: "llegar" },
+            { base: "smile", third: "smiles", meaning: "sonreír" },
+            { base: "climb", third: "climbs", meaning: "trepar / subir" },
+            { base: "find", third: "finds", meaning: "encontrar" },
+            { base: "put", third: "puts", meaning: "poner / meter" },
+            { base: "give", third: "gives", meaning: "dar" },
+            { base: "check", third: "checks", meaning: "revisar" },
+            { base: "reply", third: "replies", meaning: "responder" },
+            { base: "wave", third: "waves", meaning: "saludar con la mano" },
+            { base: "sing", third: "sings", meaning: "cantar" }
+        ],
+        otherWords: [
+            { word: "hungry", meaning: "hambriento", type: "Adjective" },
+            { word: "sunny", meaning: "soleado", type: "Adjective" },
+            { word: "colorful", meaning: "colorido", type: "Adjective" },
+            { word: "juicy", meaning: "jugoso", type: "Adjective" },
+            { word: "crunchy", meaning: "crujiente", type: "Adjective" },
+            { word: "forest", meaning: "bosque", type: "Place" },
+            { word: "fruit stand", meaning: "puesto de frutas", type: "Place" },
+            { word: "top shelf", meaning: "repisa de arriba", type: "Place" },
+            { word: "paper bag", meaning: "bolsa de papel", type: "Noun" },
+            { word: "pocket", meaning: "bolsillo", type: "Noun" },
+            { word: "coins", meaning: "monedas", type: "Noun" },
+            { word: "anything else?", meaning: "¿algo más?", type: "Phrase" },
+            { word: "quickly", meaning: "rápidamente", type: "Adverb" },
+            { word: "carefully", meaning: "cuidadosamente", type: "Adverb" },
+            { word: "politely", meaning: "amablemente", type: "Adverb" }
+        ],
+        quiz: [
+            { q: "Who is the main character of the story?", options: ["Barnaby Bear", "Sammy Squirrel", "Leo Lion", "Lily Rabbit"], answer: 0 },
+            { q: "How does Barnaby Bear feel at the beginning?", options: ["Tired", "Hungry", "Sad", "Scared"], answer: 1 },
+            { q: "Where does Barnaby Bear go?", options: ["To the school", "To the river", "To the forest market", "To his house"], answer: 2 },
+            { q: "What is the name of the squirrel?", options: ["Sammy", "David", "Toby", "Tom"], answer: 0 },
+            { q: "Where does Sammy Squirrel work?", options: ["At a toy store", "At a book store", "At a candy shop", "At a fruit stand"], answer: 3 },
+            { q: "What does Sammy ask first when Barnaby arrives?", options: ["Anything else?", "Can I help you?", "Here you are.", "No, thanks."], answer: 1 },
+            { q: "What fruit does Barnaby Bear want to buy?", options: ["Apples", "Oranges", "Pears", "Bananas"], answer: 2 },
+            { q: "How many pears does Barnaby Bear ask for?", options: ["Six", "Four", "Three", "Ten"], answer: 0 },
+            { q: "Where does Sammy Squirrel find the pears?", options: ["In a box on the floor", "In a small fridge", "Under a big rock", "On the top shelf of the tree"], answer: 3 },
+            { q: "What kind of bag does Sammy use for the fruit?", options: ["A white plastic bag", "A brown paper bag", "A purple bag", "A green box"], answer: 1 },
+            { q: "What phrase does Sammy say when he gives the bag to the bear?", options: ["Anything else?", "No, thanks.", "Here you are.", "Can I help you?"], answer: 2 },
+            { q: "What does Sammy say to offer more food?", options: ["Anything else?", "Goodbye!", "Yes, please.", "Six pears, please."], answer: 0 },
+            { q: "Why does Barnaby Bear say \"No, thanks\"?", options: ["Because he is angry", "Because he does not like carrots", "Because he wants apples", "Because he has no more coins in his pocket"], answer: 3 },
+            { q: "What color are Barnaby's favorite fruits in the story?", options: ["Red", "Green", "Orange", "Yellow"], answer: 1 },
+            { q: "What does Barnaby Bear do while walking back home?", options: ["He cries", "He runs very fast", "He sings a happy song", "He sleeps under a tree"], answer: 2 }
+        ]
+    };
+    // =========================================================================
+    // 🔴 FIN DE LA ZONA DE DATOS (NO ES NECESARIO MODIFICAR NADA DE AQUÍ ABAJO)
+    // =========================================================================
 
-            <!-- Q3 -->
-            <div class="question-card" data-correct="C">
-                <div class="question-text">3. Where did Barnaby Bear go?</div>
-                <div class="options-list">
-                    <label class="option-label"><input type="radio" name="q3" value="A"> A) To the school</label>
-                    <label class="option-label"><input type="radio" name="q3" value="B"> B) To the river</label>
-                    <label class="option-label"><input type="radio" name="q3" value="C"> C) To the forest market</label>
-                    <label class="option-label"><input type="radio" name="q3" value="D"> D) To his house</label>
-                </div>
-                <div class="feedback-text text-correct">✨ Correct!</div>
-                <div class="feedback-text text-wrong">❌ Incorrect (Correct: C)</div>
-            </div>
+    function leerTexto(texto) {
+        window.speechSynthesis.cancel();
+        const mensaje = new SpeechSynthesisUtterance(texto);
+        mensaje.lang = 'en-US';
+        const speedSelect = document.getElementById('voice-speed');
+        mensaje.rate = speedSelect ? parseFloat(speedSelect.value) : 0.75;
+        window.speechSynthesis.speak(mensaje);
+    }
 
-            <!-- Q4 -->
-            <div class="question-card" data-correct="A">
-                <div class="question-text">4. What is the name of the squirrel?</div>
-                <div class="options-list">
-                    <label class="option-label"><input type="radio" name="q4" value="A"> A) Sammy</label>
-                    <label class="option-label"><input type="radio" name="q4" value="B"> B) David</label>
-                    <label class="option-label"><input type="radio" name="q4" value="C"> C) Toby</label>
-                    <label class="option-label"><input type="radio" name="q4" value="D"> D) Tom</label>
-                </div>
-                <div class="feedback-text text-correct">✨ Correct!</div>
-                <div class="feedback-text text-wrong">❌ Incorrect (Correct: A)</div>
-            </div>
+    function initPage() {
+        document.title = storyData.title;
+        document.getElementById('story-title').innerText = storyData.title;
+        document.getElementById('story-subtitle').innerText = storyData.subtitle || "";
 
-            <div class="question-card" data-correct="D">
-                <div class="question-text">5. Where was Sammy Squirrel working?</div>
-                <div class="options-list">
-                    <label class="option-label"><input type="radio" name="q5" value="A"> A) At a toy store</label>
-                    <label class="option-label"><input type="radio" name="q5" value="B"> B) At a book store</label>
-                    <label class="option-label"><input type="radio" name="q5" value="C"> C) At a candy shop</label>
-                    <label class="option-label"><input type="radio" name="q5" value="D"> D) At a fruit stand</label>
-                </div>
-                <div class="feedback-text text-correct">✨ Correct!</div>
-                <div class="feedback-text text-wrong">❌ Incorrect (Correct: D)</div>
-            </div>
-
-            <div class="question-card" data-correct="B">
-                <div class="question-text">6. What did Sammy ask first when Barnaby arrived?</div>
-                <div class="options-list">
-                    <label class="option-label"><input type="radio" name="q6" value="A"> A) Anything else?</label>
-                    <label class="option-label"><input type="radio" name="q6" value="B"> B) Can I help you?</label>
-                    <label class="option-label"><input type="radio" name="q6" value="C"> C) Here you are.</label>
-                    <label class="option-label"><input type="radio" name="q6" value="D"> D) No, thanks.</label>
-                </div>
-                <div class="feedback-text text-correct">✨ Correct!</div>
-                <div class="feedback-text text-wrong">❌ Incorrect (Correct: B)</div>
-            </div>
-
-            <div class="question-card" data-correct="C">
-                <div class="question-text">7. What fruit did Barnaby Bear want to buy?</div>
-                <div class="options-list">
-                    <label class="option-label"><input type="radio" name="q7" value="A"> A) Apples</label>
-                    <label class="option-label"><input type="radio" name="q7" value="B"> B) Oranges</label>
-                    <label class="option-label"><input type="radio" name="q7" value="C"> C) Pears</label>
-                    <label class="option-label"><input type="radio" name="q7" value="D"> D) Bananas</label>
-                </div>
-                <div class="feedback-text text-correct">✨ Correct!</div>
-                <div class="feedback-text text-wrong">❌ Incorrect (Correct: C)</div>
-            </div>
-
-            <div class="question-card" data-correct="A">
-                <div class="question-text">8. How many pears did Barnaby Bear ask for?</div>
-                <div class="options-list">
-                    <label class="option-label"><input type="radio" name="q8" value="A"> A) Six</label>
-                    <label class="option-label"><input type="radio" name="q8" value="B"> B) Four</label>
-                    <label class="option-label"><input type="radio" name="q8" value="C"> C) Three</label>
-                    <label class="option-label"><input type="radio" name="q8" value="D"> D) Ten</label>
-                </div>
-                <div class="feedback-text text-correct">✨ Correct!</div>
-                <div class="feedback-text text-wrong">❌ Incorrect (Correct: A)</div>
-            </div>
-
-            <div class="question-card" data-correct="D">
-                <div class="question-text">9. Where did Sammy Squirrel find the pears?</div>
-                <div class="options-list">
-                    <label class="option-label"><input type="radio" name="q9" value="A"> A) In a box on the floor</label>
-                    <label class="option-label"><input type="radio" name="q9" value="B"> B) In a small fridge</label>
-                    <label class="option-label"><input type="radio" name="q9" value="C"> C) Under a big rock</label>
-                    <label class="option-label"><input type="radio" name="q9" value="D"> D) On the top shelf of the tree</label>
-                </div>
-                <div class="feedback-text text-correct">✨ Correct!</div>
-                <div class="feedback-text text-wrong">❌ Incorrect (Correct: D)</div>
-            </div>
-
-            <div class="question-card" data-correct="B">
-                <div class="question-text">10. What kind of bag did Sammy use for the fruit?</div>
-                <div class="options-list">
-                    <label class="option-label"><input type="radio" name="q10" value="A"> A) A white plastic bag</label>
-                    <label class="option-label"><input type="radio" name="q10" value="B"> B) A brown paper bag</label>
-                    <label class="option-label"><input type="radio" name="q10" value="C"> C) A purple bag</label>
-                    <label class="option-label"><input type="radio" name="q10" value="D"> D) A green box</label>
-                </div>
-                <div class="feedback-text text-correct">✨ Correct!</div>
-                <div class="feedback-text text-wrong">❌ Incorrect (Correct: B)</div>
-            </div>
-
-            <div class="question-card" data-correct="C">
-                <div class="question-text">11. What phrase did Sammy say when he gave the bag to the bear?</div>
-                <div class="options-list">
-                    <label class="option-label"><input type="radio" name="q11" value="A"> A) Anything else?</label>
-                    <label class="option-label"><input type="radio" name="q11" value="B"> B) No, thanks.</label>
-                    <label class="option-label"><input type="radio" name="q11" value="C"> C) Here you are.</label>
-                    <label class="option-label"><input type="radio" name="q11" value="D"> D) Can I help you?</label>
-                </div>
-                <div class="feedback-text text-correct">✨ Correct!</div>
-                <div class="feedback-text text-wrong">❌ Incorrect (Correct: C)</div>
-            </div>
-
-            <div class="question-card" data-correct="A">
-                <div class="question-text">12. What did Sammy say to offer more food?</div>
-                <div class="options-list">
-                    <label class="option-label"><input type="radio" name="q12" value="A"> A) Anything else?</label>
-                    <label class="option-label"><input type="radio" name="q12" value="B"> B) Goodbye!</label>
-                    <label class="option-label"><input type="radio" name="q12" value="C"> C) Yes, please.</label>
-                    <label class="option-label"><input type="radio" name="q12" value="D"> D) Six pears, please.</label>
-                </div>
-                <div class="feedback-text text-correct">✨ Correct!</div>
-                <div class="feedback-text text-wrong">❌ Incorrect (Correct: A)</div>
-            </div>
-
-            <div class="question-card" data-correct="D">
-                <div class="question-text">13. Why did Barnaby Bear say "No, thanks"?</div>
-                <div class="options-list">
-                    <label class="option-label"><input type="radio" name="q13" value="A"> A) Because he was angry</label>
-                    <label class="option-label"><input type="radio" name="q13" value="B"> B) Because he does not like carrots</label>
-                    <label class="option-label"><input type="radio" name="q13" value="C"> C) Because he wanted apples</label>
-                    <label class="option-label"><input type="radio" name="q13" value="D"> D) Because he had no more coins in his pocket</label>
-                </div>
-                <div class="feedback-text text-correct">✨ Correct!</div>
-                <div class="feedback-text text-wrong">❌ Incorrect (Correct: D)</div>
-            </div>
-
-            <div class="question-card" data-correct="B">
-                <div class="question-text">14. What color were Barnaby's favorite fruits in the story?</div>
-                <div class="options-list">
-                    <label class="option-label"><input type="radio" name="q14" value="A"> A) Red</label>
-                    <label class="option-label"><input type="radio" name="q14" value="B"> B) Green</label>
-                    <label class="option-label"><input type="radio" name="q14" value="C"> C) Orange</label>
-                    <label class="option-label"><input type="radio" name="q14" value="D"> D) Yellow</label>
-                </div>
-                <div class="feedback-text text-correct">✨ Correct!</div>
-                <div class="feedback-text text-wrong">❌ Incorrect (Correct: B)</div>
-            </div>
-
-            <div class="question-card" data-correct="C">
-<div class="question-text">15. What did Barnaby Bear do while walking back home?</div>
-                <div class="options-list">
-                    <label class="option-label"><input type="radio" name="q15" value="A"> A) He cried</label>
-                    <label class="option-label"><input type="radio" name="q15" value="B"> B) He ran very fast</label>
-                    <label class="option-label"><input type="radio" name="q15" value="C"> C) He sang a happy song</label>
-                    <label class="option-label"><input type="radio" name="q15" value="D"> D) He slept under a tree</label>
-                </div>
-                <div class="feedback-text text-correct">✨ Correct!</div>
-                <div class="feedback-text text-wrong">❌ Incorrect (Correct: C)</div>
-            </div>
-        </div>
-
-        <div class="btn-container">
-            <button class="check-btn" onclick="gradeQuiz()">Grade Quiz ✔️</button>
-        </div>
-
-        <div class="win-message" id="win-msg">🎉 Super Reader! You answered all questions correctly! ⭐</div>
-    </div>
-
-    <script>
-		function leerTexto(texto) {
-				window.speechSynthesis.cancel();
-				const mensaje = new SpeechSynthesisUtterance(texto);
-				mensaje.lang = 'en-US';
-				mensaje.rate = 0.85; // Velocidad lenta y clara
-				window.speechSynthesis.speak(mensaje);
-			}
-
-			window.addEventListener('DOMContentLoaded', () => {
-				// Selecciona todos los párrafos del cuento que estén antes del título del Quiz (h2)
-				const parrafos = document.querySelectorAll('p');
-				
-				parrafos.forEach(p => {
-					// Evita poner botón en párrafos vacíos o que pertenezcan al quiz
-					if (p.innerText.trim() !== "" && !p.closest('.quiz') && !p.innerText.includes('Correct') && !p.innerText.includes('Incorrect')) {
-						const textoOriginal = p.innerText;
-						
-						// Crea el contenedor con el texto y el botón
-						const wrapper = document.createElement('div');
-						wrapper.className = 'story-paragraph-box';
-						
-						const textoSpan = document.createElement('span');
-						textoSpan.innerHTML = p.innerHTML;
-						
-						const btn = document.createElement('button');
-						btn.type = 'button';
-						btn.className = 'btn-read-p';
-						btn.innerText = '🔊 Listen';
-						btn.onclick = () => leerTexto(textoOriginal);
-						
-						wrapper.appendChild(textoSpan);
-						wrapper.appendChild(btn);
-						p.replaceWith(wrapper);
-					}
-				});
-			});
-        // Text-to-Speech Function
-        function readStory() {
-            let storyText = document.getElementById('story-content').innerText;
-            
-            // Cancel any current speech running
-            window.speechSynthesis.cancel();
-            
-            let utterance = new SpeechSynthesisUtterance(storyText);
-            utterance.lang = 'en-US'; // American English
-            utterance.rate = 0.75;    // Slower speed for kids
-            
-            window.speechSynthesis.speak(utterance);
+        const imgEl = document.getElementById('story-image');
+        if (storyData.imageFile) {
+            imgEl.src = storyData.imageFile;
+            imgEl.style.display = 'block';
+            imgEl.onerror = () => { imgEl.style.display = 'none'; };
         }
 
-        // Quiz Evaluation Logic
-        function gradeQuiz() {
-            const cards = document.querySelectorAll('.question-card');
-            let totalCorrect = true;
+        const storyContainer = document.getElementById('story-container');
+        storyData.paragraphs.forEach(htmlTexto => {
+            const box = document.createElement('div');
+            box.className = 'story-paragraph-box';
+            const span = document.createElement('span');
+            span.innerHTML = htmlTexto;
+            const textoLimpio = span.innerText;
 
-            cards.forEach(card => {
-                const correctAnswer = card.getAttribute('data-correct');
-                const selectedOption = card.querySelector('input[type="radio"]:checked');
-                
-                card.querySelectorAll('.feedback-text').forEach(f => f.style.display = 'none');
-                card.classList.remove('card-correct', 'card-wrong');
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn-read-p';
+            btn.innerText = '🔊 Listen';
+            btn.onclick = () => leerTexto(textoLimpio);
 
-                if (selectedOption) {
-                    const userAnswer = selectedOption.value;
-                    if (userAnswer === correctAnswer) {
-                        card.classList.add('card-correct');
-                        card.querySelector('.text-correct').style.display = 'block';
-                    } else {
-                        card.classList.add('card-wrong');
-                        card.querySelector('.text-wrong').style.display = 'block';
-                        totalCorrect = false;
-                    }
-                } else {
-                    card.classList.add('card-wrong');
-                    card.querySelector('.text-wrong').style.display = 'block';
-                    totalCorrect = false;
-                }
+            box.appendChild(span);
+            box.appendChild(btn);
+            storyContainer.appendChild(box);
+        });
+
+        const verbsContainer = document.getElementById('verbs-container');
+        (storyData.verbs || []).forEach(v => {
+            const card = document.createElement('div');
+            card.className = 'vocab-card';
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn-read-p';
+            btn.innerText = '🔊';
+            btn.onclick = () => leerTexto(`${v.base}, ${v.third}`);
+
+            card.innerHTML = `<span><b>${v.base}</b> / <b>${v.third}</b><br><small>${v.meaning}</small></span>`;
+            card.appendChild(btn);
+            verbsContainer.appendChild(card);
+        });
+
+        const wordsContainer = document.getElementById('words-container');
+        (storyData.otherWords || []).forEach(w => {
+            const card = document.createElement('div');
+            card.className = 'vocab-card';
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn-read-p';
+            btn.innerText = '🔊';
+            btn.onclick = () => leerTexto(w.word);
+
+            card.innerHTML = `<span><b>${w.word}</b> <span class="badge">${w.type}</span><br><small>${w.meaning}</small></span>`;
+            card.appendChild(btn);
+            wordsContainer.appendChild(card);
+        });
+
+        buildQuiz(false);
+    }
+
+    const letras = ["A", "B", "C", "D"];
+    let shuffledQuiz = [];
+
+    function shuffleArray(arr) {
+        const copy = [...arr];
+        for (let i = copy.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+    }
+
+    function buildQuiz(scrollToQuiz = false) {
+        const quizContainer = document.getElementById('quiz-container');
+        const resultBox = document.getElementById('result-box');
+        quizContainer.innerHTML = '';
+        resultBox.style.display = 'none';
+
+        shuffledQuiz = shuffleArray(storyData.quiz).map((item, idx) => {
+            const cleanQuestion = item.q.replace(/^\d+\.\s*/, '');
+            const correctText = item.options[item.answer];
+            const mixedOptions = shuffleArray(item.options);
+            return {
+                q: `${idx + 1}. ${cleanQuestion}`,
+                options: mixedOptions,
+                answer: mixedOptions.indexOf(correctText)
+            };
+        });
+
+        shuffledQuiz.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            let opcionesHTML = '';
+            item.options.forEach((opt, i) => {
+                opcionesHTML += `<label class="option-label"><input type="radio" name="q${index}" value="${i}"> ${letras[i]}) ${opt}</label>`;
             });
+            card.innerHTML = `<div class="question-title">${item.q}</div>${opcionesHTML}<div class="feedback" id="fb-${index}"></div>`;
+            quizContainer.appendChild(card);
+        });
 
-            const winMsg = document.getElementById('win-msg');
-            if (totalCorrect) {
-                winMsg.style.display = 'block';
-                winMsg.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                winMsg.style.display = 'none';
-            }
+        if (scrollToQuiz) {
+            document.getElementById('quiz-heading').scrollIntoView({ behavior: 'smooth' });
         }
-    </script>
+    }
+
+    function gradeQuiz() {
+        let score = 0;
+        shuffledQuiz.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            const fb = document.getElementById(`fb-${index}`);
+            fb.style.display = 'block';
+            if (selected && parseInt(selected.value) === item.answer) {
+                score++;
+                fb.className = 'feedback correct';
+                fb.innerText = '✨ Correct!';
+            } else {
+                fb.className = 'feedback incorrect';
+                fb.innerText = `❌ Incorrect (Correct: ${letras[item.answer]})`;
+            }
+        });
+
+        const resultBox = document.getElementById('result-box');
+        resultBox.style.display = 'block';
+        resultBox.innerText = score === shuffledQuiz.length
+            ? `🎉 Super Reader! You answered all ${score} / ${shuffledQuiz.length} questions correctly! ⭐`
+            : `You got ${score} out of ${shuffledQuiz.length} questions right! Keep practicing! 💪`;
+        resultBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    initPage();
+</script>
 </body>
 </html>
-

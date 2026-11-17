@@ -367,7 +367,10 @@
         window.speechSynthesis.cancel();
         resetearBotonesParrafo();
 
-        palabrasActuales = texto.match(/[^.!?,;:]+[.!?,;:]?|\S+/g) || [texto];
+        // Mantiene las comillas pegadas a su frase y elimina comillas sueltas para que no las lea en voz alta
+        const textoSinComillasSueltas = texto.replace(/["“”]/g, '');
+        palabrasActuales = textoSinComillasSueltas.match(/[^.!?,;:]+[.!?,;:]?|\S+/g) || [textoSinComillasSueltas];
+
         indicePalabra = 0;
         estaSonando = true;
 

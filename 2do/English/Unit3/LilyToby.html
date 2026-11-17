@@ -6,7 +6,7 @@
     <title>Interactive English Story</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fef9c3; color: #1e293b; line-height: 1.6; margin: 0; padding: 20px; }
-        .top-controls { max-width: 1320px; margin: 0 auto 15px auto; display: flex; justify-content: flex-end; }
+        .top-controls { max-width: 1320px; margin: 0 auto 15px auto; display: flex; justify-content: flex-end; gap: 10px; align-items: center; flex-wrap: wrap; }
         .btn-swap { background-color: #ffffff; color: #854d0e; border: 2px solid #fde047; border-radius: 10px; padding: 8px 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: all 0.2s; }
         .btn-swap:hover { background-color: #fef08a; }
 
@@ -15,12 +15,11 @@
 
         .story-column { flex: 1.8; min-width: 0; background: #ffffff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 3px solid #fde047; }
         .vocab-sidebar { flex: 1; min-width: 320px; max-width: 380px; background: #ffffff; padding: 22px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 3px solid #bbf7d0; position: sticky; top: 20px; max-height: calc(100vh - 95px); box-sizing: border-box; overflow-y: auto; }
-        .story-img { display: block; max-width: 100%; max-height: 320px; margin: 0 auto; border-radius: 12px; border: 2px solid #fde047; object-fit: cover; }
-
-
 
         h1 { text-align: center; color: #b45309; margin: 0 0 5px 0; font-size: 2em; }
         .subtitle { text-align: center; color: #64748b; font-weight: 600; margin-bottom: 20px; font-size: 1.05em; }
+        .story-img { display: block; max-width: 100%; max-height: 320px; margin: 0 auto 25px auto; border-radius: 12px; border: 2px solid #fde047; object-fit: cover; }
+
         h2 { color: #15803d; border-bottom: 2px solid #bbf7d0; padding-bottom: 8px; margin-top: 35px; }
         .vocab-sidebar h2 { margin-top: 0; font-size: 1.15em; }
         .vocab-sidebar h2.second-heading { margin-top: 24px; }
@@ -49,7 +48,6 @@
         #result-box { display: none; margin-top: 20px; padding: 20px; border-radius: 12px; text-align: center; font-size: 1.3em; font-weight: bold; background-color: #fef08a; color: #854d0e; border: 2px solid #facc15; }
 
         @media (max-width: 900px) {
-            .top-controls { display: none; }
             .main-layout, .main-layout.swapped { flex-direction: column; }
             .vocab-sidebar { position: static; max-width: 100%; max-height: none; width: 100%; box-sizing: border-box; }
         }
@@ -79,7 +77,7 @@
         onmouseout="this.style.backgroundColor='#ff9f1c'; this.style.transform='scale(1)';">
         ⬅ Units Menu
     </a>
-<div class="top-controls" style="gap: 10px; align-items: center; flex-wrap: wrap;">
+<div class="top-controls">
     <label for="voice-speed" style="font-weight: bold; color: #854d0e; background: #fff; padding: 7px 12px; border-radius: 10px; border: 2px solid #fde047;">
         🐢 Velocidad:
         <select id="voice-speed" style="border: none; font-weight: bold; color: #0284c7; background: transparent; cursor: pointer; font-size: 0.95em;">
@@ -104,22 +102,12 @@
     </button>
 </div>
 
-
-
-
 <div id="main-layout" class="main-layout">
     <main class="story-column">
         <h1 id="story-title"></h1>
         <div id="story-subtitle" class="subtitle"></div>
 
-        <div id="image-wrapper" style="display:none; text-align: center; margin-bottom: 25px;">
-            <img id="story-image" class="story-img" style="cursor: zoom-in;" title="Doble clic o doble toque para abrir en grande" alt="Story illustration">
-            <small style="color: #64748b; display: block; margin-top: 6px;">🔍 Doble clic (o doble toque en iPad) para abrir la imagen en grande</small>
-        </div>
-
-
-
-        <div id="story-container"></div>
+        <img id="story-image" class="story-img" style="display:none;" alt="Story illustration">
 
         <div id="story-container"></div>
 
@@ -133,14 +121,13 @@
         <div id="result-box"></div>
     </main>
 
-	<aside class="vocab-sidebar">
-		<h2>🏃 Action Verbs (Base / 3rd)</h2>
-		<div id="verbs-container" class="vocab-grid"></div>
+    <aside class="vocab-sidebar">
+        <h2>🏃 Action Verbs (Base / 3rd)</h2>
+        <div id="verbs-container" class="vocab-grid"></div>
 
-		<h2 class="second-heading">🔑 Other Key Words</h2>
-		<div id="words-container" class="vocab-grid"></div>
-	</aside>
-
+        <h2 class="second-heading">🔑 Other Key Words</h2>
+        <div id="words-container" class="vocab-grid"></div>
+    </aside>
 </div>
 
 <script>
@@ -220,8 +207,6 @@
 
     let vozInglesa = null;
     let botonActivo = null;
-
-    // Control exacto por frases (100% compatible con Chrome en iPad)
     let palabrasActuales = [];
     let indicePalabra = 0;
     let estaPausado = false;
@@ -274,11 +259,9 @@
         const mensaje = new SpeechSynthesisUtterance(palabra);
         mensaje.lang = 'en-US';
 
-        // Detecta si es iPad / iPhone (incluyendo iPadOS en modo escritorio)
         const esIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
                        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-        // En iPad es mejor NO forzar mensaje.voice si no es Samantha/Daniel, para que obedezca el rate
         if (!esIpad && vozInglesa) {
             mensaje.voice = vozInglesa;
         } else if (esIpad) {
@@ -290,7 +273,6 @@
         const speedSelect = document.getElementById('voice-speed');
         const valorMenu = speedSelect ? parseFloat(speedSelect.value) : 0.75;
 
-        // Ajusta la escala real de velocidad para iPadOS vs Computadora
         let velocidadFinal = valorMenu;
         if (esIpad) {
             if (valorMenu <= 0.5) velocidadFinal = 0.15;
@@ -301,7 +283,6 @@
         }
         mensaje.rate = velocidadFinal;
 
-        // Agrega una pausa breve entre frases en velocidades lentas para mayor claridad
         const pausaEntreFrases = valorMenu <= 0.65 ? 320 : (valorMenu <= 0.75 ? 180 : 40);
 
         mensaje.onend = () => {
@@ -319,7 +300,6 @@
 
         window.speechSynthesis.speak(mensaje);
     }
-
 
     function togglePausa() {
         if (!estaSonando && !estaPausado) return;
@@ -366,10 +346,8 @@
         window.speechSynthesis.cancel();
         resetearBotonesParrafo();
 
-        // Mantiene las comillas pegadas a su frase y elimina comillas sueltas para que no las lea en voz alta
-        const textoSinComillasSueltas = texto.replace(/["“”]/g, '');
-        palabrasActuales = textoSinComillasSueltas.match(/[^.!?,;:]+[.!?,;:]?|\S+/g) || [textoSinComillasSueltas];
-
+        const textoSinComillas = texto.replace(/["“”]/g, '');
+        palabrasActuales = textoSinComillas.match(/[^.!?,;:]+[.!?,;:]?|\S+/g) || [textoSinComillas];
         indicePalabra = 0;
         estaSonando = true;
 
@@ -389,27 +367,10 @@
         document.getElementById('story-subtitle').innerText = storyData.subtitle || "";
 
         const imgEl = document.getElementById('story-image');
-        const imgWrapper = document.getElementById('image-wrapper');
         if (storyData.imageFile) {
             imgEl.src = storyData.imageFile;
-            imgWrapper.style.display = 'block';
-            imgEl.onerror = () => { imgWrapper.style.display = 'none'; };
-
-            const abrirImagenEnPestana = () => {
-                window.open(imgEl.src, '_blank', 'noopener,noreferrer');
-            };
-
-            imgEl.addEventListener('dblclick', abrirImagenEnPestana);
-
-            let ultimoToque = 0;
-            imgEl.addEventListener('touchend', (e) => {
-                const ahora = Date.now();
-                if (ahora - ultimoToque < 350 && ahora - ultimoToque > 0) {
-                    e.preventDefault();
-                    abrirImagenEnPestana();
-                }
-                ultimoToque = ahora;
-            });
+            imgEl.style.display = 'block';
+            imgEl.onerror = () => { imgEl.style.display = 'none'; };
         }
 
         const storyContainer = document.getElementById('story-container');

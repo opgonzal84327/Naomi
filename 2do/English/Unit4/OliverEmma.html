@@ -6,7 +6,7 @@
     <title>Interactive English Story</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fef9c3; color: #1e293b; line-height: 1.6; margin: 0; padding: 20px; }
-        .top-controls { max-width: 1320px; margin: 0 auto 15px auto; display: flex; justify-content: flex-end; }
+        .top-controls { max-width: 1320px; margin: 0 auto 15px auto; display: flex; justify-content: flex-end; gap: 10px; align-items: center; flex-wrap: wrap; }
         .btn-swap { background-color: #ffffff; color: #854d0e; border: 2px solid #fde047; border-radius: 10px; padding: 8px 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: all 0.2s; }
         .btn-swap:hover { background-color: #fef08a; }
 
@@ -14,26 +14,12 @@
         .main-layout.swapped { flex-direction: row-reverse; }
 
         .story-column { flex: 1.8; min-width: 0; background: #ffffff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 3px solid #fde047; }
-        .vocab-sidebar {
-            flex: 1;
-            min-width: 320px;
-            max-width: 380px;
-            background: #ffffff;
-            padding: 22px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            border: 3px solid #bbf7d0;
-            position: sticky;
-            top: 20px;
-            max-height: calc(100vh - 95px);
-            box-sizing: border-box;
-            overflow-y: auto;
-        }
-
+        .vocab-sidebar { flex: 1; min-width: 320px; max-width: 380px; background: #ffffff; padding: 22px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 3px solid #bbf7d0; position: sticky; top: 20px; max-height: calc(100vh - 95px); box-sizing: border-box; overflow-y: auto; }
 
         h1 { text-align: center; color: #b45309; margin: 0 0 5px 0; font-size: 2em; }
         .subtitle { text-align: center; color: #64748b; font-weight: 600; margin-bottom: 20px; font-size: 1.05em; }
         .story-img { display: block; max-width: 100%; max-height: 320px; margin: 0 auto 25px auto; border-radius: 12px; border: 2px solid #fde047; object-fit: cover; }
+
         h2 { color: #15803d; border-bottom: 2px solid #bbf7d0; padding-bottom: 8px; margin-top: 35px; }
         .vocab-sidebar h2 { margin-top: 0; font-size: 1.15em; }
         .vocab-sidebar h2.second-heading { margin-top: 24px; }
@@ -62,7 +48,6 @@
         #result-box { display: none; margin-top: 20px; padding: 20px; border-radius: 12px; text-align: center; font-size: 1.3em; font-weight: bold; background-color: #fef08a; color: #854d0e; border: 2px solid #facc15; }
 
         @media (max-width: 900px) {
-            .top-controls { display: none; }
             .main-layout, .main-layout.swapped { flex-direction: column; }
             .vocab-sidebar { position: static; max-width: 100%; max-height: none; width: 100%; box-sizing: border-box; }
         }
@@ -92,28 +77,38 @@
         onmouseout="this.style.backgroundColor='#ff9f1c'; this.style.transform='scale(1)';">
         ⬅ Units Menu
     </a>
-<div class="top-controls" style="gap: 10px; align-items: center; flex-wrap: wrap;">
+<div class="top-controls">
     <label for="voice-speed" style="font-weight: bold; color: #854d0e; background: #fff; padding: 7px 12px; border-radius: 10px; border: 2px solid #fde047;">
-        🐢 Velocidad de voz:
+        🐢 Velocidad:
         <select id="voice-speed" style="border: none; font-weight: bold; color: #0284c7; background: transparent; cursor: pointer; font-size: 0.95em;">
-            <option value="0.55">Muy lento (0.55x)</option>
+            <option value="0.5">Muy lento (0.5x)</option>
+            <option value="0.65">Más lento (0.65x)</option>
             <option value="0.75" selected>Lento (0.75x)</option>
             <option value="0.9">Casi normal (0.9x)</option>
             <option value="1.0">Normal (1.0x)</option>
         </select>
     </label>
 
+    <button type="button" id="btn-pause-resume" class="btn-swap" onclick="togglePausa()" style="border-color: #38bdf8; color: #0369a1;">
+        ⏸️ Pausar
+    </button>
+
+    <button type="button" class="btn-swap" onclick="detenerLectura()" style="border-color: #fca5a5; color: #b91c1c;">
+        ⏹️ Detener
+    </button>
+
     <button type="button" class="btn-swap" onclick="document.getElementById('main-layout').classList.toggle('swapped')">
-        ⇄ Cambiar posición del vocabulario
+        ⇄ Cambiar lado
     </button>
 </div>
-
 
 <div id="main-layout" class="main-layout">
     <main class="story-column">
         <h1 id="story-title"></h1>
         <div id="story-subtitle" class="subtitle"></div>
+
         <img id="story-image" class="story-img" style="display:none;" alt="Story illustration">
+
         <div id="story-container"></div>
 
         <h2 id="quiz-heading">📝 Quiz: Answer the Questions!</h2>
@@ -224,13 +219,160 @@
     // 🔴 FIN DE LA ZONA DE DATOS (NO ES NECESARIO MODIFICAR NADA DE AQUÍ ABAJO)
     // =========================================================================
 
-    function leerTexto(texto) {
-        window.speechSynthesis.cancel();
-        const mensaje = new SpeechSynthesisUtterance(texto);
+    let vozInglesa = null;
+    let botonActivo = null;
+    let palabrasActuales = [];
+    let indicePalabra = 0;
+    let estaPausado = false;
+    let estaSonando = false;
+    let idSesionLectura = 0;
+
+    function cargarVozIngles() {
+        const voces = window.speechSynthesis.getVoices();
+        if (voces.length > 0) {
+            vozInglesa =
+                voces.find(v => v.lang === 'en-US' && v.localService) ||
+                voces.find(v => v.lang.startsWith('en') && v.localService) ||
+                voces.find(v => v.lang === 'en-US') ||
+                voces.find(v => v.lang.startsWith('en'));
+        }
+    }
+
+    cargarVozIngles();
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = cargarVozIngles;
+    }
+
+    function actualizarBotonGlobal(estado) {
+        const btnGlobal = document.getElementById('btn-pause-resume');
+        if (!btnGlobal) return;
+        btnGlobal.innerText = estado === 'paused' ? '▶️ Continuar' : '⏸️ Pausar';
+    }
+
+    function resetearBotonesParrafo() {
+        document.querySelectorAll('.btn-read-p[data-type="paragraph"]').forEach(b => {
+            b.innerText = '🔊 Listen';
+            b.style.backgroundColor = '#0284c7';
+        });
+        botonActivo = null;
+        estaPausado = false;
+        estaSonando = false;
+        indicePalabra = 0;
+        actualizarBotonGlobal('playing');
+    }
+
+    function leerSiguientePalabra(sesionId) {
+        if (sesionId !== idSesionLectura || estaPausado) return;
+
+        if (indicePalabra >= palabrasActuales.length) {
+            resetearBotonesParrafo();
+            return;
+        }
+
+        const palabra = palabrasActuales[indicePalabra];
+        const mensaje = new SpeechSynthesisUtterance(palabra);
         mensaje.lang = 'en-US';
+
+        const esIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+        if (!esIpad && vozInglesa) {
+            mensaje.voice = vozInglesa;
+        } else if (esIpad) {
+            const voces = window.speechSynthesis.getVoices();
+            const vozCompacta = voces.find(v => v.lang === 'en-US' && v.name.includes('Samantha'));
+            if (vozCompacta) mensaje.voice = vozCompacta;
+        }
+
         const speedSelect = document.getElementById('voice-speed');
-        mensaje.rate = speedSelect ? parseFloat(speedSelect.value) : 0.75;
+        const valorMenu = speedSelect ? parseFloat(speedSelect.value) : 0.75;
+
+        let velocidadFinal = valorMenu;
+        if (esIpad) {
+            if (valorMenu <= 0.5) velocidadFinal = 0.15;
+            else if (valorMenu <= 0.65) velocidadFinal = 0.25;
+            else if (valorMenu <= 0.75) velocidadFinal = 0.38;
+            else if (valorMenu <= 0.9) velocidadFinal = 0.6;
+            else velocidadFinal = 1.0;
+        }
+        mensaje.rate = velocidadFinal;
+
+        const pausaEntreFrases = valorMenu <= 0.65 ? 320 : (valorMenu <= 0.75 ? 180 : 40);
+
+        mensaje.onend = () => {
+            if (sesionId === idSesionLectura && !estaPausado) {
+                indicePalabra++;
+                setTimeout(() => leerSiguientePalabra(sesionId), pausaEntreFrases);
+            }
+        };
+
+        mensaje.onerror = () => {
+            if (sesionId === idSesionLectura && !estaPausado) {
+                resetearBotonesParrafo();
+            }
+        };
+
         window.speechSynthesis.speak(mensaje);
+    }
+
+    function togglePausa() {
+        if (!estaSonando && !estaPausado) return;
+
+        if (estaPausado) {
+            estaPausado = false;
+            estaSonando = true;
+            idSesionLectura++;
+            actualizarBotonGlobal('playing');
+            if (botonActivo) {
+                botonActivo.innerText = '⏸️ Pause';
+                botonActivo.style.backgroundColor = '#d97706';
+            }
+            leerSiguientePalabra(idSesionLectura);
+        } else {
+            estaPausado = true;
+            estaSonando = false;
+            idSesionLectura++;
+            window.speechSynthesis.cancel();
+            actualizarBotonGlobal('paused');
+            if (botonActivo) {
+                botonActivo.innerText = '▶️ Resume';
+                botonActivo.style.backgroundColor = '#16a34a';
+            }
+        }
+    }
+
+    function detenerLectura() {
+        idSesionLectura++;
+        estaPausado = false;
+        estaSonando = false;
+        window.speechSynthesis.cancel();
+        resetearBotonesParrafo();
+    }
+
+    function leerTexto(texto, btn = null) {
+        if (btn && botonActivo === btn && (estaSonando || estaPausado)) {
+            togglePausa();
+            return;
+        }
+
+        idSesionLectura++;
+        estaPausado = false;
+        window.speechSynthesis.cancel();
+        resetearBotonesParrafo();
+
+        const textoSinComillas = texto.replace(/["“”]/g, '');
+        palabrasActuales = textoSinComillas.match(/[^.!?,;:]+[.!?,;:]?|\S+/g) || [textoSinComillas];
+        indicePalabra = 0;
+        estaSonando = true;
+
+        if (btn) {
+            botonActivo = btn;
+            btn.innerText = '⏸️ Pause';
+            btn.style.backgroundColor = '#d97706';
+        }
+        actualizarBotonGlobal('playing');
+
+        leerSiguientePalabra(idSesionLectura);
     }
 
     function initPage() {
@@ -256,8 +398,9 @@
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'btn-read-p';
+            btn.setAttribute('data-type', 'paragraph');
             btn.innerText = '🔊 Listen';
-            btn.onclick = () => leerTexto(textoLimpio);
+            btn.onclick = () => leerTexto(textoLimpio, btn);
 
             box.appendChild(span);
             box.appendChild(btn);

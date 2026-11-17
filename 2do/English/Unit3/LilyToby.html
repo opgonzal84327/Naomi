@@ -13,27 +13,14 @@
         .main-layout { max-width: 1320px; margin: 0 auto; display: flex; gap: 24px; align-items: flex-start; }
         .main-layout.swapped { flex-direction: row-reverse; }
 
-        .story-column { flex: 1.8; min-width: 0; background: #ffffff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 3px solid #fde047; }
-        .vocab-sidebar {
-            flex: 1;
-            min-width: 320px;
-            max-width: 380px;
-            background: #ffffff;
-            padding: 22px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            border: 3px solid #bbf7d0;
-            position: sticky;
-            top: 20px;
-            max-height: calc(100vh - 95px);
-            box-sizing: border-box;
-            overflow-y: auto;
-        }
+        .story-column { flex: 1.4; min-width: 0; background: #ffffff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 3px solid #fde047; }
+        .vocab-sidebar { flex: 1.1; min-width: 380px; max-width: 480px; background: #ffffff; padding: 22px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 3px solid #bbf7d0; position: sticky; top: 20px; max-height: calc(100vh - 95px); box-sizing: border-box; overflow-y: auto; }
+        .story-img { display: block; width: 100%; height: auto; max-height: 360px; margin: 0 auto 10px auto; border-radius: 12px; border: 2px solid #fde047; object-fit: contain; background-color: #fef9c3; }
+
 
 
         h1 { text-align: center; color: #b45309; margin: 0 0 5px 0; font-size: 2em; }
         .subtitle { text-align: center; color: #64748b; font-weight: 600; margin-bottom: 20px; font-size: 1.05em; }
-        .story-img { display: block; max-width: 100%; max-height: 320px; margin: 0 auto 25px auto; border-radius: 12px; border: 2px solid #fde047; object-fit: cover; }
         h2 { color: #15803d; border-bottom: 2px solid #bbf7d0; padding-bottom: 8px; margin-top: 35px; }
         .vocab-sidebar h2 { margin-top: 0; font-size: 1.15em; }
         .vocab-sidebar h2.second-heading { margin-top: 24px; }
@@ -94,26 +81,36 @@
     </a>
 <div class="top-controls" style="gap: 10px; align-items: center; flex-wrap: wrap;">
     <label for="voice-speed" style="font-weight: bold; color: #854d0e; background: #fff; padding: 7px 12px; border-radius: 10px; border: 2px solid #fde047;">
-        🐢 Velocidad de voz:
+        🐢 Velocidad:
         <select id="voice-speed" style="border: none; font-weight: bold; color: #0284c7; background: transparent; cursor: pointer; font-size: 0.95em;">
-            <option value="0.55">Muy lento (0.55x)</option>
+            <option value="0.5">Muy lento (0.5x)</option>
+            <option value="0.65">Más lento (0.65x)</option>
             <option value="0.75" selected>Lento (0.75x)</option>
             <option value="0.9">Casi normal (0.9x)</option>
             <option value="1.0">Normal (1.0x)</option>
         </select>
     </label>
 
+    <button type="button" id="btn-pause-resume" class="btn-swap" onclick="togglePausa()" style="border-color: #38bdf8; color: #0369a1;">
+        ⏸️ Pausar
+    </button>
+
+    <button type="button" class="btn-swap" onclick="detenerLectura()" style="border-color: #fca5a5; color: #b91c1c;">
+        ⏹️ Detener
+    </button>
+
     <button type="button" class="btn-swap" onclick="document.getElementById('main-layout').classList.toggle('swapped')">
-        ⇄ Cambiar posición del vocabulario
+        ⇄ Cambiar lado
     </button>
 </div>
+
+
 
 
 <div id="main-layout" class="main-layout">
     <main class="story-column">
         <h1 id="story-title"></h1>
         <div id="story-subtitle" class="subtitle"></div>
-        <img id="story-image" class="story-img" style="display:none;" alt="Story illustration">
         <div id="story-container"></div>
 
         <h2 id="quiz-heading">📝 Quiz: Answer the Questions!</h2>
@@ -126,13 +123,22 @@
         <div id="result-box"></div>
     </main>
 
-    <aside class="vocab-sidebar">
-        <h2>🏃 Action Verbs (Base / 3rd)</h2>
-        <div id="verbs-container" class="vocab-grid"></div>
+	<aside class="vocab-sidebar">
+        <div id="image-wrapper" style="display:none; margin-bottom: 18px; text-align: center;">
+            <img id="story-image" class="story-img" alt="Story illustration">
+            <button type="button" onclick="toggleImagen()" id="btn-toggle-img" style="background: #fef9c3; color: #854d0e; border: 1px solid #fde047; border-radius: 8px; padding: 5px 12px; font-size: 0.85em; font-weight: bold; cursor: pointer;">
+                🙈 Ocultar imagen
+            </button>
+        </div>
 
-        <h2 class="second-heading">🔑 Other Key Words</h2>
-        <div id="words-container" class="vocab-grid"></div>
-    </aside>
+
+		<h2>🏃 Action Verbs (Base / 3rd)</h2>
+		<div id="verbs-container" class="vocab-grid"></div>
+
+		<h2 class="second-heading">🔑 Other Key Words</h2>
+		<div id="words-container" class="vocab-grid"></div>
+	</aside>
+
 </div>
 
 <script>
@@ -160,7 +166,7 @@
             "\"Yes, they are <b>ours</b>!\" say the frogs happily.",
             "Lily and Toby walk home with their full basket. They cook a delicious rainbow soup with <b>carrots</b>, <b>peas</b>, <b>beans</b>, <b>corn</b>, and <b>peppers</b>, and drink fresh <b>lime</b> juice. What a yummy meal! The end!"
         ],
-                verbs: [
+        verbs: [
             { base: "make", third: "makes", meaning: "hacer / preparar" },
             { base: "open", third: "opens", meaning: "abrir" },
             { base: "check", third: "checks", meaning: "revisar" },
@@ -195,18 +201,13 @@
         ],
         quiz: [
             { q: "Who are the main characters in the story?", options: ["Lily Rabbit and Toby Turtle", "Mia Mouse and Leo Lion", "Barnaby Bear and Sammy", "Milo Monkey and Maya"], answer: 0 },
-            { q: "What do Lily and Toby want to make for lunch?", options: ["A fruit salad", "A colorful rainbow soup", "A carrot cake", "A mango smoothie"], answer: 1 },
             { q: "Which vegetables are in the kitchen cupboard?", options: ["Beans, peppers, and corn", "Carrots, peas, onions, and cabbage", "Mushrooms and potatoes", "Tomatoes and broccoli"], answer: 1 },
-            { q: "Why do Lily and Toby need beans and peppers?", options: ["For red and yellow colors", "For dessert", "For Mrs. Duck", "For breakfast"], answer: 0 },
             { q: "Are there any mushrooms or corn in the cupboard?", options: ["Yes, there are.", "No, there aren't.", "Only one corn.", "Only two mushrooms."], answer: 1 },
             { q: "Who works at the market stand?", options: ["Mrs. Owl", "Mr. Toucan", "Mrs. Duck", "Sammy Squirrel"], answer: 2 },
             { q: "How many fresh mushrooms does Lily ask for?", options: ["Two", "Three", "Five", "Six"], answer: 2 },
-            { q: "What does Toby ask for when Mrs. Duck says \"Anything else?\"", options: ["One yellow corn and two green limes", "Three sweet mangoes", "Four green pears", "Two brown coconuts"], answer: 0 },
-            { q: "What does Toby see next to a crate of pineapples?", options: ["A big basket of oranges", "A small blue bag", "A yellow lemon", "A brown paper bag"], answer: 1 },
             { q: "What question does Toby ask when he picks up the blue bag?", options: ["What is this?", "Can I help you?", "Whose is it?", "Are there any kiwis?"], answer: 2 },
             { q: "Who owns the small blue bag?", options: ["Two little frogs", "Mrs. Duck", "Lily Rabbit", "Toby Turtle"], answer: 0 },
             { q: "What fruit belongs to the two little frogs?", options: ["Pineapples", "Green kiwis", "Yellow lemons", "Red apples"], answer: 1 },
-            { q: "What possessive pronoun do the frogs use to say the bag is theirs?", options: ["It's mine!", "It's his!", "It's ours!", "It's hers!"], answer: 2 },
             { q: "What do Lily and Toby drink with their rainbow soup?", options: ["Orange juice", "Fresh lime juice", "Cold water", "Coconut milk"], answer: 1 },
             { q: "How do Lily and Toby carry their groceries home?", options: ["In a wooden crate", "In a full basket", "In a blue box", "In a plastic bag"], answer: 1 }
         ]
@@ -215,13 +216,154 @@
     // 🔴 FIN DE LA ZONA DE DATOS (NO ES NECESARIO MODIFICAR NADA DE AQUÍ ABAJO)
     // =========================================================================
 
-    function leerTexto(texto) {
-        window.speechSynthesis.cancel();
-        const mensaje = new SpeechSynthesisUtterance(texto);
+    let vozInglesa = null;
+    let botonActivo = null;
+
+    // Control exacto por frases (100% compatible con Chrome en iPad)
+    let palabrasActuales = [];
+    let indicePalabra = 0;
+    let estaPausado = false;
+    let estaSonando = false;
+    let idSesionLectura = 0;
+
+    function cargarVozIngles() {
+        const voces = window.speechSynthesis.getVoices();
+        if (voces.length > 0) {
+            vozInglesa =
+                voces.find(v => v.lang === 'en-US' && v.localService) ||
+                voces.find(v => v.lang.startsWith('en') && v.localService) ||
+                voces.find(v => v.lang === 'en-US') ||
+                voces.find(v => v.lang.startsWith('en'));
+        }
+    }
+
+    cargarVozIngles();
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = cargarVozIngles;
+    }
+
+    function actualizarBotonGlobal(estado) {
+        const btnGlobal = document.getElementById('btn-pause-resume');
+        if (!btnGlobal) return;
+        btnGlobal.innerText = estado === 'paused' ? '▶️ Continuar' : '⏸️ Pausar';
+    }
+
+    function resetearBotonesParrafo() {
+        document.querySelectorAll('.btn-read-p[data-type="paragraph"]').forEach(b => {
+            b.innerText = '🔊 Listen';
+            b.style.backgroundColor = '#0284c7';
+        });
+        botonActivo = null;
+        estaPausado = false;
+        estaSonando = false;
+        indicePalabra = 0;
+        actualizarBotonGlobal('playing');
+    }
+
+    function leerSiguientePalabra(sesionId) {
+        if (sesionId !== idSesionLectura || estaPausado) return;
+
+        if (indicePalabra >= palabrasActuales.length) {
+            resetearBotonesParrafo();
+            return;
+        }
+
+        if (!vozInglesa) cargarVozIngles();
+
+        const palabra = palabrasActuales[indicePalabra];
+        const mensaje = new SpeechSynthesisUtterance(palabra);
+        if (vozInglesa) {
+            mensaje.voice = vozInglesa;
+        }
         mensaje.lang = 'en-US';
+
         const speedSelect = document.getElementById('voice-speed');
         mensaje.rate = speedSelect ? parseFloat(speedSelect.value) : 0.75;
+
+        mensaje.onend = () => {
+            if (sesionId === idSesionLectura && !estaPausado) {
+                indicePalabra++;
+                leerSiguientePalabra(sesionId);
+            }
+        };
+
+        mensaje.onerror = () => {
+            if (sesionId === idSesionLectura && !estaPausado) {
+                resetearBotonesParrafo();
+            }
+        };
+
         window.speechSynthesis.speak(mensaje);
+    }
+
+    function togglePausa() {
+        if (!estaSonando && !estaPausado) return;
+
+        if (estaPausado) {
+            estaPausado = false;
+            estaSonando = true;
+            idSesionLectura++;
+            actualizarBotonGlobal('playing');
+            if (botonActivo) {
+                botonActivo.innerText = '⏸️ Pause';
+                botonActivo.style.backgroundColor = '#d97706';
+            }
+            leerSiguientePalabra(idSesionLectura);
+        } else {
+            estaPausado = true;
+            estaSonando = false;
+            idSesionLectura++;
+            window.speechSynthesis.cancel();
+            actualizarBotonGlobal('paused');
+            if (botonActivo) {
+                botonActivo.innerText = '▶️ Resume';
+                botonActivo.style.backgroundColor = '#16a34a';
+            }
+        }
+    }
+
+    function detenerLectura() {
+        idSesionLectura++;
+        estaPausado = false;
+        estaSonando = false;
+        window.speechSynthesis.cancel();
+        resetearBotonesParrafo();
+    }
+
+    function leerTexto(texto, btn = null) {
+        if (btn && botonActivo === btn && (estaSonando || estaPausado)) {
+            togglePausa();
+            return;
+        }
+
+        idSesionLectura++;
+        estaPausado = false;
+        window.speechSynthesis.cancel();
+        resetearBotonesParrafo();
+
+        palabrasActuales = texto.match(/[^.!?,;:]+[.!?,;:]?|\S+/g) || [texto];
+        indicePalabra = 0;
+        estaSonando = true;
+
+        if (btn) {
+            botonActivo = btn;
+            btn.innerText = '⏸️ Pause';
+            btn.style.backgroundColor = '#d97706';
+        }
+        actualizarBotonGlobal('playing');
+
+        leerSiguientePalabra(idSesionLectura);
+    }
+	function toggleImagen() {
+        const img = document.getElementById('story-image');
+        const btn = document.getElementById('btn-toggle-img');
+        if (img.style.display === 'none') {
+            img.style.display = 'block';
+            btn.innerText = '🙈 Ocultar imagen';
+        } else {
+            img.style.display = 'none';
+            btn.innerText = '🖼️ Ver imagen';
+        }
     }
 
     function initPage() {
@@ -230,6 +372,13 @@
         document.getElementById('story-subtitle').innerText = storyData.subtitle || "";
 
         const imgEl = document.getElementById('story-image');
+        const imgWrapper = document.getElementById('image-wrapper');
+        if (storyData.imageFile) {
+            imgEl.src = storyData.imageFile;
+            imgWrapper.style.display = 'block';
+            imgEl.onerror = () => { imgWrapper.style.display = 'none'; };
+        }
+
         if (storyData.imageFile) {
             imgEl.src = storyData.imageFile;
             imgEl.style.display = 'block';
@@ -247,8 +396,9 @@
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'btn-read-p';
+            btn.setAttribute('data-type', 'paragraph');
             btn.innerText = '🔊 Listen';
-            btn.onclick = () => leerTexto(textoLimpio);
+            btn.onclick = () => leerTexto(textoLimpio, btn);
 
             box.appendChild(span);
             box.appendChild(btn);
@@ -287,6 +437,8 @@
 
         buildQuiz(false);
     }
+
+
 
     const letras = ["A", "B", "C", "D"];
     let shuffledQuiz = [];

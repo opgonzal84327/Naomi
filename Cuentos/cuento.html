@@ -64,7 +64,7 @@
 
         .marco-imagen {
             width: 100%;
-            height: 340px;
+            max-height: 450px; /* Permite que crezca un poco más sin hacerse gigante */
             background-color: #F4F1EA;
             border: 3px dashed #D3CBB8;
             border-radius: 18px;
@@ -77,10 +77,12 @@
 
         .marco-imagen img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;        /* Ajusta la altura automáticamente sin deformar */
+            max-height: 450px;   /* Tope de altura */
+            object-fit: contain; /* Muestra la imagen COMPLETA sin recortar bordes */
             display: block;
         }
+
 
         .contenido-cuento p {
             font-size: 1.2rem;

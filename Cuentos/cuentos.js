@@ -724,5 +724,102 @@ const CUENTOS = {
                 texto: "Si pudieras inventar un color nuevo usando cosas de la naturaleza, ¿cómo se llamaría y de qué estaría hecho?"
             }
         ]
+    },
+    22: {
+        numero: "22",
+        categoria: "frustracion", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+        temaTexto: "Entusiasmo y Perseverancia",
+        titulo: "El salto de las piedras dormilonas",
+        resumen: "Teo, un pequeño sapo acróbata, descubre que el entusiasmo no aparece antes de empezar, sino justo después de dar el primer salto.",
+        imagen: "imagenes/piedras-dormilonas.jpg",
+        emojiRespaldo: "🐸",
+        parrafos: [
+            "En el Estanque de los Nenúfares Brillantes vivía Teo, un pequeño sapo verde al que le encantaba hacer piruetas en el aire. Pero aquella tarde, cuando llegó la hora de practicar su rutina de saltos, Teo sintió que sus patas pesaban como si estuvieran hechas de plomo.",
+            "<em>«Qué flojera»</em>, suspiró Teo tirándose panza arriba sobre una hoja gigante. <em>«El agua está muy lejos, el viento da pereza y mejor no hago nada hoy»</em>. Miró hacia el circuito de piedras lisas que cruzaban el arroyo y pensó que terminar toda la práctica era demasiado trabajo.",
+            "De pronto, vio una chispa dorada saltando sobre la primera piedra. Era una luciérnaga diminuta que parecía estar jugando a las escondidas entre el musgo. Sin pensarlo demasiado, Teo decidió dar un solo saltito pequeño hasta esa primera piedra, únicamente para verla de cerca.",
+            "Al caer sobre la roca tibia, sus patas sintieron el cosquilleo del agua fresca salpicando. La luciérnaga voló hacia la segunda piedra, un poco más alta, y Teo sintió una curiosidad irresistible por alcanzarla. Dio un segundo salto, esta vez haciendo un giro en el aire.",
+            "Para cuando llegó a la tercera piedra, el peso de plomo había desaparecido por completo. Su corazón latía con ritmo de tambor alegre y sus patas se sentían ligeras como resortes mágicos. Teo continuó saltando por todo el circuito, inventando volteretas nuevas y cayendo con precisión en cada nenúfar.",
+            "Al terminar la última pirueta, Teo sonrió mirando el camino recorrido. Descubrió un secreto muy curioso: las ganas de entrenar casi nunca llegan mientras uno está acostado esperando; se esconden detrás del primer paso y despiertan en cuanto el cuerpo empieza a moverse."
+        ],
+        tituloPreguntas: "Para seguir imaginando juntos",
+        preguntas: [
+            {
+                negrita: "El truco del primer paso:",
+                texto: "Cuando sientes flojera de empezar un entrenamiento o una tarea, ¿cuál es ese «primer saltito» fácil que puedes hacer para encender tu energía?"
+            },
+            {
+                negrita: "Pies de plomo o resortes:",
+                texto: "¿Cómo cambia tu cuerpo cuando llevas cinco minutos patinando, nadando o haciendo gimnasia comparado con antes de empezar?"
+            },
+            {
+                negrita: "Tu circuito mágico:",
+                texto: "Si pudieras diseñar una pista de obstáculos con piedras, nenúfares y luciérnagas, ¿qué pirueta pondrías al final?"
+            }
+        ]
+    },
+    23: {
+        numero: "23",
+        categoria: "risa", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+        temaTexto: "Pura Risa y Fantasía",
+        titulo: "El campeonato de burbujas con hipo",
+        resumen: "Beto, un cangrejo peluquero en el fondo del mar, intenta hacerle un peinado elegante a un pulpo con ataque de risa.",
+        imagen: "imagenes/burbujas-hipo.jpg",
+        emojiRespaldo: "🦀",
+        parrafos: [
+            "En el arrecife de Coral Cosquillas funcionaba la peluquería submarina de Beto, un cangrejo muy elegante que usaba sus tenazas como tijeras de oro y peine de concha. Beto era famoso por hacer los peinados más quietos y serios de todo el océano.",
+            "Una mañana entró al salón Octavio, un pulpo morado que necesitaba un peinado de gala para el baile de las medusas. El único problema era que Octavio acababa de desayunar algas picantes y tenía un ataque de hipo submarino.",
+            "Cada vez que Beto lograba peinarle tres tentáculos con gelatina de estrella de mar, Octavio hacía: <em>«¡HIC-BLUB!»</em>, y soltaba una burbuja gigante que levantaba sus ocho brazos como si fueran espaguetis voladores.",
+            "Beto intentó ponerle horquillas de caracol para sujetar el peinado, pero en el siguiente <em>«¡HIC-BLUB!»</em>, las burbujas atraparon las horquillas y empezaron a flotar por todo el salón como globos de cumpleaños.",
+            "Intentaron detener el hipo haciendo muecas, nadando de cabeza y hasta haciéndole cosquillas a una almeja gruñona, pero solo lograron que un pez globo se contagiara de la risa y empezara a rebotar por las paredes como pelota de playa.",
+            "Al final, Octavio salió del salón sin peinado elegante, pero rodeado de una corona flotante de burbujas musicales que hacían <em>«plop»</em> al ritmo de sus pasos, ganando el premio al invitado más divertido de toda la fiesta."
+        ],
+        tituloPreguntas: "Para seguir imaginando juntos",
+        preguntas: [
+            {
+                negrita: "El peinado loco:",
+                texto: "Si tuvieras ocho brazos como Octavio, ¿qué peinado o acrobacia graciosa intentarías hacer con ellos al mismo tiempo?"
+            },
+            {
+                negrita: "Burbujas mágicas:",
+                texto: "Si pudieras atrapar un sonido chistoso dentro de una burbuja de jabón para que explotara después, ¿qué sonido guardarías?"
+            },
+            {
+                negrita: "Invitados submarinos:",
+                texto: "¿Qué otro animal del mar crees que haría un desastre divertidísimo dentro de una peluquería?"
+            }
+        ]
+    },
+    24: {
+        numero: "24",
+        categoria: "frustracion", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+        temaTexto: "Paciencia y Manejo de la Frustración",
+        titulo: "El nudo de los hilos de luna",
+        resumen: "Luna, una pequeña araña tejedora, descubre que tirar con fuerza solo aprieta los enredos, mientras que respirar y soltar abre el camino.",
+        imagen: "imagenes/hilos-luna.jpg",
+        emojiRespaldo: "🕷️",
+        parrafos: [
+            "En lo alto de un pino plateado vivía Luna, una pequeña arañita tejedora famosa por crear telarañas que brillaban como encaje de cristal bajo las estrellas. Aquella noche preparaba una hamaca especial para atrapar gotas de rocío.",
+            "Todo iba perfecto hasta que una ráfaga de viento travieso pasó por la rama y enredó los tres hilos principales en un nudo apretado y chueco justo en el centro del tejido.",
+            "Luna sintió que sus ocho patitas se ponían tensas y calientes. Quiso arreglarlo rapidísimo y empezó a jalar el hilo con todas sus fuerzas. Pero cuanto más fuerte tiraba, más chiquito y duro se volvía el nudo, hasta parecer una bolita de piedra.",
+            "<em>«¡No sale, no sale!»</em>, resopló Luna dando un pisotón sobre la rama, haciendo que toda la telaraña temblara y se enredara todavía más con una hoja seca.",
+            "Agotada, Luna se detuvo un instante, soltó los hilos y dejó caer sus ocho patitas como si fueran fideos cocidos. Tomó aire profundo llenando su pancita de aire fresco de la noche y lo soltó despacio, mirando el nudo sin tocarlo.",
+            "Al dejar de jalar, los hilos se relajaron y dejaron ver un pequeño espacio libre justo en medio del enredo. Con mucha suavidad, como quien acaricia el ala de una mariposa, Luna metió la punta de una patita por ese huequito y el nudo se deshizo casi solo, deslizando los hilos de vuelta a su lugar.",
+            "Esa noche, Luna terminó su hamaca plateada y descubrió que los enredos no se vencen con fuerza ni con prisa: se resuelven cuando uno suelta la tensión y mira con calma dónde está la salida."
+        ],
+        tituloPreguntas: "Para seguir imaginando juntos",
+        preguntas: [
+            {
+                negrita: "El truco de soltar:",
+                texto: "¿Alguna vez te ha pasado que algo no te sale (un movimiento, un dibujo o una tarea) y entre más te apuras, más difícil se pone?"
+            },
+            {
+                negrita: "Patitas de fideo:",
+                texto: "Si tu cuerpo se pone tenso y enojado como el de Luna, ¿cómo se vería hacer el truco de «soltar las patitas como fideos»?"
+            },
+            {
+                negrita: "Tu tejido mágico:",
+                texto: "Si pudieras tejer una hamaca brillante en el bosque, ¿qué cosas de la noche te gustaría atrapar en ella?"
+            }
+        ]
     }
 };

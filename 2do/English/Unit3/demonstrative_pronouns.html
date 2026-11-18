@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English Grammar: This / That / These / Those</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial Rounded MT Bold', sans-serif;
+      background-color: #f0f8ff;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      border: 4px solid #ff9f43;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #2e86de;
+      margin-bottom: 5px;
+      font-size: 28px;
+    }
+    .badges {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 15px 0;
+    }
+    .badge {
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 16px;
+      color: white;
+    }
+    .b-this { background-color: #ee5253; }
+    .b-that { background-color: #ff9f43; }
+    .b-these { background-color: #10ac84; }
+    .b-those { background-color: #2e86de; }
+
+    .instructions {
+      background-color: #fff3cd;
+      border: 2px dashed #ffc107;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(390px, 1fr));
+      gap: 15px;
+    }
+    .card {
+      background: #f8f9fa;
+      border: 2px solid #dfe6e9;
+      border-radius: 15px;
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+    .card.correct {
+      background-color: #d4edda;
+      border-color: #28a745;
+    }
+    .card.incorrect {
+      background-color: #f8d7da;
+      border-color: #dc3545;
+    }
+    .question-area {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .question-text {
+      font-size: 17px;
+      line-height: 1.4;
+    }
+    .num {
+      font-weight: bold;
+      color: #576574;
+      margin-right: 4px;
+    }
+    select {
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 4px 8px;
+      border-radius: 8px;
+      border: 2px solid #54a0ff;
+      background-color: #fff;
+      color: #222f3e;
+      cursor: pointer;
+    }
+    .feedback {
+      font-size: 14px;
+      font-weight: bold;
+      display: none;
+    }
+    .feedback.show-correct {
+      display: inline-block;
+      color: #155724;
+    }
+    .feedback.show-wrong {
+      display: inline-block;
+      color: #721c24;
+      background-color: #ffffff;
+      padding: 2px 8px;
+      border-radius: 6px;
+      border: 1px solid #dc3545;
+      width: fit-content;
+    }
+    .emoji {
+      font-size: 36px;
+      margin-left: 12px;
+      user-select: none;
+    }
+    .controls {
+      text-align: center;
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    button {
+      font-family: inherit;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    button:hover {
+      transform: scale(1.05);
+    }
+    .btn-check {
+      background-color: #10ac84;
+      color: white;
+    }
+    .btn-reset {
+      background-color: #ff9f43;
+      color: white;
+    }
+    #result-box {
+      margin-top: 25px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      padding: 15px;
+      border-radius: 15px;
+      display: none;
+    }
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>🌟 English Grammar Practice 🌟</h1>
+    <div class="badges">
+      <span class="badge b-this">THIS (1 near 👇)</span>
+      <span class="badge b-that">THAT (1 far 👉)</span>
+      <span class="badge b-these">THESE (Many near 👇)</span>
+      <span class="badge b-those">THOSE (Many far 👉)</span>
+    </div>
+  </header>
+
+  <div class="instructions">
+    📝 <strong>Instructions:</strong> Think if the object is <strong>near</strong> or <strong>far</strong>, and if it is <strong>one</strong> or <strong>many</strong>!
+  </div>
+
+  <div class="grid" id="quiz-container"></div>
+
+  <div class="controls">
+    <button class="btn-check" onclick="gradeQuiz()">✅ Check Answers</button>
+    <button class="btn-reset" onclick="resetQuiz()">🔄 Try Again</button>
+  </div>
+
+  <div id="result-box"></div>
+</div>
+
+<script>
+  const questions = [
+    { num: 1, text: "is a baby elephant.", emoji: "🐘", answer: "That" },
+    { num: 2, text: "are new crayons.", emoji: "🖍️", answer: "These" },
+    { num: 3, text: "are red apples.", emoji: "🍎", answer: "These" },
+    { num: 4, text: "is a vintage car.", emoji: "🚗", answer: "That" },
+    { num: 5, text: "is a palm tree.", emoji: "🌴", answer: "That" },
+    { num: 6, text: "are watermelon slices.", emoji: "🍉", answer: "These" },
+    { num: 7, text: "is a propeller plane.", emoji: "🛩️", answer: "That" },
+    { num: 8, text: "are happy dogs.", emoji: "🐶", answer: "Those" },
+    { num: 9, text: "is a log cabin.", emoji: "🏡", answer: "That" },
+    { num: 10, text: "is a new backpack.", emoji: "🎒", answer: "This" },
+    { num: 11, text: "is a cheerful sun.", emoji: "🌞", answer: "That" },
+    { num: 12, text: "is a new desk.", emoji: "🪑", answer: "This" },
+    { num: 13, text: "are colored pencils.", emoji: "✏️", answer: "These" },
+    { num: 14, text: "are pretty tulips.", emoji: "🌷", answer: "Those" },
+    { num: 15, text: "are glowing stars.", emoji: "✨", answer: "Those" },
+    { num: 16, text: "are palm leaves.", emoji: "🌿", answer: "Those" },
+    { num: 17, text: "are modern stools.", emoji: "🪑", answer: "Those" },
+    { num: 18, text: "are playful cats.", emoji: "🐱", answer: "Those" },
+    { num: 19, text: "is a ripe pineapple.", emoji: "🍍", answer: "This" },
+    { num: 20, text: "are paper airplanes.", emoji: "✈️", answer: "These" },
+    { num: 21, text: "is a tiny frog.", emoji: "🐸", answer: "This" },
+    { num: 22, text: "is a red bicycle.", emoji: "🚲", answer: "That" },
+    { num: 23, text: "are open books.", emoji: "📚", answer: "These" },
+    { num: 24, text: "is an old clock.", emoji: "🕰️", answer: "That" }
+  ];
+
+  const container = document.getElementById("quiz-container");
+
+  function renderQuestions() {
+    container.innerHTML = "";
+    questions.forEach((q, index) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.id = `card-${index}`;
+
+      card.innerHTML = `
+        <div class="question-area">
+          <div class="question-text">
+            <span class="num">${q.num}.</span>
+            <select id="select-${index}">
+              <option value="">-- Choose --</option>
+              <option value="This">This</option>
+              <option value="That">That</option>
+              <option value="These">These</option>
+              <option value="Those">Those</option>
+            </select>
+            ${q.text}
+          </div>
+          <div class="feedback" id="feedback-${index}"></div>
+        </div>
+        <div class="emoji">${q.emoji}</div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function gradeQuiz() {
+    let score = 0;
+
+    questions.forEach((q, index) => {
+      const select = document.getElementById(`select-${index}`);
+      const card = document.getElementById(`card-${index}`);
+      const feedback = document.getElementById(`feedback-${index}`);
+      const val = select.value;
+
+      card.classList.remove("correct", "incorrect");
+      feedback.className = "feedback";
+
+      if (val === q.answer) {
+        score++;
+        card.classList.add("correct");
+        feedback.classList.add("show-correct");
+        feedback.textContent = "✔️ Correct!";
+      } else {
+        card.classList.add("incorrect");
+        feedback.classList.add("show-wrong");
+        feedback.textContent = `❌ Correct answer: ${q.answer}`;
+      }
+    });
+
+    const resultBox = document.getElementById("result-box");
+    resultBox.style.display = "block";
+
+    if (score === questions.length) {
+      resultBox.style.backgroundColor = "#d4edda";
+      resultBox.style.color = "#155724";
+      resultBox.innerHTML = `🎉 Awesome job! You got ${score} out of ${questions.length} ⭐⭐⭐`;
+    } else if (score >= 16) {
+      resultBox.style.backgroundColor = "#fff3cd";
+      resultBox.style.color = "#856404";
+      resultBox.innerHTML = `👏 Great job! You got ${score} out of ${questions.length}. Check the red boxes!`;
+    } else {
+      resultBox.style.backgroundColor = "#f8d7da";
+      resultBox.style.color = "#721c24";
+      resultBox.innerHTML = `💪 You got ${score} out of ${questions.length}. You can do it, try again!`;
+    }
+  }
+
+  function resetQuiz() {
+    renderQuestions();
+    const resultBox = document.getElementById("result-box");
+    resultBox.style.display = "none";
+  }
+
+  renderQuestions();
+</script>
+
+</body>
+</html>

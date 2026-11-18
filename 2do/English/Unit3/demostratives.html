@@ -234,35 +234,50 @@
 
 <script>
   const questions = [
-    { num: 1, before: "Look at", after: "birds up there in the tree.", options: ["this", "these", "those"], answer: "those", emoji: "🐦", hint: "Birds = many 🐦🐦 | 'up there' = far 👉" },
-    { num: 2, before: "Are", after: "your books over there on the table?", options: ["these", "those", "this"], answer: "those", emoji: "📚", hint: "Books = many 📚 | 'over there' = far 👉" },
-    { num: 3, before: "My umbrella is right here.", after: "is my umbrella.", options: ["That", "This", "These"], answer: "This", emoji: "☂️", hint: "Umbrella = 1 ☂️ | 'right here' = near 👇" },
-    { num: 4, before: "Those apples are red, but", after: "apples over here are green.", options: ["that", "this", "these"], answer: "these", emoji: "🍏", hint: "Apples = many 🍏🍏 | 'over here' = near 👇" },
-    { num: 5, before: "Do you see", after: "big hotel over there across the street?", options: ["that", "this", "those"], answer: "that", emoji: "🏨", hint: "Hotel = 1 🏨 | 'over there' = far 👉" },
-    { num: 6, before: "Please come here and look at", after: "picture.", options: ["that", "these", "this"], answer: "this", emoji: "🖼️", hint: "Picture = 1 🖼️ | 'come here' = near 👇" },
-    { num: 7, before: "Who is", after: "tall man standing over there?", options: ["those", "that", "this"], answer: "that", emoji: "👨", hint: "Man = 1 👨 | 'over there' = far 👉" },
-    { num: 8, before: "Can you see", after: "fishing boats on the lake?", options: ["those", "that", "these"], answer: "those", emoji: "⛵", hint: "Boats = many ⛵⛵ | on the lake = far 👉" },
-    { num: 9, before: "Hello, Dr. Smith. Could you please look at", after: "cut on my finger?", options: ["this", "that", "these"], answer: "this", emoji: "🩹", hint: "Cut = 1 🩹 | on my finger = near 👇" },
-    { num: 10, before: "Maybe we can ask", after: "policeman over there for directions.", options: ["that", "these", "those"], answer: "that", emoji: "👮", hint: "Policeman = 1 👮 | 'over there' = far 👉" },
-    { num: 11, before: "", after: "is an easy test right here on my desk.", options: ["Those", "This", "That"], answer: "This", emoji: "📝", hint: "Test = 1 📝 | 'right here on my desk' = near 👇" },
-    { num: 12, before: "How many of", after: "cookies here would you like? Two? Okay, here you are.", options: ["this", "those", "these"], answer: "these", emoji: "🍪", hint: "Cookies = many 🍪🍪 | 'here' = near 👇" },
-    { num: 13, before: "", after: "movie on TV over there is really great!", options: ["Those", "That", "This"], answer: "That", emoji: "🎬", hint: "Movie = 1 🎬 | 'over there' = far 👉" },
-    { num: 14, before: "", after: "cake in front of me is delicious!", options: ["This", "These", "Those"], answer: "This", emoji: "🍰", hint: "Cake = 1 🍰 | 'in front of me' = near 👇" },
-    { num: 15, before: "Do you know", after: "person over there by the post office?", options: ["this", "that", "those"], answer: "that", emoji: "📮", hint: "Person = 1 🧍 | 'over there' = far 👉" },
-    { num: 16, before: "Do you think", after: "sixteen grammar questions here are easy or difficult?", options: ["this", "these", "that"], answer: "these", emoji: "🤔", hint: "Questions = many ❓ | 'here' on screen = near 👇" }
+    { before: "Look at", after: "birds up there in the tree.", options: ["this", "these", "those"], answer: "those", emoji: "🐦", hint: "Birds = many 🐦🐦 | 'up there' = far 👉" },
+    { before: "Are", after: "your books over there on the table?", options: ["these", "those", "this"], answer: "those", emoji: "📚", hint: "Books = many 📚 | 'over there' = far 👉" },
+    { before: "My umbrella is right here.", after: "is my umbrella.", options: ["That", "This", "These"], answer: "This", emoji: "☂️", hint: "Umbrella = 1 ☂️ | 'right here' = near 👇" },
+    { before: "Those apples are red, but", after: "apples over here are green.", options: ["that", "this", "these"], answer: "these", emoji: "🍏", hint: "Apples = many 🍏🍏 | 'over here' = near 👇" },
+    { before: "Do you see", after: "big hotel over there across the street?", options: ["that", "this", "those"], answer: "that", emoji: "🏨", hint: "Hotel = 1 🏨 | 'over there' = far 👉" },
+    { before: "Please come here and look at", after: "picture.", options: ["that", "these", "this"], answer: "this", emoji: "🖼️", hint: "Picture = 1 🖼️ | 'come here' = near 👇" },
+    { before: "Who is", after: "tall man standing over there?", options: ["those", "that", "this"], answer: "that", emoji: "👨", hint: "Man = 1 👨 | 'over there' = far 👉" },
+    { before: "Can you see", after: "fishing boats on the lake?", options: ["those", "that", "these"], answer: "those", emoji: "⛵", hint: "Boats = many ⛵⛵ | on the lake = far 👉" },
+    { before: "Hello, Dr. Smith. Could you please look at", after: "cut on my finger?", options: ["this", "that", "these"], answer: "this", emoji: "🩹", hint: "Cut = 1 🩹 | on my finger = near 👇" },
+    { before: "Maybe we can ask", after: "policeman over there for directions.", options: ["that", "these", "those"], answer: "that", emoji: "👮", hint: "Policeman = 1 👮 | 'over there' = far 👉" },
+    { before: "", after: "is an easy test right here on my desk.", options: ["Those", "This", "That"], answer: "This", emoji: "📝", hint: "Test = 1 📝 | 'right here on my desk' = near 👇" },
+    { before: "How many of", after: "cookies here would you like? Two? Okay, here you are.", options: ["this", "those", "these"], answer: "these", emoji: "🍪", hint: "Cookies = many 🍪🍪 | 'here' = near 👇" },
+    { before: "", after: "movie on TV over there is really great!", options: ["Those", "That", "This"], answer: "That", emoji: "🎬", hint: "Movie = 1 🎬 | 'over there' = far 👉" },
+    { before: "", after: "cake in front of me is delicious!", options: ["This", "These", "Those"], answer: "This", emoji: "🍰", hint: "Cake = 1 🍰 | 'in front of me' = near 👇" },
+    { before: "Do you know", after: "person over there by the post office?", options: ["this", "that", "those"], answer: "that", emoji: "📮", hint: "Person = 1 🧍 | 'over there' = far 👉" },
+    { before: "Do you think", after: "sixteen grammar questions here are easy or difficult?", options: ["this", "these", "that"], answer: "these", emoji: "🤔", hint: "Questions = many ❓ | 'here' on screen = near 👇" }
   ];
 
+  let activeQuestions = [];
   const container = document.getElementById("quiz-container");
+
+  // Función para mezclar las preguntas al azar
+  function shuffleArray(array) {
+    const copy = [...array];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
 
   function renderQuestions() {
     container.innerHTML = "";
-    questions.forEach((q, index) => {
+    activeQuestions = shuffleArray(questions);
+
+    activeQuestions.forEach((q, index) => {
       const card = document.createElement("div");
       card.className = "card";
       card.id = `card-${index}`;
 
       let optionsHtml = `<option value="">-- Choose --</option>`;
-      q.options.forEach(opt => {
+      // También mezclamos las 3 opciones del combo box al azar
+      const shuffledOptions = shuffleArray(q.options);
+      shuffledOptions.forEach(opt => {
         optionsHtml += `<option value="${opt}">${opt}</option>`;
       });
 
@@ -271,7 +286,7 @@
       card.innerHTML = `
         <div class="question-area">
           <div class="question-text">
-            <span class="num">${q.num}.</span>
+            <span class="num">${index + 1}.</span>
             ${spaceBefore}<select id="select-${index}">${optionsHtml}</select> ${q.after}
           </div>
           <button type="button" class="hint-btn" onclick="toggleHint(${index})">💡 Hint</button>
@@ -286,17 +301,13 @@
 
   function toggleHint(index) {
     const hintBox = document.getElementById(`hint-${index}`);
-    if (hintBox.style.display === "block") {
-      hintBox.style.display = "none";
-    } else {
-      hintBox.style.display = "block";
-    }
+    hintBox.style.display = hintBox.style.display === "block" ? "none" : "block";
   }
 
   function gradeQuiz() {
     let score = 0;
 
-    questions.forEach((q, index) => {
+    activeQuestions.forEach((q, index) => {
       const select = document.getElementById(`select-${index}`);
       const card = document.getElementById(`card-${index}`);
       const feedback = document.getElementById(`feedback-${index}`);
@@ -320,18 +331,18 @@
     const resultBox = document.getElementById("result-box");
     resultBox.style.display = "block";
 
-    if (score === questions.length) {
+    if (score === activeQuestions.length) {
       resultBox.style.backgroundColor = "#d4edda";
       resultBox.style.color = "#155724";
-      resultBox.innerHTML = `🎉 Awesome job! You got ${score} out of ${questions.length} ⭐⭐⭐`;
+      resultBox.innerHTML = `🎉 Awesome job! You got ${score} out of ${activeQuestions.length} ⭐⭐⭐`;
     } else if (score >= 11) {
       resultBox.style.backgroundColor = "#fff3cd";
       resultBox.style.color = "#856404";
-      resultBox.innerHTML = `👏 Great job! You got ${score} out of ${questions.length}. Check the red boxes!`;
+      resultBox.innerHTML = `👏 Great job! You got ${score} out of ${activeQuestions.length}. Check the red boxes!`;
     } else {
       resultBox.style.backgroundColor = "#f8d7da";
       resultBox.style.color = "#721c24";
-      resultBox.innerHTML = `💪 You got ${score} out of ${questions.length}. You can do it, try again!`;
+      resultBox.innerHTML = `💪 You got ${score} out of ${activeQuestions.length}. You can do it, try again!`;
     }
   }
 
@@ -342,6 +353,7 @@
   }
 
   renderQuestions();
+
 </script>
 
 </body>

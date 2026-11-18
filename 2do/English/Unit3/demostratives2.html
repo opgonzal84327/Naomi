@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fruits & Vegetables: This / That / These / Those</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial Rounded MT Bold', sans-serif;
+      background-color: #f4fbe8;
+      color: #333;
+      margin: 0;
+      padding: 15px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      border: 4px solid #8bc34a;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    h1 {
+      color: #558b2f;
+      margin: 0 0 10px 0;
+      font-size: 26px;
+    }
+    .badges {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .badge {
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 14px;
+      color: white;
+    }
+    .b-this { background-color: #ee5253; }
+    .b-that { background-color: #ff9f43; }
+    .b-these { background-color: #10ac84; }
+    .b-those { background-color: #2e86de; }
+
+    .instructions {
+      background-color: #fff8e1;
+      border: 2px dashed #ffb300;
+      border-radius: 12px;
+      padding: 10px 15px;
+      text-align: center;
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 15px;
+    }
+    .card {
+      background: #fafafa;
+      border: 2px solid #dfe6e9;
+      border-radius: 15px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      transition: all 0.3s ease;
+    }
+    .card.correct {
+      background-color: #d4edda;
+      border-color: #28a745;
+    }
+    .card.incorrect {
+      background-color: #f8d7da;
+      border-color: #dc3545;
+    }
+
+    /* Visual de la flecha y el emoji */
+    .visual-row {
+      display: flex;
+      align-items: center;
+      background-color: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 8px 12px;
+      min-height: 44px;
+    }
+    .arrow-wrapper {
+      display: flex;
+      align-items: center;
+      margin-right: 10px;
+    }
+    .arrow-line-short {
+      width: 30px;
+      height: 8px;
+      background-color: #3b82f6;
+      border-radius: 3px 0 0 3px;
+    }
+    .arrow-line-long {
+      width: 125px;
+      height: 8px;
+      background-color: #3b82f6;
+      border-radius: 3px 0 0 3px;
+    }
+    .arrow-head {
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-left: 14px solid #3b82f6;
+    }
+    .emoji-display {
+      font-size: 30px;
+      letter-spacing: 2px;
+      user-select: none;
+    }
+
+    /* Fila de la oración y combos */
+    .sentence-row {
+      font-size: 16px;
+      line-height: 1.6;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .num {
+      font-weight: bold;
+      color: #576574;
+    }
+    select {
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: bold;
+      padding: 4px 6px;
+      border-radius: 8px;
+      border: 2px solid #54a0ff;
+      background-color: #fff;
+      color: #222f3e;
+      cursor: pointer;
+    }
+    .feedback {
+      font-size: 14px;
+      font-weight: bold;
+      display: none;
+    }
+    .feedback.show-correct {
+      display: inline-block;
+      color: #155724;
+    }
+    .feedback.show-wrong {
+      display: inline-block;
+      color: #721c24;
+      background-color: #ffffff;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid #dc3545;
+      width: fit-content;
+    }
+
+    .controls {
+      text-align: center;
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    button {
+      font-family: inherit;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    button:hover {
+      transform: scale(1.05);
+    }
+    .btn-check {
+      background-color: #10ac84;
+      color: white;
+    }
+    .btn-reset {
+      background-color: #ff9f43;
+      color: white;
+    }
+    #result-box {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      padding: 15px;
+      border-radius: 15px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>🥕 Fruits & Vegetables Grammar 🍍</h1>
+    <div class="badges">
+      <span class="badge b-this">THIS is (1 near ➡️)</span>
+      <span class="badge b-that">THAT is (1 far ━━━➤)</span>
+      <span class="badge b-these">THESE are (Many near ➡️)</span>
+      <span class="badge b-those">THOSE are (Many far ━━━➤)</span>
+    </div>
+  </header>
+
+  <div class="instructions">
+    📝 <strong>Instructions:</strong> Look at the arrow (short = near, long = far) and count the food! Choose <strong>This/That/These/Those</strong> and <strong>is/are</strong>.
+  </div>
+
+  <div class="grid" id="quiz-container"></div>
+
+  <div class="controls">
+    <button class="btn-check" onclick="gradeQuiz()">✅ Check Answers</button>
+    <button class="btn-reset" onclick="renderQuestions()">🔄 New 10 Questions</button>
+  </div>
+
+  <div id="result-box"></div>
+</div>
+
+<script>
+  // Banco con los 8 vegetales y 8 frutas de la imagen
+  const foodItems = [
+    // Vegetables
+    { singular: "a bean.", plural: "beans.", emoji: "🫘" },
+    { singular: "a cabbage.", plural: "cabbages.", emoji: "🥬" },
+    { singular: "a carrot.", plural: "carrots.", emoji: "🥕" },
+    { singular: "a corn.", plural: "corns.", emoji: "🌽" },
+    { singular: "a mushroom.", plural: "mushrooms.", emoji: "🍄" },
+    { singular: "an onion.", plural: "onions.", emoji: "🧅" },
+    { singular: "a pea.", plural: "peas.", emoji: "🫛" },
+    { singular: "a pepper.", plural: "peppers.", emoji: "🫑" },
+    // Fruits
+    { singular: "a coconut.", plural: "coconuts.", emoji: "🥥" },
+    { singular: "a kiwi.", plural: "kiwis.", emoji: "🥝" },
+    { singular: "a lemon.", plural: "lemons.", emoji: "🍋" },
+    { singular: "a lime.", plural: "limes.", emoji: "🍈" },
+    { singular: "a mango.", plural: "mangoes.", emoji: "🥭" },
+    { singular: "an orange.", plural: "oranges.", emoji: "🍊" },
+    { singular: "a pear.", plural: "pears.", emoji: "🍐" },
+    { singular: "a pineapple.", plural: "pineapples.", emoji: "🍍" }
+  ];
+
+  // Generamos todas las combinaciones posibles (16 alimentos x 2 cantidades x 2 distancias = 64 preguntas)
+  function buildQuestionBank() {
+    const bank = [];
+    foodItems.forEach(item => {
+      // 1. Singular + Near -> This is
+      bank.push({
+        noun: item.singular,
+        emojis: item.emoji,
+        distance: "near",
+        ansPronoun: "This",
+        ansVerb: "is"
+      });
+      // 2. Singular + Far -> That is
+      bank.push({
+        noun: item.singular,
+        emojis: item.emoji,
+        distance: "far",
+        ansPronoun: "That",
+        ansVerb: "is"
+      });
+      // 3. Plural + Near -> These are
+      bank.push({
+        noun: item.plural,
+        emojis: `${item.emoji}${item.emoji}`,
+        distance: "near",
+        ansPronoun: "These",
+        ansVerb: "are"
+      });
+      // 4. Plural + Far -> Those are
+      bank.push({
+        noun: item.plural,
+        emojis: `${item.emoji}${item.emoji}`,
+        distance: "far",
+        ansPronoun: "Those",
+        ansVerb: "are"
+      });
+    });
+    return bank;
+  }
+
+  const fullBank = buildQuestionBank();
+  let currentTen = [];
+  const container = document.getElementById("quiz-container");
+
+  function shuffleArray(array) {
+    const copy = [...array];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function renderQuestions() {
+    container.innerHTML = "";
+    document.getElementById("result-box").style.display = "none";
+
+    // Selecciona 10 preguntas al azar del banco de 64
+    currentTen = shuffleArray(fullBank).slice(0, 10);
+
+    currentTen.forEach((q, index) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.id = `card-${index}`;
+
+      const arrowClass = q.distance === "near" ? "arrow-line-short" : "arrow-line-long";
+
+      card.innerHTML = `
+        <div class="visual-row">
+          <div class="arrow-wrapper" title="${q.distance === 'near' ? 'Near' : 'Far'}">
+            <div class="${arrowClass}"></div>
+            <div class="arrow-head"></div>
+          </div>
+          <div class="emoji-display">${q.emojis}</div>
+        </div>
+
+        <div class="sentence-row">
+          <span class="num">${index + 1}.</span>
+          <select id="pronoun-${index}">
+            <option value="">-- Choose --</option>
+            <option value="This">This</option>
+            <option value="That">That</option>
+            <option value="These">These</option>
+            <option value="Those">Those</option>
+          </select>
+          <select id="verb-${index}">
+            <option value="">is/are</option>
+            <option value="is">is</option>
+            <option value="are">are</option>
+          </select>
+          <span>${q.noun}</span>
+        </div>
+
+        <div class="feedback" id="feedback-${index}"></div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function gradeQuiz() {
+    let score = 0;
+
+    currentTen.forEach((q, index) => {
+      const pVal = document.getElementById(`pronoun-${index}`).value;
+      const vVal = document.getElementById(`verb-${index}`).value;
+      const card = document.getElementById(`card-${index}`);
+      const feedback = document.getElementById(`feedback-${index}`);
+
+      card.classList.remove("correct", "incorrect");
+      feedback.className = "feedback";
+
+      if (pVal === q.ansPronoun && vVal === q.ansVerb) {
+        score++;
+        card.classList.add("correct");
+        feedback.classList.add("show-correct");
+        feedback.textContent = "✔️ Correct!";
+      } else {
+        card.classList.add("incorrect");
+        feedback.classList.add("show-wrong");
+        feedback.textContent = `❌ Correct: ${q.ansPronoun} ${q.ansVerb}`;
+      }
+    });
+
+    const resultBox = document.getElementById("result-box");
+    resultBox.style.display = "block";
+
+    if (score === 10) {
+      resultBox.style.backgroundColor = "#d4edda";
+      resultBox.style.color = "#155724";
+      resultBox.innerHTML = `🎉 Perfect! You got 10 out of 10 ⭐⭐⭐`;
+    } else if (score >= 7) {
+      resultBox.style.backgroundColor = "#fff3cd";
+      resultBox.style.color = "#856404";
+      resultBox.innerHTML = `👏 Great job! You got ${score} out of 10. Check the red boxes!`;
+    } else {
+      resultBox.style.backgroundColor = "#f8d7da";
+      resultBox.style.color = "#721c24";
+      resultBox.innerHTML = `💪 You got ${score} out of 10. Look at the arrows and try again!`;
+    }
+  }
+
+  renderQuestions();
+</script>
+
+</body>
+</html>

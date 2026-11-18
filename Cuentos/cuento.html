@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargando cuento... - Cuentos para ti</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --color-fondo: #FDF8F2;
+            --color-tarjeta: #FFFFFF;
+            --color-primario: #4A7C59;
+            --color-secundario: #E07A5F;
+            --color-texto: #2B2D42;
+            --color-caja-preguntas: #F2EFE9;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.8;
+            padding: 20px;
+        }
+
+        .contenedor-libro {
+            max-width: 780px;
+            margin: 20px auto;
+            background-color: var(--color-tarjeta);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            padding: 40px 50px;
+        }
+
+        .etiqueta-tema {
+            display: inline-block;
+            background-color: #E8F3EC;
+            color: var(--color-primario);
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        /* Colores dinámicos según categoría */
+        .tema-empatia { background-color: #E8F3EC; color: #3A6B4C; }
+        .tema-valentia { background-color: #FCECE8; color: #C85A3F; }
+        .tema-frustracion { background-color: #EBF2FA; color: #3B6998; }
+        .tema-risa { background-color: #F3E8FF; color: #6B3FA0; }
+
+        h1 {
+            font-size: 2.3rem;
+            color: var(--color-primario);
+            line-height: 1.25;
+            margin-bottom: 25px;
+            font-weight: 800;
+        }
+
+        .marco-imagen {
+            width: 100%;
+            height: 340px;
+            background-color: #F4F1EA;
+            border: 3px dashed #D3CBB8;
+            border-radius: 18px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .marco-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .contenido-cuento p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .dialogo {
+            color: #1D3557;
+            font-weight: 600;
+        }
+
+        .separador {
+            text-align: center;
+            margin: 35px 0;
+            color: var(--color-secundario);
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+        }
+
+        .seccion-preguntas {
+            background-color: var(--color-caja-preguntas);
+            border-left: 6px solid var(--color-secundario);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-top: 30px;
+        }
+
+        .seccion-preguntas h2 {
+            color: var(--color-secundario);
+            font-size: 1.4rem;
+            margin-bottom: 18px;
+            font-weight: 800;
+        }
+
+        .lista-preguntas { list-style: none; }
+
+        .lista-preguntas li {
+            margin-bottom: 16px;
+            font-size: 1.08rem;
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .lista-preguntas li::before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        .lista-preguntas strong { color: var(--color-primario); }
+
+        .pie-pagina {
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 1px solid #EAEAEA;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #777;
+        }
+
+        .boton-nav {
+            text-decoration: none;
+            background-color: var(--color-primario);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .boton-nav:hover { background-color: #3A6346; }
+
+        @media (max-width: 600px) {
+            .contenedor-libro { padding: 25px 20px; }
+            h1 { font-size: 1.8rem; }
+            .marco-imagen { height: 220px; }
+            .contenido-cuento p { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="contenedor-libro" id="visor-cuento">
+        <!-- El contenido se genera automáticamente desde cuentos.js -->
+    </main>
+
+    <!-- Cargamos la base de datos de cuentos -->
+    <script src="cuentos.js"></script>
+    <script>
+        // 1. Obtener el ID del cuento desde la URL (ej. cuento.html?id=21)
+        const params = new URLSearchParams(window.location.search);
+        const idCuento = params.get('id');
+        const cuento = CUENTOS[idCuento];
+        const visor = document.getElementById('visor-cuento');
+
+        if (cuento) {
+            // 2. Actualizar el título de la pestaña del navegador
+            document.title = `${cuento.titulo} - Cuentos para ti`;
+
+            // 3. Construir los párrafos (detecta automáticamente si empiezan con guion de diálogo)
+            const htmlParrafos = cuento.parrafos.map(texto => {
+                const esDialogo = texto.trim().startsWith('—');
+                return `<p class="${esDialogo ? 'dialogo' : ''}">${texto}</p>`;
+            }).join('');
+
+            // 4. Construir las preguntas
+            const htmlPreguntas = cuento.preguntas.map(p => 
+                `<li><strong>${p.negrita}</strong> ${p.texto}</li>`
+            ).join('');
+
+            // 5. Inyectar todo en el contenedor
+            visor.innerHTML = `
+                <span class="etiqueta-tema tema-${cuento.categoria}">${cuento.temaTexto}</span>
+                <h1>${cuento.titulo}</h1>
+
+                <div class="marco-imagen">
+                    <img src="${cuento.imagen}" alt="${cuento.titulo}" 
+                         onerror="this.style.display='none'; this.parentElement.innerHTML='<p style=\\'color:#8C8270; text-align:center; padding:20px;\\'>🖼️ <strong>Espacio para tu imagen</strong><br>Guarda tu imagen como <code>${cuento.imagen}</code></p>';">
+                </div>
+
+                <article class="contenido-cuento">
+                    ${htmlParrafos}
+                </article>
+
+                <div class="separador">• • •</div>
+
+                <section class="seccion-preguntas">
+                    <h2>${cuento.tituloPreguntas || 'Preguntas para conversar y reflexionar juntos'}</h2>
+                    <ul class="lista-preguntas">
+                        ${htmlPreguntas}
+                    </ul>
+                </section>
+
+                <footer class="pie-pagina">
+                    <span>Cuento #${cuento.numero.padStart(2, '0')} • Biblioteca de papá y mamá</span>
+                    <a href="index.html" class="boton-nav">← Volver al índice</a>
+                </footer>
+            `;
+        } else {
+            // Mensaje amigable si alguien entra a un número de cuento que aún no existe
+            document.title = "Cuento no encontrado";
+            visor.innerHTML = `
+                <div style="text-align: center; padding: 40px 20px;">
+                    <h1 style="margin-bottom: 15px;">¡Ups! Ese cuento aún se está escribiendo ✍️</h1>
+                    <p style="margin-bottom: 25px; color: #666;">Regresa a la biblioteca para elegir una de nuestras historias disponibles.</p>
+                    <a href="index.html" class="boton-nav">← Volver al índice</a>
+                </div>
+            `;
+        }
+    </script>
+
+</body>
+</html>

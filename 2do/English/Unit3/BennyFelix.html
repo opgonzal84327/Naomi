@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive English Story</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fef9c3; color: #1e293b; line-height: 1.6; margin: 0; padding: 20px; }
+        .top-controls { max-width: 1320px; margin: 0 auto 15px auto; display: flex; justify-content: flex-end; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .btn-swap { background-color: #ffffff; color: #854d0e; border: 2px solid #fde047; border-radius: 10px; padding: 8px 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: all 0.2s; }
+        .btn-swap:hover { background-color: #fef08a; }
+
+        .main-layout { max-width: 1320px; margin: 0 auto; display: flex; gap: 24px; align-items: flex-start; }
+        .main-layout.swapped { flex-direction: row-reverse; }
+
+        .story-column { flex: 1.8; min-width: 0; background: #ffffff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 3px solid #fde047; }
+        .vocab-sidebar { flex: 1; min-width: 320px; max-width: 380px; background: #ffffff; padding: 22px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 3px solid #bbf7d0; position: sticky; top: 20px; max-height: calc(100vh - 95px); box-sizing: border-box; overflow-y: auto; }
+
+        h1 { text-align: center; color: #b45309; margin: 0 0 5px 0; font-size: 2em; }
+        .subtitle { text-align: center; color: #64748b; font-weight: 600; margin-bottom: 20px; font-size: 1.05em; }
+        .story-img { display: block; max-width: 100%; max-height: 320px; margin: 0 auto 25px auto; border-radius: 12px; border: 2px solid #fde047; object-fit: cover; }
+
+        h2 { color: #15803d; border-bottom: 2px solid #bbf7d0; padding-bottom: 8px; margin-top: 35px; }
+        .vocab-sidebar h2 { margin-top: 0; font-size: 1.15em; }
+        .vocab-sidebar h2.second-heading { margin-top: 24px; }
+
+        .story-paragraph-box { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 12px; padding: 12px 15px; border-radius: 10px; background-color: #f8fafc; border: 1px solid #e2e8f0; font-size: 1.08em; }
+        .story-paragraph-box b { color: #b45309; }
+
+        .vocab-grid { display: flex; flex-direction: column; gap: 8px; }
+        .vocab-card { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px; border-radius: 10px; background-color: #f8fafc; border: 1px solid #e2e8f0; font-size: 0.95em; }
+        .badge { display: inline-block; background-color: #fef08a; color: #854d0e; font-size: 0.72em; font-weight: bold; padding: 2px 6px; border-radius: 6px; margin-left: 5px; }
+
+        .btn-read-p { background-color: #0284c7; color: white; border: none; border-radius: 8px; padding: 6px 11px; font-size: 0.85em; font-weight: bold; cursor: pointer; flex-shrink: 0; }
+        .btn-read-p:hover { background-color: #0369a1; }
+
+        .question-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 15px 20px; margin-bottom: 15px; }
+        .question-title { font-weight: bold; margin-bottom: 10px; font-size: 1.05em; }
+        .option-label { display: block; margin: 6px 0; cursor: pointer; padding: 6px 10px; border-radius: 6px; }
+        .option-label:hover { background-color: #dcfce7; }
+        .feedback { margin-top: 8px; font-weight: bold; display: none; }
+        .correct { color: #15803d; } .incorrect { color: #b91c1c; }
+
+        .actions { display: flex; gap: 15px; margin-top: 25px; flex-wrap: wrap; }
+        .btn-grade, .btn-retry { flex: 1; min-width: 200px; padding: 15px; font-size: 1.1em; font-weight: bold; color: white; border: none; border-radius: 10px; cursor: pointer; }
+        .btn-grade { background-color: #16a34a; } .btn-grade:hover { background-color: #15803d; }
+        .btn-retry { background-color: #0284c7; } .btn-retry:hover { background-color: #0369a1; }
+        #result-box { display: none; margin-top: 20px; padding: 20px; border-radius: 12px; text-align: center; font-size: 1.3em; font-weight: bold; background-color: #fef08a; color: #854d0e; border: 2px solid #facc15; }
+
+        @media (max-width: 900px) {
+            .main-layout, .main-layout.swapped { flex-direction: column; }
+            .vocab-sidebar { position: static; max-width: 100%; max-height: none; width: 100%; box-sizing: border-box; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 👇 PEGA EL BOTÓN AQUÍ MISMO -->
+    <a href="../menuEnglish.html" style="
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 9999;
+        background-color: #ff9f1c;
+        color: #ffffff;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 800;
+        font-size: 0.9rem;
+        text-decoration: none;
+        padding: 10px 16px;
+        border-radius: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+    " onmouseover="this.style.backgroundColor='#e08200'; this.style.transform='scale(1.05)';" 
+        onmouseout="this.style.backgroundColor='#ff9f1c'; this.style.transform='scale(1)';">
+        ⬅ Units Menu
+    </a>
+<div class="top-controls">
+    <label for="voice-speed" style="font-weight: bold; color: #854d0e; background: #fff; padding: 7px 12px; border-radius: 10px; border: 2px solid #fde047;">
+        🐢 Velocidad:
+        <select id="voice-speed" style="border: none; font-weight: bold; color: #0284c7; background: transparent; cursor: pointer; font-size: 0.95em;">
+            <option value="0.5">Muy lento (0.5x)</option>
+            <option value="0.65">Más lento (0.65x)</option>
+            <option value="0.75" selected>Lento (0.75x)</option>
+            <option value="0.9">Casi normal (0.9x)</option>
+            <option value="1.0">Normal (1.0x)</option>
+        </select>
+    </label>
+
+    <button type="button" id="btn-pause-resume" class="btn-swap" onclick="togglePausa()" style="border-color: #38bdf8; color: #0369a1;">
+        ⏸️ Pausar
+    </button>
+
+    <button type="button" class="btn-swap" onclick="detenerLectura()" style="border-color: #fca5a5; color: #b91c1c;">
+        ⏹️ Detener
+    </button>
+
+    <button type="button" class="btn-swap" onclick="document.getElementById('main-layout').classList.toggle('swapped')">
+        ⇄ Cambiar lado
+    </button>
+</div>
+
+<div id="main-layout" class="main-layout">
+    <main class="story-column">
+        <h1 id="story-title"></h1>
+        <div id="story-subtitle" class="subtitle"></div>
+
+        <img id="story-image" class="story-img" style="display:none;" alt="Story illustration">
+
+        <div id="story-container"></div>
+
+        <h2 id="quiz-heading">📝 Quiz: Answer the Questions!</h2>
+        <div id="quiz-container"></div>
+
+        <div class="actions">
+            <button class="btn-grade" onclick="gradeQuiz()">Grade Quiz ✔</button>
+            <button class="btn-retry" onclick="buildQuiz(true)">🔄 Try Again (New Order)</button>
+        </div>
+        <div id="result-box"></div>
+    </main>
+
+    <aside class="vocab-sidebar">
+        <h2>🏃 Action Verbs (Base / 3rd)</h2>
+        <div id="verbs-container" class="vocab-grid"></div>
+
+        <h2 class="second-heading">🔑 Other Key Words</h2>
+        <div id="words-container" class="vocab-grid"></div>
+    </aside>
+</div>
+
+<script>
+    // =========================================================================
+    // 🟢 ZONA DE DATOS DEL CUENTO (SOLO REEMPLAZA ESTO EN CADA HISTORIA NUEVA)
+    // =========================================================================
+    const storyData = {
+        title: "🐰 Benny Bunny and Felix Fox at the Forest Market! 🦊",
+        subtitle: "Unit 3: At the Market • Reading & Vocabulary Practice",
+        imageFile: "../images/BennyFelix.jpg",
+        paragraphs: [
+            "On Sunday morning, Benny Bunny and his friend Felix Fox hop to the sunny <b>forest market</b>. They carry two small baskets.",
+            "First, they stop at Badger's vegetable stand. Friendly Badger smiles and asks: \"<b>Can I help you?</b>\"",
+            "Benny looks at the fresh vegetables and says: \"Four orange <b>carrots</b> and two green <b>peppers</b>, please.\" Badger hands him the bag and says: \"<b>Here you are. Anything else?</b>\" Benny replies: \"<b>No, thanks.</b>\"",
+            "Next, they walk to Deer's fruit stand. They see sweet yellow <b>mangoes</b> and a big <b>pineapple</b>.",
+            "Felix points to a shiny green bag on the table and asks: \"<b>Whose is it?</b>\" Benny laughs and answers: \"<b>It's mine!</b> My green <b>pears</b> are inside.\"",
+            "When Benny and Felix get back to their cozy treehouse, they open the kitchen <b>cupboard</b>. Felix asks: \"<b>What's in the cupboard?</b>\"",
+            "Benny looks inside and says: \"<b>There are some</b> brown <b>beans</b> and <b>some</b> sweet <b>corn</b>, <b>but there aren't any</b> <b>mushrooms</b>.\"",
+"Felix checks the top shelf and asks: \"<b>Are there any</b> <b>oranges</b>?\" Benny smiles and answers: \"<b>Yes, there are!</b> Look! There are two oranges for my parents. The small orange is <b>his</b> (Dad's), and the big one is <b>hers</b> (Mom's)!\"",
+            "Then, Benny puts the pears on the wooden table and says to Felix: \"These sweet pears are <b>yours</b>! Now this yummy picnic is <b>ours</b>!\""
+        ],
+        verbs: [
+            { base: "hop", third: "hops", meaning: "saltar / brincar" },
+            { base: "carry", third: "carries", meaning: "cargar / llevar" },
+            { base: "stop", third: "stops", meaning: "detenerse" },
+            { base: "smile", third: "smiles", meaning: "sonreír" },
+            { base: "ask", third: "asks", meaning: "preguntar" },
+            { base: "look", third: "looks", meaning: "mirar" },
+            { base: "hand", third: "hands", meaning: "entregar" },
+            { base: "reply", third: "replies", meaning: "responder" },
+            { base: "walk", third: "walks", meaning: "caminar" },
+            { base: "see", third: "sees", meaning: "ver" },
+            { base: "point", third: "points", meaning: "señalar" },
+            { base: "laugh", third: "laughs", meaning: "reír" },
+            { base: "open", third: "opens", meaning: "abrir" },
+            { base: "check", third: "checks", meaning: "revisar" },
+            { base: "put", third: "puts", meaning: "poner" }
+        ],
+        otherWords: [
+            { word: "bunny", meaning: "conejito", type: "Animal" },
+            { word: "fox", meaning: "zorro", type: "Animal" },
+            { word: "badger", meaning: "tejón", type: "Animal" },
+            { word: "deer", meaning: "venado / ciervo", type: "Animal" },
+            { word: "forest", meaning: "bosque", type: "Place" },
+            { word: "stand", meaning: "puesto (de mercado)", type: "Place" },
+            { word: "treehouse", meaning: "casa del árbol", type: "Place" },
+            { word: "cupboard", meaning: "alacena / despensa", type: "Place" },
+            { word: "basket / baskets", meaning: "canasta / canastas", type: "Object" },
+            { word: "top shelf", meaning: "repisa de arriba", type: "Object" },
+            { word: "shiny", meaning: "brillante", type: "Adjective" },
+            { word: "cozy", meaning: "acogedora", type: "Adjective" },
+            { word: "wooden", meaning: "de madera", type: "Adjective" }
+        ],
+        quiz: [
+            { q: "Where do Benny Bunny and Felix Fox hop on Sunday morning?", options: ["To the forest market", "To the city school", "To the big beach", "To the train station"], answer: 0 },
+            { q: "What vegetables does Benny Bunny buy at Badger's stand?", options: ["Four carrots and two peppers", "Beans and corn", "Mushrooms and onions", "Cabbage and peas"], answer: 0 },
+            { q: "What does Friendly Badger ask after handing the bag to Benny?", options: ["Here you are. Anything else?", "Whose is it?", "What's in the cupboard?", "Are there any oranges?"], answer: 0 },
+            { q: "Which fruits do Benny and Felix see at Deer's fruit stand?", options: ["Yellow mangoes and a big pineapple", "Apples and bananas", "Lemons and limes", "Kiwis and coconuts"], answer: 0 },
+            { q: "Whose is the shiny green bag on the table?", options: ["It's Benny's (mine)", "It's Felix's", "It's Friendly Badger's", "It's Deer's"], answer: 0 },
+            { q: "What is inside Benny's green bag?", options: ["Green pears", "Orange carrots", "Brown beans", "Sweet corn"], answer: 0 },
+            { q: "What is in the kitchen cupboard at their treehouse?", options: ["Some beans and some corn", "Some mushrooms and peas", "Only apples and pears", "Some mangoes and kiwis"], answer: 0 },
+            { q: "Are there any mushrooms in the cupboard?", options: ["No, there aren't", "Yes, there are", "Yes, there are two", "No, there isn't"], answer: 0 },
+            { q: "Whose is the big orange on the top shelf?", options: ["It is hers (Mom's)", "It is his (Felix's)", "It is Friendly Badger's", "It is Deer's"], answer: 0 },
+            { q: "What does Benny put on the wooden table for Felix?", options: ["The sweet pears (yours)", "Four orange carrots", "A big pineapple", "Two green peppers"], answer: 0 }
+        ]
+    };
+    // =========================================================================
+    // 🔴 FIN DE LA ZONA DE DATOS (NO ES NECESARIO MODIFICAR NADA DE AQUÍ ABAJO)
+    // =========================================================================
+
+
+    let vozInglesa = null;
+    let botonActivo = null;
+    let palabrasActuales = [];
+    let indicePalabra = 0;
+    let estaPausado = false;
+    let estaSonando = false;
+    let idSesionLectura = 0;
+
+    function cargarVozIngles() {
+        const voces = window.speechSynthesis.getVoices();
+        if (voces.length > 0) {
+            vozInglesa =
+                voces.find(v => v.lang === 'en-US' && v.localService) ||
+                voces.find(v => v.lang.startsWith('en') && v.localService) ||
+                voces.find(v => v.lang === 'en-US') ||
+                voces.find(v => v.lang.startsWith('en'));
+        }
+    }
+
+    cargarVozIngles();
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = cargarVozIngles;
+    }
+
+    function actualizarBotonGlobal(estado) {
+        const btnGlobal = document.getElementById('btn-pause-resume');
+        if (!btnGlobal) return;
+        btnGlobal.innerText = estado === 'paused' ? '▶️ Continuar' : '⏸️ Pausar';
+    }
+
+    function resetearBotonesParrafo() {
+        document.querySelectorAll('.btn-read-p[data-type="paragraph"]').forEach(b => {
+            b.innerText = '🔊 Listen';
+            b.style.backgroundColor = '#0284c7';
+        });
+        botonActivo = null;
+        estaPausado = false;
+        estaSonando = false;
+        indicePalabra = 0;
+        actualizarBotonGlobal('playing');
+    }
+
+    function leerSiguientePalabra(sesionId) {
+        if (sesionId !== idSesionLectura || estaPausado) return;
+
+        if (indicePalabra >= palabrasActuales.length) {
+            resetearBotonesParrafo();
+            return;
+        }
+
+        const palabra = palabrasActuales[indicePalabra];
+        const mensaje = new SpeechSynthesisUtterance(palabra);
+        mensaje.lang = 'en-US';
+
+        const esIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+        if (!esIpad && vozInglesa) {
+            mensaje.voice = vozInglesa;
+        } else if (esIpad) {
+            const voces = window.speechSynthesis.getVoices();
+            const vozCompacta = voces.find(v => v.lang === 'en-US' && v.name.includes('Samantha'));
+            if (vozCompacta) mensaje.voice = vozCompacta;
+        }
+
+        const speedSelect = document.getElementById('voice-speed');
+        const valorMenu = speedSelect ? parseFloat(speedSelect.value) : 0.75;
+
+        let velocidadFinal = valorMenu;
+        if (esIpad) {
+            if (valorMenu <= 0.5) velocidadFinal = 0.15;
+            else if (valorMenu <= 0.65) velocidadFinal = 0.25;
+            else if (valorMenu <= 0.75) velocidadFinal = 0.38;
+            else if (valorMenu <= 0.9) velocidadFinal = 0.6;
+            else velocidadFinal = 1.0;
+        }
+        mensaje.rate = velocidadFinal;
+
+        const pausaEntreFrases = valorMenu <= 0.65 ? 320 : (valorMenu <= 0.75 ? 180 : 40);
+
+        mensaje.onend = () => {
+            if (sesionId === idSesionLectura && !estaPausado) {
+                indicePalabra++;
+                setTimeout(() => leerSiguientePalabra(sesionId), pausaEntreFrases);
+            }
+        };
+
+        mensaje.onerror = () => {
+            if (sesionId === idSesionLectura && !estaPausado) {
+                resetearBotonesParrafo();
+            }
+        };
+
+        window.speechSynthesis.speak(mensaje);
+    }
+
+    function togglePausa() {
+        if (!estaSonando && !estaPausado) return;
+
+        if (estaPausado) {
+            estaPausado = false;
+            estaSonando = true;
+            idSesionLectura++;
+            actualizarBotonGlobal('playing');
+            if (botonActivo) {
+                botonActivo.innerText = '⏸️ Pause';
+                botonActivo.style.backgroundColor = '#d97706';
+            }
+            leerSiguientePalabra(idSesionLectura);
+        } else {
+            estaPausado = true;
+            estaSonando = false;
+            idSesionLectura++;
+            window.speechSynthesis.cancel();
+            actualizarBotonGlobal('paused');
+            if (botonActivo) {
+                botonActivo.innerText = '▶️ Resume';
+                botonActivo.style.backgroundColor = '#16a34a';
+            }
+        }
+    }
+
+    function detenerLectura() {
+        idSesionLectura++;
+        estaPausado = false;
+        estaSonando = false;
+        window.speechSynthesis.cancel();
+        resetearBotonesParrafo();
+    }
+
+    function leerTexto(texto, btn = null) {
+        if (btn && botonActivo === btn && (estaSonando || estaPausado)) {
+            togglePausa();
+            return;
+        }
+
+        idSesionLectura++;
+        estaPausado = false;
+        window.speechSynthesis.cancel();
+        resetearBotonesParrafo();
+
+        const textoSinComillas = texto.replace(/["“”]/g, '');
+        palabrasActuales = textoSinComillas.match(/[^.!?,;:]+[.!?,;:]?|\S+/g) || [textoSinComillas];
+        indicePalabra = 0;
+        estaSonando = true;
+
+        if (btn) {
+            botonActivo = btn;
+            btn.innerText = '⏸️ Pause';
+            btn.style.backgroundColor = '#d97706';
+        }
+        actualizarBotonGlobal('playing');
+
+        leerSiguientePalabra(idSesionLectura);
+    }
+
+    function initPage() {
+        document.title = storyData.title;
+        document.getElementById('story-title').innerText = storyData.title;
+        document.getElementById('story-subtitle').innerText = storyData.subtitle || "";
+
+        const imgEl = document.getElementById('story-image');
+        if (storyData.imageFile) {
+            imgEl.src = storyData.imageFile;
+            imgEl.style.display = 'block';
+            imgEl.onerror = () => { imgEl.style.display = 'none'; };
+        }
+
+        const storyContainer = document.getElementById('story-container');
+        storyData.paragraphs.forEach(htmlTexto => {
+            const box = document.createElement('div');
+            box.className = 'story-paragraph-box';
+            const span = document.createElement('span');
+            span.innerHTML = htmlTexto;
+            const textoLimpio = span.innerText;
+
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn-read-p';
+            btn.setAttribute('data-type', 'paragraph');
+            btn.innerText = '🔊 Listen';
+            btn.onclick = () => leerTexto(textoLimpio, btn);
+
+            box.appendChild(span);
+            box.appendChild(btn);
+            storyContainer.appendChild(box);
+        });
+
+        const verbsContainer = document.getElementById('verbs-container');
+        (storyData.verbs || []).forEach(v => {
+            const card = document.createElement('div');
+            card.className = 'vocab-card';
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn-read-p';
+            btn.innerText = '🔊';
+            btn.onclick = () => leerTexto(`${v.base}, ${v.third}`);
+
+            card.innerHTML = `<span><b>${v.base}</b> / <b>${v.third}</b><br><small>${v.meaning}</small></span>`;
+            card.appendChild(btn);
+            verbsContainer.appendChild(card);
+        });
+
+        const wordsContainer = document.getElementById('words-container');
+        (storyData.otherWords || []).forEach(w => {
+            const card = document.createElement('div');
+            card.className = 'vocab-card';
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn-read-p';
+            btn.innerText = '🔊';
+            btn.onclick = () => leerTexto(w.word);
+
+            card.innerHTML = `<span><b>${w.word}</b> <span class="badge">${w.type}</span><br><small>${w.meaning}</small></span>`;
+            card.appendChild(btn);
+            wordsContainer.appendChild(card);
+        });
+
+        buildQuiz(false);
+    }
+
+    const letras = ["A", "B", "C", "D"];
+    let shuffledQuiz = [];
+
+    function shuffleArray(arr) {
+        const copy = [...arr];
+        for (let i = copy.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+    }
+
+    function buildQuiz(scrollToQuiz = false) {
+        const quizContainer = document.getElementById('quiz-container');
+        const resultBox = document.getElementById('result-box');
+        quizContainer.innerHTML = '';
+        resultBox.style.display = 'none';
+
+        shuffledQuiz = shuffleArray(storyData.quiz).map((item, idx) => {
+            const cleanQuestion = item.q.replace(/^\d+\.\s*/, '');
+            const correctText = item.options[item.answer];
+            const mixedOptions = shuffleArray(item.options);
+            return {
+                q: `${idx + 1}. ${cleanQuestion}`,
+                options: mixedOptions,
+                answer: mixedOptions.indexOf(correctText)
+            };
+        });
+
+        shuffledQuiz.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            let opcionesHTML = '';
+            item.options.forEach((opt, i) => {
+                opcionesHTML += `<label class="option-label"><input type="radio" name="q${index}" value="${i}"> ${letras[i]}) ${opt}</label>`;
+            });
+            card.innerHTML = `<div class="question-title">${item.q}</div>${opcionesHTML}<div class="feedback" id="fb-${index}"></div>`;
+            quizContainer.appendChild(card);
+        });
+
+        if (scrollToQuiz) {
+            document.getElementById('quiz-heading').scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    function gradeQuiz() {
+        let score = 0;
+        shuffledQuiz.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            const fb = document.getElementById(`fb-${index}`);
+            fb.style.display = 'block';
+            if (selected && parseInt(selected.value) === item.answer) {
+                score++;
+                fb.className = 'feedback correct';
+                fb.innerText = '✨ Correct!';
+            } else {
+                fb.className = 'feedback incorrect';
+                fb.innerText = `❌ Incorrect (Correct: ${letras[item.answer]})`;
+            }
+        });
+
+        const resultBox = document.getElementById('result-box');
+        resultBox.style.display = 'block';
+        resultBox.innerText = score === shuffledQuiz.length
+            ? `🎉 Super Reader! You answered all ${score} / ${shuffledQuiz.length} questions correctly! ⭐`
+            : `You got ${score} out of ${shuffledQuiz.length} questions right! Keep practicing! 💪`;
+        resultBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    initPage();
+</script>
+</body>
+</html>

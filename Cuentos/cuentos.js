@@ -821,5 +821,103 @@ const CUENTOS = {
                 texto: "Si pudieras tejer una hamaca brillante en el bosque, ¿qué cosas de la noche te gustaría atrapar en ella?"
             }
         ]
-    }
+    },
+	25: {
+		numero: "25",
+		categoria: "risa", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+		temaTexto: "Pura Risa y Fantasía",
+		titulo: "El torneo de los sombreros saltarines",
+		resumen: "Pipo, un mapache sombrerero, organiza un desfile elegante donde los sombreros cobran vida y deciden bailar por su cuenta.",
+		imagen: "imagenes/sombreros-saltarines.jpg",
+		emojiRespaldo: "🦝",
+		parrafos: [
+			"En la plaza del Roble Risueño vivía Pipo, un mapache sombrerero muy presumido que fabricaba los sombreros más extravagantes del bosque: sombreros con plumas de pavo real, copas altas de nube y viseras hechas de hojas gigantes.",
+			"Una mañana, Pipo organizó el Gran Desfile de la Elegancia. Todos los animales llegaron caminando muy derechos y serios para modelar sus sombreros nuevos frente al público.",
+			"Pero Pipo había olvidado un pequeño detalle: había pegado las plumas usando savia de árbol saltarín. En cuanto salió el primer rayo de sol tibio, todos los sombreros empezaron a hacer: <em>«¡BOING, BOING!»</em>.",
+			"El sombrero de copa de un puercoespín salió disparado como cohete y aterrizó justo en la cabeza de una tortuga, haciéndola ver como una directora de circo con caparazón.",
+			"Luego, el sombrero de flores de un alce empezó a dar volteretas en el aire y le cayó encima a un topo, que siguió caminando sin ver nada mientras las margaritas le hacían cosquillas en la nariz y lo hacían estornudar: <em>«¡ACHÚ-PLOF!»</em>.",
+			"Al final, nadie pudo caminar serio. Todos los animales terminaron persiguiendo sus sombreros rebotadores por toda la plaza entre carcajadas, declarando el desfile como el concurso de baile más chistoso de la historia del bosque."
+		],
+		tituloPreguntas: "Para seguir imaginando juntos",
+		preguntas: [
+			{
+				negrita: "Tu sombrero loco:",
+				texto: "Si pudieras inventar un sombrero mágico con cosas chistosas encima, ¿qué le pondrías y qué haría al tocar el sol?"
+			},
+			{
+				negrita: "Cambio de sombreros:",
+				texto: "De todos los animales del cuento, ¿cuál crees que se veía más gracioso con el sombrero equivocado?"
+			},
+			{
+				negrita: "El pegamento saltarín:",
+				texto: "¿Qué pasaría si Pipo usara esa misma savia mágica para pegar las agujetas de unos patines?"
+			}
+		]
+	},
+	26: {
+		numero: "26",
+		categoria: "empatia", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+		temaTexto: "Empatía y Escucha Activa",
+		titulo: "El eco de las hojas susurrantes",
+		resumen: "Gala, una venadita muy rápida y parlanchina, descubre lo mágico que pasa cuando hace silencio para escuchar las ideas de los demás.",
+		imagen: "imagenes/hojas-susurrantes.jpg",
+		emojiRespaldo: "🦌",
+		parrafos: [
+			"En el Claro de los Sauces vivía Gala, una venadita llena de energía a la que se le ocurrían mil ideas por minuto. Cada vez que sus amigos empezaban a contar algo, Gala daba un saltito emocionada y terminaba la frase por ellos antes de que pudieran acabar.",
+			"Una tarde, Gala, un pequeño tejón llamado Roque y una ratoncita llamada Mora decidieron construir una balsa de ramas para cruzar el arroyo tranquilo. Mora levantó una patita y empezó a decir: <em>«Yo vi unas lianas muy fuertes cerca de...»</em>.",
+			"<em>«¡Sí, sí, sí! ¡Vamos a buscar piedras planas y hojas gigantes, va a quedar increíble!»</em>, exclamó Gala dando vueltas alrededor de ellos sin detenerse a escuchar el resto.",
+			"Gala corrió a traer hojas gigantes y piedras planas, pero cuando las pusieron en el agua, las piedras pesaban tanto que la balsa se hundió hasta el fondo como un submarino de piedra. Gala se quedó mirando las burbujas con las orejas bajas.",
+			"Entonces recordó lo que Mora había intentado decir al principio. Gala cerró su hocico, dio un paso atrás y miró a sus amigos en silencio, dejando un espacio vacío para que sus voces pudieran salir.",
+			"Mora sonrió y terminó su idea: las lianas fuertes servían para amarrar troncos huecos que flotaban como plumas. Roque añadió que podían usar cortezas curvas como remos. Trabajando juntos con las ideas de todos, construyeron la balsa más veloz y segura del arroyo.",
+			"Mientras navegaban suavemente por el agua, Gala descubrió que guardar silencio para escuchar no era quedarse sin hablar: era como abrir una ventana para recibir los mejores tesoros de sus amigos."
+		],
+		tituloPreguntas: "Para seguir imaginando juntos",
+		preguntas: [
+			{
+				negrita: "El tesoro escondido:",
+				texto: "¿Qué idea genial tenía Mora que Gala casi se pierde por hablar muy rápido?"
+			},
+			{
+				negrita: "Abrir la ventana:",
+				texto: "En casa o jugando con amigos, ¿qué truco divertido puedes usar para recordar esperar tu turno y escuchar hasta el final?"
+			},
+			{
+				negrita: "Tu balsa mágica:",
+				texto: "Si pudieras construir una balsa con cosas del bosque junto con tus amigos, ¿qué le pondrías para navegar?"
+			}
+		]
+	},
+	27: {
+		numero: "27",
+		categoria: "valentia", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+		temaTexto: "Atención y Superación",
+		titulo: "La viga de las luciérnagas doradas",
+		resumen: "Nala, una ardilla voladora acróbata, descubre que poner sus ojos y oídos en cada detalle es el secreto para lograr una pirueta que parecía imposible.",
+		imagen: "imagenes/viga-luciernagas.jpg",
+		emojiRespaldo: "🐿️",
+		parrafos: [
+			"En lo alto de los árboles del Bosque Acróbata vivía Nala, una ardilla voladora a la que le encantaba practicar saltos, giros y equilibrio sobre ramas delgadas como cintas.",
+			"Nala tenía un gran sueño: cruzar la Rama de Cristal, una viga alta y brillante que terminaba en un salto con giro doble. Pero cada vez que lo intentaba, su mente volaba más rápido que sus patas; miraba hacia las nubes, se distraía con el vuelo de las mariposas y terminaba dando un saltito chueco hacia la red de hojas.",
+			"Una tarde, vio a un viejo camaleón acróbata practicando en una rama vecina. Nala se quedó muy quieta observándolo y notó un truco fascinante: antes de moverse, el camaleón apuntaba sus dos ojos fijos hacia el punto exacto donde quería caer y movía sus orejas como antenas para sentir el ritmo del viento.",
+			"Intrigada, Nala decidió probar ese juego de «ojos de láser y orejas de antena». Subió a la Rama de Cristal, dejó de mirar las nubes y puso toda su atención en la punta de sus patas y en el borde final de la madera.",
+			"Con la mente súper enfocada, sintió exactamente cómo doblar las rodillas, cuándo impulsar la cola y en qué instante abrir sus patitas en el aire. Dio el salto, giró limpiamente como un trompo dorado y aterrizó firme y derecha sobre la plataforma de musgo, sin tambalearse ni un milímetro.",
+			"Nala dio un saltito de alegría. Descubrió que cuando reúne toda su atención en un solo lugar, su cuerpo se vuelve tan preciso como la magia y puede alcanzar cualquier reto que se proponga."
+		],
+		tituloPreguntas: "Para seguir imaginando juntos",
+		preguntas: [
+			{
+				negrita: "Ojos de láser:",
+				texto: "¿Cómo se siente en tu cuerpo cuando pones toda tu atención en un movimiento de gimnasia, en el agua o en los patines?"
+			},
+			{
+				negrita: "Tu próximo reto:",
+				texto: "¿Qué truco, salto o movimiento nuevo te gustaría lograr pronto usando el secreto de «ojos de láser y orejas de antena»?"
+			},
+			{
+				negrita: "El Bosque Acróbata:",
+				texto: "Si pudieras diseñar un aparato de gimnasia mágico en lo alto de los árboles, ¿cómo sería y qué pirueta harías ahí?"
+			}
+		]
+	}
+
 };

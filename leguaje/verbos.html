@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cazadora de Verbos - El bosque azul</title>
+<style>
+  body {
+    font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
+    background-color: #e0f7fa;
+    color: #2c3e50;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin: 0;
+  }
+  .contenedor {
+    background: white;
+    max-width: 700px;
+    width: 100%;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  h1 { color: #00838f; margin-bottom: 5px; }
+  .instrucciones { font-size: 18px; color: #546e7a; margin-bottom: 20px; }
+  .progreso {
+    background: #eceff1;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: bold;
+    color: #006064;
+    margin-bottom: 20px;
+  }
+  .texto-cuento {
+    font-size: 26px;
+    line-height: 1.8;
+    background: #f9fbe7;
+    padding: 25px;
+    border-radius: 15px;
+    border: 3px dashed #cddc39;
+    margin-bottom: 20px;
+  }
+  .palabra {
+    display: inline-block;
+    padding: 2px 6px;
+    margin: 2px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.2s;
+  }
+  .palabra:hover { background-color: #fff9c4; transform: scale(1.05); }
+  .correcta {
+    background-color: #a5d6a7 !important;
+    color: #1b5e20;
+    font-weight: bold;
+    border: 2px solid #4caf50;
+  }
+  .incorrecta {
+    background-color: #ffcdd2;
+    animation: sacudir 0.3s;
+  }
+  @keyframes sacudir {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+  .mensaje { font-size: 20px; font-weight: bold; min-height: 30px; margin-bottom: 15px; }
+  button {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    display: none;
+  }
+  button:hover { background-color: #f57c00; }
+</style>
+</head>
+<body>
+
+<div class="contenedor">
+  <h1>🐉 El secreto del bosque azul</h1>
+  <p class="instrucciones">Toca las <strong>palabras de acción (verbos)</strong> en este párrafo:</p>
+  
+  <div class="progreso" id="progreso">Párrafo 1 de 4 | Verbos encontrados: 0 / 4</div>
+  <div class="texto-cuento" id="texto-cuento"></div>
+  <div class="mensaje" id="mensaje"></div>
+  <button id="btn-siguiente" onclick="siguienteParrafo()">Siguiente párrafo ➡️</button>
+</div>
+
+<script>
+  const parrafos = [
+    {
+      texto: "Valeria camina por el bosque con su mochila roja. De repente, ella escucha un ruido extraño detrás de un arbusto grande. La niña se acerca despacio y mira entre las hojas verdes.",
+      verbos: ["camina", "escucha", "acerca", "mira"]
+    },
+    {
+      texto: "Allí descubre a un pequeño dragón azul con alas brillantes. El dragón estornuda una chispa de fuego y salta del susto. Valeria sonríe con dulzura y saca una manzana de su mochila.",
+      verbos: ["descubre", "estornuda", "salta", "sonríe", "saca"]
+    },
+    {
+      texto: "El dragón huele la fruta roja y mueve su cola larga. Él muerde la manzana y mastica muy feliz. Luego, abre sus alas y vuela alrededor de la niña.",
+      verbos: ["huele", "mueve", "muerde", "mastica", "abre", "vuela"]
+    },
+    {
+      texto: "Valeria aplaude emocionada y ríe a carcajadas. El dragón aterriza en su hombro y lame su mejilla. Juntos regresan a casa antes de que caiga la noche.",
+      verbos: ["aplaude", "ríe", "aterriza", "lame", "regresan", "caiga"]
+    }
+  ];
+
+  let indiceActual = 0;
+  let encontrados = 0;
+
+  function cargarParrafo() {
+    const actual = parrafos[indiceActual];
+    encontrados = 0;
+    document.getElementById("btn-siguiente").style.display = "none";
+    document.getElementById("mensaje").textContent = "";
+    actualizarProgreso();
+
+    const contenedorTexto = document.getElementById("texto-cuento");
+    contenedorTexto.innerHTML = "";
+
+    const palabras = actual.texto.split(" ");
+    palabras.forEach(palabraOriginal => {
+      const span = document.createElement("span");
+      span.textContent = palabraOriginal;
+      span.className = "palabra";
+      
+      const palabraLimpia = palabraOriginal.toLowerCase().replace(/[.,¡!¿?]/g, "");
+
+      span.onclick = function() {
+        if (span.classList.contains("correcta")) return;
+
+        if (actual.verbos.includes(palabraLimpia)) {
+          span.classList.add("correcta");
+          encontrados++;
+          actualizarProgreso();
+          document.getElementById("mensaje").style.color = "#2e7d32";
+          document.getElementById("mensaje").textContent = "¡Muy bien! '" + palabraLimpia + "' es una acción ⭐";
+
+          if (encontrados === actual.verbos.length) {
+            if (indiceActual < parrafos.length - 1) {
+              document.getElementById("mensaje").textContent = "🎉 ¡Excelente! Encontraste todos los verbos de este párrafo.";
+              document.getElementById("btn-siguiente").style.display = "inline-block";
+            } else {
+              document.getElementById("mensaje").textContent = "🏆 ¡FELICIDADES! Terminaste todo el cuento y atrapaste todos los verbos.";
+            }
+          }
+        } else {
+          span.classList.add("incorrecta");
+          document.getElementById("mensaje").style.color = "#c62828";
+          document.getElementById("mensaje").textContent = "🤔 Hmm, pregúntate: ¿eso es algo que se puede hacer?";
+          setTimeout(() => span.classList.remove("incorrecta"), 400);
+        }
+      };
+
+      contenedorTexto.appendChild(span);
+      contenedorTexto.appendChild(document.createTextNode(" "));
+    });
+  }
+
+  function actualizarProgreso() {
+    const totalVerbos = parrafos[indiceActual].verbos.length;
+    document.getElementById("progreso").textContent = 
+      `Párrafo ${indiceActual + 1} de ${parrafos.length} | Verbos encontrados: ${encontrados} / ${totalVerbos}`;
+  }
+
+  function siguienteParrafo() {
+    indiceActual++;
+    cargarParrafo();
+  }
+
+  cargarParrafo();
+</script>
+
+</body>
+</html>

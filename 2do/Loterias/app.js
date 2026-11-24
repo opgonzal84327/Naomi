@@ -1,5 +1,5 @@
-import { initializeApp } from "https://gstatic.com";
-import { getDatabase, ref, set, get, update, onValue, onDisconnect } from "https://gstatic.com";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, set, get, update, onValue, onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 // Tu configuración de Firebase
 const firebaseConfig = {

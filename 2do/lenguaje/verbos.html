@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cazadora de Verbos - El bosque azul</title>
+<title>Cazadora de Verbos - 10 Cuentos</title>
 <style>
   body {
     font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
@@ -16,15 +16,39 @@
   }
   .contenedor {
     background: white;
-    max-width: 700px;
+    max-width: 720px;
     width: 100%;
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     text-align: center;
   }
-  h1 { color: #00838f; margin-bottom: 5px; }
-  .instrucciones { font-size: 18px; color: #546e7a; margin-bottom: 20px; }
+  .barra-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff3e0;
+    padding: 8px 15px;
+    border-radius: 12px;
+    font-size: 15px;
+    color: #e65100;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  h1 { color: #00838f; margin: 10px 0 10px 0; font-size: 28px; }
+  
+  /* Estilo para la imagen fija del cuento */
+  .imagen-cuento {
+    max-width: 100%;
+    max-height: 220px;
+    border-radius: 15px;
+    margin: 10px auto 15px auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    object-fit: cover;
+    display: none; /* Se muestra automáticamente cuando encuentra la imagen */
+  }
+
+  .instrucciones { font-size: 18px; color: #546e7a; margin-bottom: 15px; }
   .progreso {
     background: #eceff1;
     border-radius: 10px;
@@ -34,7 +58,7 @@
     margin-bottom: 20px;
   }
   .texto-cuento {
-    font-size: 26px;
+    font-size: 25px;
     line-height: 1.8;
     background: #f9fbe7;
     padding: 25px;
@@ -66,58 +90,270 @@
     25% { transform: translateX(-5px); }
     75% { transform: translateX(5px); }
   }
-  .mensaje { font-size: 20px; font-weight: bold; min-height: 30px; margin-bottom: 15px; }
+  .mensaje { font-size: 20px; font-weight: bold; min-height: 32px; margin-bottom: 15px; }
+  .botones { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
   button {
-    background-color: #ff9800;
-    color: white;
     border: none;
-    padding: 15px 30px;
-    font-size: 20px;
+    padding: 14px 26px;
+    font-size: 19px;
     border-radius: 12px;
     cursor: pointer;
     font-weight: bold;
+    color: white;
     display: none;
+    transition: transform 0.1s;
   }
-  button:hover { background-color: #f57c00; }
+  button:hover { transform: scale(1.03); }
+  #btn-siguiente { background-color: #ff9800; }
+  #btn-siguiente:hover { background-color: #f57c00; }
+  #btn-nuevo-cuento { background-color: #00acc1; }
+  #btn-nuevo-cuento:hover { background-color: #00838f; }
 </style>
 </head>
 <body>
 
 <div class="contenedor">
-  <h1>🐉 El secreto del bosque azul</h1>
+  <div class="barra-superior">
+    <span id="contador-cuentos">📚 Cuentos terminados: 0</span>
+    <span id="numero-cuento">Cuento #1</span>
+  </div>
+
+  <h1 id="titulo-cuento">Título del cuento</h1>
+  
+  <!-- Aquí se carga la imagen fija de cada cuento -->
+  <img id="imagen-cuento" class="imagen-cuento" src="" alt="Ilustración del cuento" onload="this.style.display='block'" onerror="this.style.display='none'">
+
   <p class="instrucciones">Toca las <strong>palabras de acción (verbos)</strong> en este párrafo:</p>
   
-  <div class="progreso" id="progreso">Párrafo 1 de 4 | Verbos encontrados: 0 / 4</div>
+  <div class="progreso" id="progreso">Párrafo 1 de 3 | Verbos encontrados: 0 / 4</div>
   <div class="texto-cuento" id="texto-cuento"></div>
   <div class="mensaje" id="mensaje"></div>
-  <button id="btn-siguiente" onclick="siguienteParrafo()">Siguiente párrafo ➡️</button>
+  
+  <div class="botones">
+    <button id="btn-siguiente" onclick="siguienteParrafo()">Siguiente párrafo ➡️</button>
+    <button id="btn-nuevo-cuento" onclick="iniciarNuevoCuento()">Leer otro cuento 🎲</button>
+  </div>
 </div>
 
 <script>
-  const parrafos = [
+  const cuentos = [
     {
-      texto: "Valeria camina por el bosque con su mochila roja. De repente, ella escucha un ruido extraño detrás de un arbusto grande. La niña se acerca despacio y mira entre las hojas verdes.",
-      verbos: ["camina", "escucha", "acerca", "mira"]
+      titulo: "🐉 El secreto del bosque azul",
+      imagen: "imagenes/dragon.jpg", // Pon aquí el nombre de tu archivo o un enlace de internet
+      parrafos: [
+        {
+          texto: "Valeria camina por el bosque con su mochila roja. De repente, ella escucha un ruido extraño detrás de un arbusto grande. La niña se acerca despacio y mira entre las hojas verdes.",
+          verbos: ["camina", "escucha", "acerca", "mira"]
+        },
+        {
+          texto: "Allí descubre a un pequeño dragón azul con alas brillantes. El dragón estornuda una chispa de fuego y salta del susto. Valeria sonríe con dulzura y saca una manzana de su mochila.",
+          verbos: ["descubre", "estornuda", "salta", "sonríe", "saca"]
+        },
+        {
+          texto: "El dragón huele la fruta roja y mueve su cola larga. Él muerde la manzana y mastica muy feliz. Luego, abre sus alas y vuela alrededor de la niña.",
+          verbos: ["huele", "mueve", "muerde", "mastica", "abre", "vuela"]
+        },
+        {
+          texto: "Valeria aplaude emocionada y ríe a carcajadas. El dragón aterriza en su hombro y lame su mejilla. Juntos regresan a casa cuando llega la noche.",
+          verbos: ["aplaude", "ríe", "aterriza", "lame", "regresan", "llega"]
+        }
+      ]
     },
     {
-      texto: "Allí descubre a un pequeño dragón azul con alas brillantes. El dragón estornuda una chispa de fuego y salta del susto. Valeria sonríe con dulzura y saca una manzana de su mochila.",
-      verbos: ["descubre", "estornuda", "salta", "sonríe", "saca"]
+      titulo: "🚀 Viaje al planeta de dulce",
+      imagen: "imagenes/cohete.jpg",
+      parrafos: [
+        {
+          texto: "Mateo sube a su cohete plateado y cierra la puerta. Él presiona un botón rojo y enciende los motores. La nave despega rápido hacia las estrellas brillantes.",
+          verbos: ["sube", "cierra", "presiona", "enciende", "despega"]
+        },
+        {
+          texto: "Pronto aterriza en un planeta de chocolate y algodón. Mateo baja por la escalera y pisa el suelo suave. Luego corta un trozo de nube dulce y come un bocado.",
+          verbos: ["aterriza", "baja", "pisa", "corta", "come"]
+        },
+        {
+          texto: "Un marciano verde aparece detrás de una montaña de caramelo. Ambos saludan con la mano y bailan una canción alegre. Después, Mateo regresa feliz a la Tierra.",
+          verbos: ["aparece", "saludan", "bailan", "regresa"]
+        }
+      ]
     },
     {
-      texto: "El dragón huele la fruta roja y mueve su cola larga. Él muerde la manzana y mastica muy feliz. Luego, abre sus alas y vuela alrededor de la niña.",
-      verbos: ["huele", "mueve", "muerde", "mastica", "abre", "vuela"]
+      titulo: "🧜‍♀️ La fiesta bajo el mar",
+      imagen: "imagenes/sirena.jpg",
+      parrafos: [
+        {
+          texto: "La sirenita Coral nada rápido entre los corales de colores. Ella busca perlas brillantes para su corona nueva. De pronto, encuentra un cofre antiguo en la arena blanca.",
+          verbos: ["nada", "busca", "encuentra"]
+        },
+        {
+          texto: "Un pulpo morado abre la tapa con sus ocho brazos. Adentro brillan muchas monedas de oro y conchas rosas. Coral aplaude contenta y guarda un collar hermoso.",
+          verbos: ["abre", "brillan", "aplaude", "guarda"]
+        },
+        {
+          texto: "Los peces tropicales tocan música con caracolas marinas. Todos giran en círculo y cantan melodías alegres. La fiesta termina cuando la luna ilumina el océano.",
+          verbos: ["tocan", "giran", "cantan", "termina", "ilumina"]
+        }
+      ]
     },
     {
-      texto: "Valeria aplaude emocionada y ríe a carcajadas. El dragón aterriza en su hombro y lame su mejilla. Juntos regresan a casa antes de que caiga la noche.",
-      verbos: ["aplaude", "ríe", "aterriza", "lame", "regresan", "caiga"]
+      titulo: "🦖 El dinosaurio pintor",
+      imagen: "imagenes/dinosaurio.jpg",
+      parrafos: [
+        {
+          texto: "El pequeño dinosaurio Dino toma un pincel con su cola. Él moja la punta en pintura azul y dibuja un círculo grande. Luego pinta unas nubes blancas en el papel.",
+          verbos: ["toma", "moja", "dibuja", "pinta"]
+        },
+        {
+          texto: "Su amiga Tina mezcla color amarillo con color rojo. Ella descubre el tono naranja y sonríe maravillada. Juntos colorean un sol radiante en la esquina.",
+          verbos: ["mezcla", "descubre", "sonríe", "colorean"]
+        },
+        {
+          texto: "Al final, ambos limpian sus pinceles en un vaso con agua. Ellos cuelgan el cuadro en una rama alta. Todos los animales del valle admiran la obra de arte.",
+          verbos: ["limpian", "cuelgan", "admiran"]
+        }
+      ]
+    },
+    {
+      titulo: "🐶 El misterio del zapato perdido",
+      imagen: "imagenes/perro.jpg",
+      parrafos: [
+        {
+          texto: "El perro Toby olfatea toda la sala con su nariz húmeda. Él busca el zapato azul de su dueña Sofía. Primero revisa debajo del sofá y mueve unos cojines.",
+          verbos: ["olfatea", "busca", "revisa", "mueve"]
+        },
+        {
+          texto: "Después corre hacia el jardín y escarba junto a las flores. Allí observa unas huellas pequeñas en el barro fresco. Toby sigue el rastro hasta la casita de madera.",
+          verbos: ["corre", "escarba", "observa", "sigue"]
+        },
+        {
+          texto: "Adentro duerme un gatito travieso sobre el zapato azul. Toby ladra suave y despierta al pequeño gato. Sofía recoge su zapato y abraza a sus dos mascotas.",
+          verbos: ["duerme", "ladra", "despierta", "recoge", "abraza"]
+        }
+      ]
+    },
+    {
+      titulo: "🧙‍♀️ La panadería mágica",
+      imagen: "imagenes/brujita.jpg",
+      parrafos: [
+        {
+          texto: "La brujita Vera prepara panecillos de canela en su cocina. Ella mezcla harina blanca, azúcar y leche tibia en un tazón. Luego amasa la pasta sobre la mesa de madera.",
+          verbos: ["prepara", "mezcla", "amasa"]
+        },
+        {
+          texto: "Vera agita su varita mágica sobre la charola metálica. Los panecillos crecen rápido y flotan por toda la cocina. La brujita atrapa cada pan con una canasta grande.",
+          verbos: ["agita", "crecen", "flotan", "atrapa"]
+        },
+        {
+          texto: "Ella hornea los panes durante cinco minutos exactos. Un aroma delicioso llena toda la casa de piedra. Vera comparte el postre caliente con su lechuza blanca.",
+          verbos: ["hornea", "llena", "comparte"]
+        }
+      ]
+    },
+    {
+      titulo: "⚽ El gran partido en el parque",
+      imagen: "imagenes/futbol.jpg",
+      parrafos: [
+        {
+          texto: "Lucas ata las agujetas de sus tenis nuevos antes del juego. Él patea el balón hacia la portería y practica sus tiros. Sus amigos llegan al campo con playeras rojas.",
+          verbos: ["ata", "patea", "practica", "llegan"]
+        },
+        {
+          texto: "El árbitro silba fuerte y comienza el partido amistoso. Camila corre por la banda derecha y pasa el balón a Lucas. Él esquiva al defensa y lanza un tiro potente.",
+          verbos: ["silba", "comienza", "corre", "pasa", "esquiva", "lanza"]
+        },
+        {
+          texto: "El portero salta muy alto pero no alcanza la pelota. ¡Gol! Todos los niños gritan de alegría y chocan sus manos. Al final, beben agua fresca bajo un árbol.",
+          verbos: ["salta", "alcanza", "gritan", "chocan", "beben"]
+        }
+      ]
+    },
+    {
+      titulo: "🏴‍☠️ El mapa del tesoro pirata",
+      imagen: "imagenes/pirata.jpg",
+      parrafos: [
+        {
+          texto: "La capitana Sara desenrolla un mapa viejo en su barco. Ella lee las pistas secretas y mira por su catalejo dorado. A lo lejos divisa una isla con palmeras altas.",
+          verbos: ["desenrolla", "lee", "mira", "divisa"]
+        },
+        {
+          texto: "Los marineros reman con fuerza hasta la orilla dorada. Sara camina veinte pasos hacia la roca gigante. Allí cava un hoyo profundo con una pala de hierro.",
+          verbos: ["reman", "camina", "cava"]
+        },
+        {
+          texto: "La pala golpea una caja de madera muy pesada. Entre todos levantan el cofre y rompen el candado oxidado. Adentro descubren muchos libros de cuentos y joyas brillantes.",
+          verbos: ["golpea", "levantan", "rompen", "descubren"]
+        }
+      ]
+    },
+    {
+      titulo: "🦋 El jardín de las mariposas",
+      imagen: "imagenes/mariposa.jpg",
+      parrafos: [
+        {
+          texto: "Emilia planta semillas de girasol en una maceta de barro. Todos los días riega la tierra con su regadera amarilla. El sol calienta la maceta y la planta crece fuerte.",
+          verbos: ["planta", "riega", "calienta", "crece"]
+        },
+        {
+          texto: "Una mañana brota una flor enorme con pétalos dorados. Una mariposa monarca vuela cerca y posa sus patas en la flor. Ella bebe el néctar dulce con mucho cuidado.",
+          verbos: ["brota", "vuela", "posa", "bebe"]
+        },
+        {
+          texto: "Emilia observa la escena en silencio desde la ventana. Ella dibuja la mariposa en su cuaderno de ciencias. Luego muestra el dibujo bonito a su maestra.",
+          verbos: ["observa", "dibuja", "muestra"]
+        }
+      ]
+    },
+    {
+      titulo: "🏕️ Campamento bajo las estrellas",
+      imagen: "imagenes/campamento.jpg",
+      parrafos: [
+        {
+          texto: "Papá y Leo arman una tienda de campaña azul en el bosque. Ellos clavan las estacas en el suelo y extienden las mantas. Luego recolectan ramas secas para la fogata nocturna.",
+          verbos: ["arman", "clavan", "extienden", "recolectan"]
+        },
+        {
+          texto: "Cuando oscurece, encienden el fuego y asan malvaviscos blancos. Leo sopla su malvavisco caliente y mastica despacio. El cielo despejado muestra miles de estrellas brillantes.",
+          verbos: ["oscurece", "encienden", "asan", "sopla", "mastica", "muestra"]
+        },
+        {
+          texto: "Una estrella fugaz cruza el cielo oscuro en silencio. Leo cierra los ojos y pide un deseo secreto. Después, ambos entran a la tienda y duermen profundamente.",
+          verbos: ["cruza", "cierra", "pide", "entran", "duermen"]
+        }
+      ]
     }
   ];
 
-  let indiceActual = 0;
+  let cuentosDisponibles = [];
+  let cuentoActual = null;
+  let indiceParrafo = 0;
   let encontrados = 0;
+  let cuentosTerminados = 0;
+
+  function obtenerCuentoAleatorio() {
+    if (cuentosDisponibles.length === 0) {
+      cuentosDisponibles = cuentos.map((_, index) => index);
+    }
+    const posicionRandom = Math.floor(Math.random() * cuentosDisponibles.length);
+    const indiceElegido = cuentosDisponibles.splice(posicionRandom, 1)[0];
+    document.getElementById("numero-cuento").textContent = `Cuento #${indiceElegido + 1} de ${cuentos.length}`;
+    return cuentos[indiceElegido];
+  }
+
+  function iniciarNuevoCuento() {
+    cuentoActual = obtenerCuentoAleatorio();
+    indiceParrafo = 0;
+    document.getElementById("titulo-cuento").textContent = cuentoActual.titulo;
+    
+    const imgElemento = document.getElementById("imagen-cuento");
+    imgElemento.style.display = "none";
+    imgElemento.src = cuentoActual.imagen || "";
+
+    document.getElementById("btn-nuevo-cuento").style.display = "none";
+    cargarParrafo();
+  }
 
   function cargarParrafo() {
-    const actual = parrafos[indiceActual];
+    const actual = cuentoActual.parrafos[indiceParrafo];
     encontrados = 0;
     document.getElementById("btn-siguiente").style.display = "none";
     document.getElementById("mensaje").textContent = "";
@@ -145,11 +381,14 @@
           document.getElementById("mensaje").textContent = "¡Muy bien! '" + palabraLimpia + "' es una acción ⭐";
 
           if (encontrados === actual.verbos.length) {
-            if (indiceActual < parrafos.length - 1) {
+            if (indiceParrafo < cuentoActual.parrafos.length - 1) {
               document.getElementById("mensaje").textContent = "🎉 ¡Excelente! Encontraste todos los verbos de este párrafo.";
               document.getElementById("btn-siguiente").style.display = "inline-block";
             } else {
+              cuentosTerminados++;
+              document.getElementById("contador-cuentos").textContent = `📚 Cuentos terminados: ${cuentosTerminados}`;
               document.getElementById("mensaje").textContent = "🏆 ¡FELICIDADES! Terminaste todo el cuento y atrapaste todos los verbos.";
+              document.getElementById("btn-nuevo-cuento").style.display = "inline-block";
             }
           }
         } else {
@@ -166,17 +405,17 @@
   }
 
   function actualizarProgreso() {
-    const totalVerbos = parrafos[indiceActual].verbos.length;
+    const totalVerbos = cuentoActual.parrafos[indiceParrafo].verbos.length;
     document.getElementById("progreso").textContent = 
-      `Párrafo ${indiceActual + 1} de ${parrafos.length} | Verbos encontrados: ${encontrados} / ${totalVerbos}`;
+      `Párrafo ${indiceParrafo + 1} de ${cuentoActual.parrafos.length} | Verbos encontrados: ${encontrados} / ${totalVerbos}`;
   }
 
   function siguienteParrafo() {
-    indiceActual++;
+    indiceParrafo++;
     cargarParrafo();
   }
 
-  cargarParrafo();
+  iniciarNuevoCuento();
 </script>
 
 </body>

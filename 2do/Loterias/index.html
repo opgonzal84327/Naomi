@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Lotería Educativa Multijugador</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --success: #16a34a;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin: 5px 0 15px;
+      font-size: 1.6rem;
+      text-align: center;
+      color: var(--primary);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 750px;
+      background: var(--card);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .hidden { display: none !important; }
+
+    /* Formularios e Inputs */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 5px;
+      font-size: 0.95rem;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 1rem;
+      background: #fff;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 8px;
+      accent-color: var(--primary);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 500px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    /* Botones */
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+      transition: transform 0.1s, opacity 0.2s;
+    }
+
+    button:active { transform: scale(0.98); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary { background: var(--primary); }
+    .btn-success { background: var(--success); }
+    .btn-warning { background: var(--warning); }
+    .btn-danger { background: var(--danger); }
+
+    .divider {
+      text-align: center;
+      margin: 18px 0;
+      font-weight: bold;
+      color: #64748b;
+    }
+
+    /* Sala de Espera y Juego */
+    .room-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #e2e8f0;
+      padding: 10px 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .room-code {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 1px;
+    }
+
+    /* Zona del Gritón */
+    .caller-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #eff6ff;
+      border: 2px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 15px;
+      gap: 15px;
+    }
+
+    .current-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border: 3px solid var(--primary);
+      border-radius: 12px;
+      min-width: 120px;
+      min-height: 120px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .current-card .visual {
+      font-size: 3rem;
+      line-height: 1.1;
+    }
+
+    .current-card img {
+      max-width: 75px;
+      max-height: 75px;
+      object-fit: contain;
+    }
+
+    .current-card .label-text {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-top: 5px;
+    }
+
+    .caller-controls {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Tablero del Jugador */
+    .board {
+      display: grid;
+      gap: 10px;
+      margin: 15px auto;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .board-3 { grid-template-columns: repeat(3, 1fr); }
+    .board-4 { grid-template-columns: repeat(4, 1fr); }
+
+    .cell {
+      aspect-ratio: 1 / 1;
+      background: #ffffff;
+      border: 2px solid #94a3b8;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      cursor: pointer;
+      position: relative;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .cell .visual {
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      line-height: 1;
+    }
+
+    .cell img {
+      width: 65%;
+      height: 65%;
+      object-fit: contain;
+    }
+
+    .cell .cell-text {
+      font-size: clamp(0.85rem, 2.5vw, 1.15rem);
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    /* Frijolito / Marca */
+    .cell.marked::after {
+      content: "🫘";
+      position: absolute;
+      font-size: clamp(2.5rem, 7vw, 4rem);
+      background: rgba(22, 163, 74, 0.25);
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      border: 3px solid var(--success);
+    }
+
+    .players-list {
+      font-size: 0.9rem;
+      color: #475569;
+      margin-bottom: 10px;
+    }
+
+    .winner-banner {
+      background: #fef08a;
+      border: 3px solid #eab308;
+      color: #854d0e;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎲 Lotería Educativa</h1>
+
+  <!-- PANTALLA 1: INICIO / CREAR O UNIRSE -->
+  <div id="screen-home" class="container">
+    <div class="form-group">
+      <label>Tu Nombre:</label>
+      <input type="text" id="player-name" placeholder="Ej. Sofía, Maestro Juan..." maxlength="18">
+    </div>
+
+    <div class="divider">— CREAR NUEVA SALA (ANFITRIÓN) —</div>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Tema de la Lotería:</label>
+        <select id="cfg-theme">
+          <option value="frutas_en">🍎 Fruits & Vegetables (English)</option>
+          <option value="multiplicaciones">✖️ Multiplicaciones (Tablas)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Modo de Juego:</label>
+        <select id="cfg-mode">
+          <option value="asociacion">Carta: Texto / Tablero: Imagen o Resultado</option>
+          <option value="clasico">Clásico: Todo visible</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Tamaño del Tablero:</label>
+        <select id="cfg-board">
+          <option value="3">3x3 (9 casillas - Rápido)</option>
+          <option value="4" selected>4x4 (16 casillas - Clásico)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Cantidad de Cartas en Mazo:</label>
+        <select id="cfg-deck">
+          <option value="30">30 cartas</option>
+          <option value="40">40 cartas</option>
+          <option value="54" selected>54 cartas (Completo)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Velocidad de Cartas: <span id="lbl-speed">5 seg</span></label>
+        <input type="range" id="cfg-speed" min="0" max="12" step="1" value="5"
+          oninput="document.getElementById('lbl-speed').textContent = this.value == 0 ? 'Manual' : this.value + ' seg'">
+      </div>
+
+      <div class="form-group">
+        <label>Velocidad de Voz: <span id="lbl-voice">0.9x</span></label>
+        <input type="range" id="cfg-voice" min="0.5" max="1.4" step="0.1" value="0.9"
+          oninput="document.getElementById('lbl-voice').textContent = this.value + 'x'">
+      </div>
+    </div>
+
+    <button id="btn-create" class="btn-primary">Crear Sala</button>
+
+    <div class="divider">— O UNIRSE A UNA SALA EXISTENTE —</div>
+
+    <div class="grid-2">
+      <div class="form-group" style="margin:0;">
+        <input type="text" id="join-code" placeholder="Código de sala (Ej. A4B9)" style="text-transform:uppercase;">
+      </div>
+      <button id="btn-join" class="btn-success">Entrar a Sala</button>
+    </div>
+  </div>
+
+  <!-- PANTALLA 2: SALA DE JUEGO -->
+  <div id="screen-game" class="container hidden">
+    <div class="room-header">
+      <div>Sala: <span id="display-room-code" class="room-code">----</span></div>
+      <div id="display-theme-name" style="font-weight:600;">Tema</div>
+      <button id="btn-leave" class="btn-danger" style="width:auto; padding:8px 12px; font-size:0.9rem;">Salir</button>
+    </div>
+
+    <div id="players-bar" class="players-list">Jugadores conectados: ...</div>
+
+    <div id="winner-banner" class="winner-banner hidden"></div>
+
+    <!-- ZONA DEL NIÑO GRITÓN -->
+    <div class="caller-box">
+      <div class="current-card" id="caller-card-display">
+        <div class="visual">🎲</div>
+        <div class="label-text">Esperando...</div>
+      </div>
+
+      <div class="caller-controls">
+        <div id="card-counter" style="font-size:0.9rem; font-weight:600; color:#475569;">Cartas: 0 / 0</div>
+        
+        <!-- Controles solo para Anfitrión -->
+        <div id="host-controls" class="hidden" style="display:flex; flex-direction:column; gap:8px;">
+          <button id="btn-start" class="btn-success">▶️ Iniciar Partida</button>
+          <button id="btn-pause" class="btn-warning hidden">⏸️ Pausar Gritón</button>
+          <button id="btn-next" class="btn-primary hidden">⏭️ Siguiente Carta</button>
+        </div>
+
+        <!-- Botón de audio para jugadores en iPad/Celular -->
+        <button id="btn-audio-toggle" class="btn-primary" style="background:#475569; font-size:0.9rem; padding:10px;">
+          🔊 Activar / Probar Voz
+        </button>
+      </div>
+    </div>
+
+    <!-- TABLERO DEL JUGADOR -->
+    <div id="player-board" class="board"></div>
+
+    <button id="btn-loteria" class="btn-success" style="font-size:1.3rem; padding:16px; margin-top:10px;">
+      🎉 ¡LOTERÍA! 🎉
+    </button>
+  </div>
+
+  <script src="temas.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
+

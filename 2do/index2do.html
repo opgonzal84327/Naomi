@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actividades de Naomi - 2° Grado</title>
+  <style>
+    :root {
+      --bg-color: #f4f7f6;
+      --text-color: #333;
+      --card-bg: #ffffff;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      color: #2c3e50;
+      font-size: 2rem;
+      margin-bottom: 5px;
+    }
+
+    p.subtitle {
+      color: #7f8c8d;
+      font-size: 1.1rem;
+      margin-top: 0;
+    }
+
+    #contenedor-materias {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .materia-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border-top: 6px solid #3498db; /* Color por defecto */
+    }
+
+    .materia-titulo {
+      font-size: 1.5rem;
+      margin-top: 0;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lista-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .link-btn {
+      display: block;
+      text-decoration: none;
+      background-color: #f8f9fa;
+      color: #2c3e50;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      border: 2px solid #e9ecef;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .link-btn:hover {
+      transform: translateY(-2px);
+      border-color: currentColor;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎒 Las Tareas de Naomi</h1>
+    <p class="subtitle">2° Grado de Primaria • Elige una actividad para empezar</p>
+  </header>
+
+  <!-- Aquí se dibujarán las materias automáticamente -->
+  <main id="contenedor-materias"></main>
+
+  <script>
+    // =========================================================================
+    // 👇 ZONA FÁCIL DE EDITAR: Solo agrega tus links aquí 👇
+    // =========================================================================
+    const materias = [
+      {
+        nombre: "Inglés",
+        icono: "🌎",
+        color: "#3498db", // Azul
+        actividades: [
+          { titulo: "Stories", url: "English/menuEnglish.html" },
+          { titulo: "Fruit & Vegetables", url: "English/Unit3/fruits_vegetables.html" },
+          { titulo: "Possessives", url: "English/Unit3/possessives.html" },
+          { titulo: "Some & Any", url: "English/Unit3/some_any.html" },
+          { titulo: "Some & Any2", url: "English/Unit3/some_any2.html" },
+          { titulo: "Whose", url: "English/Unit3/whose.html" },
+          { titulo: "Demostratives1", url: "English/Unit3/demostratives2.html" },
+          { titulo: "Demostratives2", url: "English/Unit3/demostratives.html" }
+        ]
+      },
+      {
+        nombre: "Lenguajes",
+        icono: "📚",
+        color: "#e67e22", // Naranja
+        actividades: [
+          { titulo: "Verbos", url: "lenguaje/verbos.html" }
+        ]
+      }
+      // Si agregas otra materia en el futuro, solo copia un bloque de arriba,
+      // pon una coma después de la llave anterior y pégalo aquí abajo.
+    ];
+    // =========================================================================
+
+    // Código que construye la página automáticamente (no necesitas tocar esto)
+    const contenedor = document.getElementById('contenedor-materias');
+
+    materias.forEach(materia => {
+      const card = document.createElement('section');
+      card.className = 'materia-card';
+      card.style.borderTopColor = materia.color;
+
+      const titulo = document.createElement('h2');
+      titulo.className = 'materia-titulo';
+      titulo.style.color = materia.color;
+      titulo.textContent = `${materia.icono} ${materia.nombre}`;
+      card.appendChild(titulo);
+
+      const grid = document.createElement('div');
+      grid.className = 'lista-links';
+
+      materia.actividades.forEach(act => {
+        const enlace = document.createElement('a');
+        enlace.className = 'link-btn';
+        enlace.href = act.url;
+        enlace.textContent = act.titulo;
+        enlace.target = "_blank"; // Abre la actividad en una pestaña nueva
+        enlace.style.color = materia.color;
+        grid.appendChild(enlace);
+      });
+
+      card.appendChild(grid);
+      contenedor.appendChild(card);
+    });
+  </script>
+
+</body>
+</html>

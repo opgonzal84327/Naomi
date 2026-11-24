@@ -1,127 +1,386 @@
-const TEMAS = {
-  frutas_en: {
-    nombre: "🍎 Fruits & Vegetables (English)",
-    lang: "en-US",
-    cartas: [
-      // --- TUS 16 OBLIGATORIAS (Siempre incluidas aunque el mazo sea de 30 o 40) ---
-      { id: "v1", frontText: "Bean", boardText: "Bean", emoji: "🫘", img: "", required: true },
-      { id: "v2", frontText: "Cabbage", boardText: "Cabbage", emoji: "🥬", img: "", required: true },
-      { id: "v3", frontText: "Carrot", boardText: "Carrot", emoji: "🥕", img: "", required: true },
-      { id: "v4", frontText: "Corn", boardText: "Corn", emoji: "🌽", img: "", required: true },
-      { id: "v5", frontText: "Mushroom", boardText: "Mushroom", emoji: "🍄", img: "", required: true },
-      { id: "v6", frontText: "Onion", boardText: "Onion", emoji: "🧅", img: "", required: true },
-      { id: "v7", frontText: "Pea", boardText: "Pea", emoji: "🫛", img: "", required: true },
-      { id: "v8", frontText: "Pepper", boardText: "Pepper", emoji: "🫑", img: "", required: true },
-      { id: "f1", frontText: "Coconut", boardText: "Coconut", emoji: "🥥", img: "", required: true },
-      { id: "f2", frontText: "Kiwi", boardText: "Kiwi", emoji: "🥝", img: "", required: true },
-      { id: "f3", frontText: "Lemon", boardText: "Lemon", emoji: "🍋", img: "", required: true },
-      { id: "f4", frontText: "Lime", boardText: "Lime", emoji: "🍈", img: "", required: true },
-      { id: "f5", frontText: "Mango", boardText: "Mango", emoji: "🥭", img: "", required: true },
-      { id: "f6", frontText: "Orange", boardText: "Orange", emoji: "🍊", img: "", required: true },
-      { id: "f7", frontText: "Pear", boardText: "Pear", emoji: "🍐", img: "", required: true },
-      { id: "f8", frontText: "Pineapple", boardText: "Pineapple", emoji: "🍍", img: "", required: true },
+import { initializeApp } from "https://gstatic.com";
+import { getDatabase, ref, set, get, update, onValue, onDisconnect } from "https://gstatic.com";
 
-      // --- 38 EXTRAS PARA COMPLETAR LAS 54 CARTAS ---
-      { id: "x1", frontText: "Apple", boardText: "Apple", emoji: "🍎", img: "" },
-      { id: "x2", frontText: "Green Apple", boardText: "Green Apple", emoji: "🍏", img: "" },
-      { id: "x3", frontText: "Banana", boardText: "Banana", emoji: "🍌", img: "" },
-      { id: "x4", frontText: "Watermelon", boardText: "Watermelon", emoji: "🍉", img: "" },
-      { id: "x5", frontText: "Grapes", boardText: "Grapes", emoji: "🍇", img: "" },
-      { id: "x6", frontText: "Strawberry", boardText: "Strawberry", emoji: "🍓", img: "" },
-      { id: "x7", frontText: "Blueberries", boardText: "Blueberries", emoji: "🫐", img: "" },
-      { id: "x8", frontText: "Cherries", boardText: "Cherries", emoji: "🍒", img: "" },
-      { id: "x9", frontText: "Peach", boardText: "Peach", emoji: "🍑", img: "" },
-      { id: "x10", frontText: "Tomato", boardText: "Tomato", emoji: "🍅", img: "" },
-      { id: "x11", frontText: "Avocado", boardText: "Avocado", emoji: "🥑", img: "" },
-      { id: "x12", frontText: "Eggplant", boardText: "Eggplant", emoji: "🍆", img: "" },
-      { id: "x13", frontText: "Potato", boardText: "Potato", emoji: "🥔", img: "" },
-      { id: "x14", frontText: "Sweet Potato", boardText: "Sweet Potato", emoji: "🍠", img: "" },
-      { id: "x15", frontText: "Broccoli", boardText: "Broccoli", emoji: "🥦", img: "" },
-      { id: "x16", frontText: "Cucumber", boardText: "Cucumber", emoji: "🥒", img: "" },
-      { id: "x17", frontText: "Garlic", boardText: "Garlic", emoji: "🧄", img: "" },
-      { id: "x18", frontText: "Chili Pepper", boardText: "Chili Pepper", emoji: "🌶️", img: "" },
-      { id: "x19", frontText: "Pumpkin", boardText: "Pumpkin", emoji: "🎃", img: "" },
-      { id: "x20", frontText: "Olive", boardText: "Olive", emoji: "🫒", img: "" },
-      { id: "x21", frontText: "Peanut", boardText: "Peanut", emoji: "🥜", img: "" },
-      { id: "x22", frontText: "Chestnut", boardText: "Chestnut", emoji: "🌰", img: "" },
-      { id: "x23", frontText: "Ginger", boardText: "Ginger", emoji: "🫚", img: "" },
-      { id: "x24", frontText: "Lettuce", boardText: "Lettuce", emoji: "🥗", img: "" },
-      { id: "x25", frontText: "Tangerine", boardText: "Tangerine", emoji: "🍊", img: "" },
-      { id: "x26", frontText: "Melon", boardText: "Melon", emoji: "🍈", img: "" },
-      { id: "x27", frontText: "Raspberries", boardText: "Raspberries", emoji: "🍇", img: "" },
-      { id: "x28", frontText: "Blackberries", boardText: "Blackberries", emoji: "🫐", img: "" },
-      { id: "x29", frontText: "Papaya", boardText: "Papaya", emoji: "🥭", img: "" },
-      { id: "x30", frontText: "Plum", boardText: "Plum", emoji: "🍑", img: "" },
-      { id: "x31", frontText: "Pomegranate", boardText: "Pomegranate", emoji: "🍎", img: "" },
-      { id: "x32", frontText: "Fig", boardText: "Fig", emoji: "🍐", img: "" },
-      { id: "x33", frontText: "Celery", boardText: "Celery", emoji: "🥬", img: "" },
-      { id: "x34", frontText: "Asparagus", boardText: "Asparagus", emoji: "🥦", img: "" },
-      { id: "x35", frontText: "Zucchini", boardText: "Zucchini", emoji: "🥒", img: "" },
-      { id: "x36", frontText: "Radish", boardText: "Radish", emoji: "🧅", img: "" },
-      { id: "x37", frontText: "Turnip", boardText: "Turnip", emoji: "🥔", img: "" },
-      { id: "x38", frontText: "Artichoke", boardText: "Artichoke", emoji: "🥬", img: "" }
-    ]
-  },
-
-  multiplicaciones: {
-    nombre: "✖️ Multiplicaciones (Tablas)",
-    lang: "es-MX",
-    cartas: [
-      // 54 operaciones con RESULTADOS 100% ÚNICOS (sin repetidos)
-      { id: "m1", frontText: "1 × 1", speech: "Uno por uno", boardText: "1", emoji: "", img: "" },
-      { id: "m2", frontText: "1 × 2", speech: "Uno por dos", boardText: "2", emoji: "", img: "" },
-      { id: "m3", frontText: "1 × 3", speech: "Uno por tres", boardText: "3", emoji: "", img: "" },
-      { id: "m4", frontText: "2 × 2", speech: "Dos por dos", boardText: "4", emoji: "", img: "" },
-      { id: "m5", frontText: "1 × 5", speech: "Uno por cinco", boardText: "5", emoji: "", img: "" },
-      { id: "m6", frontText: "2 × 3", speech: "Dos por tres", boardText: "6", emoji: "", img: "" },
-      { id: "m7", frontText: "1 × 7", speech: "Uno por siete", boardText: "7", emoji: "", img: "" },
-      { id: "m8", frontText: "2 × 4", speech: "Dos por cuatro", boardText: "8", emoji: "", img: "" },
-      { id: "m9", frontText: "3 × 3", speech: "Tres por tres", boardText: "9", emoji: "", img: "" },
-      { id: "m10", frontText: "2 × 5", speech: "Dos por cinco", boardText: "10", emoji: "", img: "" },
-      { id: "m11", frontText: "1 × 11", speech: "Uno por once", boardText: "11", emoji: "", img: "" },
-      { id: "m12", frontText: "3 × 4", speech: "Tres por cuatro", boardText: "12", emoji: "", img: "" },
-      { id: "m13", frontText: "2 × 7", speech: "Dos por siete", boardText: "14", emoji: "", img: "" },
-      { id: "m14", frontText: "3 × 5", speech: "Tres por cinco", boardText: "15", emoji: "", img: "" },
-      { id: "m15", frontText: "4 × 4", speech: "Cuatro por cuatro", boardText: "16", emoji: "", img: "" },
-      { id: "m16", frontText: "3 × 6", speech: "Tres por seis", boardText: "18", emoji: "", img: "" },
-      { id: "m17", frontText: "4 × 5", speech: "Cuatro por cinco", boardText: "20", emoji: "", img: "" },
-      { id: "m18", frontText: "3 × 7", speech: "Tres por siete", boardText: "21", emoji: "", img: "" },
-      { id: "m19", frontText: "2 × 11", speech: "Dos por once", boardText: "22", emoji: "", img: "" },
-      { id: "m20", frontText: "4 × 6", speech: "Cuatro por seis", boardText: "24", emoji: "", img: "" },
-      { id: "m21", frontText: "5 × 5", speech: "Cinco por cinco", boardText: "25", emoji: "", img: "" },
-      { id: "m22", frontText: "3 × 9", speech: "Tres por nueve", boardText: "27", emoji: "", img: "" },
-      { id: "m23", frontText: "4 × 7", speech: "Cuatro por siete", boardText: "28", emoji: "", img: "" },
-      { id: "m24", frontText: "5 × 6", speech: "Cinco por seis", boardText: "30", emoji: "", img: "" },
-      { id: "m25", frontText: "4 × 8", speech: "Cuatro por ocho", boardText: "32", emoji: "", img: "" },
-      { id: "m26", frontText: "3 × 11", speech: "Tres por once", boardText: "33", emoji: "", img: "" },
-      { id: "m27", frontText: "5 × 7", speech: "Cinco por siete", boardText: "35", emoji: "", img: "" },
-      { id: "m28", frontText: "6 × 6", speech: "Seis por seis", boardText: "36", emoji: "", img: "" },
-      { id: "m29", frontText: "5 × 8", speech: "Cinco por ocho", boardText: "40", emoji: "", img: "" },
-      { id: "m30", frontText: "6 × 7", speech: "Seis por siete", boardText: "42", emoji: "", img: "" },
-      { id: "m31", frontText: "4 × 11", speech: "Cuatro por once", boardText: "44", emoji: "", img: "" },
-      { id: "m32", frontText: "5 × 9", speech: "Cinco por nueve", boardText: "45", emoji: "", img: "" },
-      { id: "m33", frontText: "6 × 8", speech: "Seis por ocho", boardText: "48", emoji: "", img: "" },
-      { id: "m34", frontText: "7 × 7", speech: "Siete por siete", boardText: "49", emoji: "", img: "" },
-      { id: "m35", frontText: "5 × 10", speech: "Cinco por diez", boardText: "50", emoji: "", img: "" },
-      { id: "m36", frontText: "6 × 9", speech: "Seis por nueve", boardText: "54", emoji: "", img: "" },
-      { id: "m37", frontText: "5 × 11", speech: "Cinco por once", boardText: "55", emoji: "", img: "" },
-      { id: "m38", frontText: "7 × 8", speech: "Siete por ocho", boardText: "56", emoji: "", img: "" },
-      { id: "m39", frontText: "6 × 10", speech: "Seis por diez", boardText: "60", emoji: "", img: "" },
-      { id: "m40", frontText: "7 × 9", speech: "Siete por nueve", boardText: "63", emoji: "", img: "" },
-      { id: "m41", frontText: "8 × 8", speech: "Ocho por ocho", boardText: "64", emoji: "", img: "" },
-      { id: "m42", frontText: "6 × 11", speech: "Seis por once", boardText: "66", emoji: "", img: "" },
-      { id: "m43", frontText: "7 × 10", speech: "Siete por diez", boardText: "70", emoji: "", img: "" },
-      { id: "m44", frontText: "8 × 9", speech: "Ocho por nueve", boardText: "72", emoji: "", img: "" },
-      { id: "m45", frontText: "7 × 11", speech: "Siete por once", boardText: "77", emoji: "", img: "" },
-      { id: "m46", frontText: "8 × 10", speech: "Ocho por diez", boardText: "80", emoji: "", img: "" },
-      { id: "m47", frontText: "9 × 9", speech: "Nueve por nueve", boardText: "81", emoji: "", img: "" },
-      { id: "m48", frontText: "7 × 12", speech: "Siete por doce", boardText: "84", emoji: "", img: "" },
-      { id: "m49", frontText: "8 × 11", speech: "Ocho por once", boardText: "88", emoji: "", img: "" },
-      { id: "m50", frontText: "9 × 10", speech: "Nueve por diez", boardText: "90", emoji: "", img: "" },
-      { id: "m51", frontText: "8 × 12", speech: "Ocho por doce", boardText: "96", emoji: "", img: "" },
-      { id: "m52", frontText: "9 × 11", speech: "Nueve por once", boardText: "99", emoji: "", img: "" },
-      { id: "m53", frontText: "10 × 10", speech: "Diez por diez", boardText: "100", emoji: "", img: "" },
-      { id: "m54", frontText: "12 × 12", speech: "Doce por doce", boardText: "144", emoji: "", img: "" }
-    ]
-  }
+// Tu configuración de Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyDZA3z3Uelvgs-Jil9-ubudr_3dCjZnL3o",
+  authDomain: "loteria-educativa.firebaseapp.com",
+  databaseURL: "https://loteria-educativa-default-rtdb.firebaseio.com",
+  projectId: "loteria-educativa",
+  storageBucket: "loteria-educativa.firebasestorage.app",
+  messagingSenderId: "738351388841",
+  appId: "1:738351388841:web:634d2c8c23fb02cb1c31b8"
 };
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// Estado local del jugador
+let myId = "p_" + Math.random().toString(36).substring(2, 9);
+let myName = "";
+let roomCode = "";
+let isHost = false;
+let myBoard = [];
+let markedCells = new Set();
+let roomData = null;
+let callerTimer = null;
+let lastSpokenIndex = -1;
+let audioUnlocked = false;
+
+// Utilidad para mezclar arreglos (Fisher-Yates)
+function shuffle(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// Generar código de sala corto (4 letras/números)
+function generateRoomCode() {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for (let i = 0; i < 4; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+// Construir mazo respetando las cartas obligatorias
+function buildDeck(themeKey, deckSize) {
+  const allCards = TEMAS[themeKey].cartas;
+  const required = allCards.filter(c => c.required);
+  const optional = shuffle(allCards.filter(c => !c.required));
+  const needed = Math.max(0, deckSize - required.length);
+  const selected = [...required, ...optional.slice(0, needed)];
+  return shuffle(selected).map(c => c.id);
+}
+
+// Desbloquear y usar voz (compatible con iPad/Safari)
+function speakText(text, lang, rate = 0.9) {
+  if (!("speechSynthesis" in window)) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = lang;
+  utterance.rate = parseFloat(rate);
+  window.speechSynthesis.speak(utterance);
+}
+
+document.getElementById("btn-audio-toggle").addEventListener("click", () => {
+  audioUnlocked = true;
+  const lang = roomData ? TEMAS[roomData.theme].lang : "es-MX";
+  const rate = roomData ? roomData.voiceRate : 0.9;
+  speakText(lang === "en-US" ? "Audio ready!" : "Audio activado", lang, rate);
+});
+
+// Renderizar visual (Imagen con respaldo automático a Emoji)
+function createVisualElement(card) {
+  const container = document.createElement("div");
+  container.className = "visual";
+
+  if (card.img && card.img.trim() !== "") {
+    const img = document.createElement("img");
+    img.src = card.img;
+    img.alt = card.frontText;
+    img.onerror = () => {
+      container.innerHTML = card.emoji || "";
+    };
+    container.appendChild(img);
+  } else if (card.emoji) {
+    container.textContent = card.emoji;
+  }
+  return container;
+}
+
+// Dibujar tablero del jugador
+function renderBoard(boardIds, themeKey, boardSize, mode) {
+  const boardEl = document.getElementById("player-board");
+  boardEl.innerHTML = "";
+  boardEl.className = `board board-${boardSize}`;
+
+  const allCards = TEMAS[themeKey].cartas;
+
+  boardIds.forEach((cardId, idx) => {
+    const card = allCards.find(c => c.id === cardId);
+    const cell = document.createElement("div");
+    cell.className = "cell" + (markedCells.has(idx) ? " marked" : "");
+
+    if (mode === "asociacion") {
+      // En modo asociación: si tiene imagen o emoji, muestra solo eso; si no (multiplicaciones), muestra el resultado
+      if ((card.img && card.img.trim() !== "") || card.emoji) {
+        cell.appendChild(createVisualElement(card));
+      } else {
+        const txt = document.createElement("div");
+        txt.className = "cell-text";
+        txt.style.fontSize = "clamp(1.4rem, 4vw, 2.2rem)";
+        txt.textContent = card.boardText;
+        cell.appendChild(txt);
+      }
+    } else {
+      // Modo clásico: muestra visual + texto
+      if ((card.img && card.img.trim() !== "") || card.emoji) {
+        cell.appendChild(createVisualElement(card));
+      }
+      const txt = document.createElement("div");
+      txt.className = "cell-text";
+      txt.textContent = card.boardText;
+      cell.appendChild(txt);
+    }
+
+    cell.addEventListener("click", () => {
+      if (markedCells.has(idx)) {
+        markedCells.delete(idx);
+        cell.classList.remove("marked");
+      } else {
+        markedCells.add(idx);
+        cell.classList.add("marked");
+      }
+    });
+
+    boardEl.appendChild(cell);
+  });
+}
+
+// CREAR SALA (ANFITRIÓN)
+document.getElementById("btn-create").addEventListener("click", async () => {
+  myName = document.getElementById("player-name").value.trim() || "Anfitrión";
+  const theme = document.getElementById("cfg-theme").value;
+  const mode = document.getElementById("cfg-mode").value;
+  const boardSize = parseInt(document.getElementById("cfg-board").value);
+  const deckSize = parseInt(document.getElementById("cfg-deck").value);
+  const speed = parseInt(document.getElementById("cfg-speed").value);
+  const voiceRate = parseFloat(document.getElementById("cfg-voice").value);
+
+  // Desbloquear audio desde el toque del usuario (clave en iPad)
+  speakText("", TEMAS[theme].lang, voiceRate);
+  audioUnlocked = true;
+
+  roomCode = generateRoomCode();
+  isHost = true;
+
+  const deck = buildDeck(theme, deckSize);
+  const totalCells = boardSize * boardSize;
+  myBoard = shuffle(deck).slice(0, totalCells);
+
+  const initialRoom = {
+    hostId: myId,
+    theme,
+    mode,
+    boardSize,
+    deckSize,
+    speed,
+    voiceRate,
+    deck,
+    currentIndex: -1,
+    status: "waiting", // waiting, playing, paused, finished
+    winner: "",
+    players: {
+      [myId]: { name: myName }
+    }
+  };
+
+  await set(ref(db, `rooms/${roomCode}`), initialRoom);
+  enterRoom();
+});
+
+// UNIRSE A SALA (JUGADOR)
+document.getElementById("btn-join").addEventListener("click", async () => {
+  myName = document.getElementById("player-name").value.trim() || "Jugador";
+  const inputCode = document.getElementById("join-code").value.trim().toUpperCase();
+  if (!inputCode) return alert("Escribe el código de la sala.");
+
+  const snap = await get(ref(db, `rooms/${inputCode}`));
+  if (!snap.exists()) return alert("No se encontró esa sala. Revisa el código.");
+
+  const data = snap.val();
+  roomCode = inputCode;
+  isHost = (data.hostId === myId);
+
+  // Desbloquear audio al entrar
+  speakText("", TEMAS[data.theme].lang, data.voiceRate);
+  audioUnlocked = true;
+
+  const totalCells = data.boardSize * data.boardSize;
+  myBoard = shuffle(data.deck).slice(0, totalCells);
+
+  await set(ref(db, `rooms/${roomCode}/players/${myId}`), { name: myName });
+  enterRoom();
+});
+
+// ENTRAR Y ESCUCHAR CAMBIOS EN TIEMPO REAL
+function enterRoom() {
+  document.getElementById("screen-home").classList.add("hidden");
+  document.getElementById("screen-game").classList.remove("hidden");
+  document.getElementById("display-room-code").textContent = roomCode;
+
+  if (isHost) {
+    document.getElementById("host-controls").classList.remove("hidden");
+  }
+
+  // Eliminar jugador si cierra pestaña
+  onDisconnect(ref(db, `rooms/${roomCode}/players/${myId}`)).remove();
+
+  onValue(ref(db, `rooms/${roomCode}`), (snapshot) => {
+    if (!snapshot.exists()) return;
+    const data = snapshot.val();
+    const firstLoad = !roomData;
+    roomData = data;
+
+    document.getElementById("display-theme-name").textContent = TEMAS[data.theme].nombre;
+
+    // Lista de jugadores
+    const playersObj = data.players || {};
+    const names = Object.values(playersObj).map(p => p.name);
+    document.getElementById("players-bar").textContent = `Jugadores (${names.length}): ${names.join(", ")}`;
+
+    // Dibujar tablero la primera vez
+    if (firstLoad) {
+      renderBoard(myBoard, data.theme, data.boardSize, data.mode);
+    }
+
+    // Actualizar contador y carta actual del gritón
+    const idx = data.currentIndex;
+    const total = data.deck.length;
+    document.getElementById("card-counter").textContent = `Cartas: ${Math.max(0, idx + 1)} / ${total}`;
+
+    const callerBox = document.getElementById("caller-card-display");
+    if (idx >= 0 && idx < total) {
+      const cardId = data.deck[idx];
+      const card = TEMAS[data.theme].cartas.find(c => c.id === cardId);
+
+      callerBox.innerHTML = "";
+      if (data.mode === "clasico" && ((card.img && card.img.trim() !== "") || card.emoji)) {
+        callerBox.appendChild(createVisualElement(card));
+      }
+      const lbl = document.createElement("div");
+      lbl.className = "label-text";
+      lbl.textContent = card.frontText;
+      callerBox.appendChild(lbl);
+
+      // Cantar carta en voz alta si es nueva
+      if (idx !== lastSpokenIndex && data.status === "playing") {
+        lastSpokenIndex = idx;
+        const textToSpeak = card.speech || card.frontText;
+        speakText(textToSpeak, TEMAS[data.theme].lang, data.voiceRate);
+      }
+    }
+
+    // Botones del Anfitrión
+    if (isHost) {
+      const btnStart = document.getElementById("btn-start");
+      const btnPause = document.getElementById("btn-pause");
+      const btnNext = document.getElementById("btn-next");
+
+      if (data.status === "waiting") {
+        btnStart.classList.remove("hidden");
+        btnPause.classList.add("hidden");
+        btnNext.classList.add("hidden");
+      } else if (data.status === "playing") {
+        btnStart.classList.add("hidden");
+        btnNext.classList.remove("hidden");
+        if (data.speed > 0) {
+          btnPause.classList.remove("hidden");
+          btnPause.textContent = "⏸️ Pausar Gritón";
+          btnPause.className = "btn-warning";
+        }
+      } else if (data.status === "paused") {
+        btnStart.classList.add("hidden");
+        btnPause.classList.remove("hidden");
+        btnPause.textContent = "▶️ Reanudar Gritón";
+        btnPause.className = "btn-success";
+      } else if (data.status === "finished") {
+        btnPause.classList.add("hidden");
+        btnNext.classList.add("hidden");
+        stopCallerLoop();
+      }
+    }
+
+    // Mostrar Ganador
+    const banner = document.getElementById("winner-banner");
+    if (data.winner) {
+      banner.classList.remove("hidden");
+      banner.textContent = `🏆 ¡${data.winner} ha ganado la Lotería! 🏆`;
+      stopCallerLoop();
+    } else {
+      banner.classList.add("hidden");
+    }
+  });
+}
+
+// LÓGICA DEL GRITÓN (SOLO ANFITRIÓN)
+function advanceCard() {
+  if (!isHost || !roomData || roomData.status !== "playing") return;
+  const nextIdx = roomData.currentIndex + 1;
+  if (nextIdx >= roomData.deck.length) {
+    update(ref(db, `rooms/${roomCode}`), { status: "finished" });
+    stopCallerLoop();
+    return;
+  }
+  update(ref(db, `rooms/${roomCode}`), { currentIndex: nextIdx });
+}
+
+function startCallerLoop() {
+  stopCallerLoop();
+  if (!roomData || roomData.speed === 0) return;
+  callerTimer = setInterval(() => {
+    advanceCard();
+  }, roomData.speed * 1000);
+}
+
+function stopCallerLoop() {
+  if (callerTimer) {
+    clearInterval(callerTimer);
+    callerTimer = null;
+  }
+}
+
+document.getElementById("btn-start").addEventListener("click", async () => {
+  await update(ref(db, `rooms/${roomCode}`), { status: "playing", currentIndex: 0 });
+  startCallerLoop();
+});
+
+document.getElementById("btn-pause").addEventListener("click", async () => {
+  if (roomData.status === "playing") {
+    stopCallerLoop();
+    await update(ref(db, `rooms/${roomCode}`), { status: "paused" });
+  } else if (roomData.status === "paused") {
+    await update(ref(db, `rooms/${roomCode}`), { status: "playing" });
+    startCallerLoop();
+  }
+});
+
+document.getElementById("btn-next").addEventListener("click", () => {
+  advanceCard();
+  if (roomData.status === "playing" && roomData.speed > 0) {
+    startCallerLoop(); // Reinicia el conteo del temporizador tras adelantar manualmente
+  }
+});
+
+// VERIFICAR ¡LOTERÍA!
+document.getElementById("btn-loteria").addEventListener("click", async () => {
+  if (!roomData || roomData.status === "waiting" || roomData.winner) return;
+
+  const totalCells = roomData.boardSize * roomData.boardSize;
+  if (markedCells.size < totalCells) {
+    return alert("¡Aún te faltan casillas por marcar en tu tablero!");
+  }
+
+  // Cartas que realmente ya salieron
+  const calledCards = new Set(roomData.deck.slice(0, roomData.currentIndex + 1));
+  const allValid = myBoard.every(cardId => calledCards.has(cardId));
+
+  if (allValid) {
+    await update(ref(db, `rooms/${roomCode}`), {
+      status: "finished",
+      winner: myName
+    });
+  } else {
+    alert("❌ ¡Falsa alarma! Tienes marcada al menos una carta que todavía no ha salido.");
+  }
+});
+
+// SALIR DE LA SALA
+document.getElementById("btn-leave").addEventListener("click", () => {
+  stopCallerLoop();
+  location.reload();
+});
+

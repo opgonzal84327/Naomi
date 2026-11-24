@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, set, get, update, onValue, onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getDatabase, ref, set, get, update, remove, onValue, onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 // Tu configuración de Firebase
 const firebaseConfig = {
@@ -26,6 +26,8 @@ let roomData = null;
 let callerTimer = null;
 let lastSpokenIndex = -1;
 let audioUnlocked = false;
+let currentRound = 1;
+
 
 // Utilidad para mezclar arreglos (Fisher-Yates)
 function shuffle(array) {
@@ -173,10 +175,30 @@ document.getElementById("btn-create").addEventListener("click", async () => {
     currentIndex: -1,
     status: "waiting", // waiting, playing, paused, finished
     winner: "",
+    round: 1,
+    createdAt: Date.now(),
     players: {
       [myId]: { name: myName }
     }
   };
+
+  // Limpiar automáticamente salas con más de 24 horas de antigüedad
+  try {
+    const allRoomsSnap = await get(ref(db, "rooms"));
+    if (allRoomsSnap.exists()) {
+      const now = Date.now();
+      const maxAge = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+      const roomsObj = allRoomsSnap.val();
+      for (const [code, rData] of Object.entries(roomsObj)) {
+        if (!rData.createdAt || (now - rData.createdAt) > maxAge) {
+          remove(ref(db, `rooms/${code}`));
+        }
+      }
+    }
+  } catch (e) {
+    // Si falla la limpieza, continúa creando la sala sin interrumpir al usuario
+  }
+
 
   await set(ref(db, `rooms/${roomCode}`), initialRoom);
   enterRoom();
@@ -232,10 +254,27 @@ function enterRoom() {
     const names = Object.values(playersObj).map(p => p.name);
     document.getElementById("players-bar").textContent = `Jugadores (${names.length}): ${names.join(", ")}`;
 
-    // Dibujar tablero la primera vez
-    if (firstLoad) {
+    // Dibujar tablero la primera vez o cuando inicia una Nueva Ronda
+    const serverRound = data.round || 1;
+    if (firstLoad || serverRound !== currentRound) {
+      if (!firstLoad) {
+        currentRound = serverRound;
+        markedCells.clear();
+        lastSpokenIndex = -1;
+        const totalCells = data.boardSize * data.boardSize;
+        myBoard = shuffle(data.deck).slice(0, totalCells);
+
+        const callerBox = document.getElementById("caller-card-display");
+        callerBox.innerHTML = `<div class="visual">🎲</div><div class="label-text">Ronda ${currentRound} lista...</div>`;
+
+        const historyBar = document.getElementById("history-bar");
+        if (historyBar) {
+          historyBar.innerHTML = `<span style="font-size:0.85rem; color:#64748b;">Historial de cartas: Ronda ${currentRound} por iniciar...</span>`;
+        }
+      }
       renderBoard(myBoard, data.theme, data.boardSize, data.mode);
     }
+
 
     // Actualizar contador y carta actual del gritón
     const idx = data.currentIndex;
@@ -256,6 +295,23 @@ function enterRoom() {
       lbl.textContent = card.frontText;
       callerBox.appendChild(lbl);
 
+      // Actualizar historial de cartas pasadas
+      const historyBar = document.getElementById("history-bar");
+      if (historyBar) {
+        historyBar.innerHTML = "";
+        const pastIds = data.deck.slice(0, idx + 1).reverse();
+        pastIds.forEach((pastId, i) => {
+          const pastCard = TEMAS[data.theme].cartas.find(c => c.id === pastId);
+          const chip = document.createElement("span");
+          chip.className = "history-chip" + (i === 0 ? " latest" : "");
+          // En modo clásico muestra emoji + texto; en asociación solo el texto cantado
+          const prefix = (data.mode === "clasico" && pastCard.emoji) ? pastCard.emoji + " " : "";
+          chip.textContent = prefix + pastCard.frontText;
+          historyBar.appendChild(chip);
+        });
+      }
+
+
       // Cantar carta en voz alta si es nueva
       if (idx !== lastSpokenIndex && data.status === "playing") {
         lastSpokenIndex = idx;
@@ -269,14 +325,17 @@ function enterRoom() {
       const btnStart = document.getElementById("btn-start");
       const btnPause = document.getElementById("btn-pause");
       const btnNext = document.getElementById("btn-next");
+      const btnRestart = document.getElementById("btn-restart");
 
       if (data.status === "waiting") {
         btnStart.classList.remove("hidden");
         btnPause.classList.add("hidden");
         btnNext.classList.add("hidden");
+        btnRestart.classList.add("hidden");
       } else if (data.status === "playing") {
         btnStart.classList.add("hidden");
         btnNext.classList.remove("hidden");
+        btnRestart.classList.add("hidden");
         if (data.speed > 0) {
           btnPause.classList.remove("hidden");
           btnPause.textContent = "⏸️ Pausar Gritón";
@@ -287,12 +346,15 @@ function enterRoom() {
         btnPause.classList.remove("hidden");
         btnPause.textContent = "▶️ Reanudar Gritón";
         btnPause.className = "btn-success";
+        btnRestart.classList.remove("hidden");
       } else if (data.status === "finished") {
         btnPause.classList.add("hidden");
         btnNext.classList.add("hidden");
+        btnRestart.classList.remove("hidden");
         stopCallerLoop();
       }
     }
+
 
     // Mostrar Ganador
     const banner = document.getElementById("winner-banner");
@@ -377,6 +439,23 @@ document.getElementById("btn-loteria").addEventListener("click", async () => {
     alert("❌ ¡Falsa alarma! Tienes marcada al menos una carta que todavía no ha salido.");
   }
 });
+
+// NUEVA RONDA (SOLO ANFITRIÓN)
+document.getElementById("btn-restart").addEventListener("click", async () => {
+  if (!isHost || !roomData) return;
+  stopCallerLoop();
+  const newDeck = buildDeck(roomData.theme, roomData.deckSize);
+  const nextRound = (roomData.round || 1) + 1;
+
+  await update(ref(db, `rooms/${roomCode}`), {
+    deck: newDeck,
+    currentIndex: -1,
+    status: "waiting",
+    winner: "",
+    round: nextRound
+  });
+});
+
 
 // SALIR DE LA SALA
 document.getElementById("btn-leave").addEventListener("click", () => {

@@ -106,7 +106,7 @@ function renderBoard(boardIds, themeKey, boardSize, mode) {
     const cell = document.createElement("div");
     cell.className = "cell" + (markedCells.has(idx) ? " marked" : "");
 
-    if (mode === "asociacion") {
+    if (mode === "asociacion" || mode === "solo_voz") {
       // En modo asociación: si tiene imagen o emoji, muestra solo eso; si no (multiplicaciones), muestra el resultado
       if ((card.img && card.img.trim() !== "") || card.emoji) {
         cell.appendChild(createVisualElement(card));
@@ -282,34 +282,60 @@ function enterRoom() {
     document.getElementById("card-counter").textContent = `Cartas: ${Math.max(0, idx + 1)} / ${total}`;
 
     const callerBox = document.getElementById("caller-card-display");
+    const historyBar = document.getElementById("history-bar");
+
     if (idx >= 0 && idx < total) {
       const cardId = data.deck[idx];
       const card = TEMAS[data.theme].cartas.find(c => c.id === cardId);
 
       callerBox.innerHTML = "";
-      if (data.mode === "clasico" && ((card.img && card.img.trim() !== "") || card.emoji)) {
-        callerBox.appendChild(createVisualElement(card));
+      if (data.mode === "solo_voz") {
+        // Modo Solo Escuchar: oculta el texto y muestra una bocina
+        callerBox.innerHTML = `<div class="visual">🎧</div><div class="label-text">¡Escucha!</div>`;
+      } else {
+        if (data.mode === "clasico" && ((card.img && card.img.trim() !== "") || card.emoji)) {
+          callerBox.appendChild(createVisualElement(card));
+        }
+        const lbl = document.createElement("div");
+        lbl.className = "label-text";
+        lbl.textContent = card.frontText;
+        callerBox.appendChild(lbl);
       }
-      const lbl = document.createElement("div");
-      lbl.className = "label-text";
-      lbl.textContent = card.frontText;
-      callerBox.appendChild(lbl);
+
+      // Cantar carta en voz alta si es nueva
+      if (idx !== lastSpokenIndex && data.status === "playing") {
+        lastSpokenIndex = idx;
+        const textToSpeak = card.speech || card.frontText;
+        speakText(textToSpeak, TEMAS[data.theme].lang, data.voiceRate);
+      }
 
       // Actualizar historial de cartas pasadas
-      const historyBar = document.getElementById("history-bar");
       if (historyBar) {
-        historyBar.innerHTML = "";
-        const pastIds = data.deck.slice(0, idx + 1).reverse();
-        pastIds.forEach((pastId, i) => {
-          const pastCard = TEMAS[data.theme].cartas.find(c => c.id === pastId);
-          const chip = document.createElement("span");
-          chip.className = "history-chip" + (i === 0 ? " latest" : "");
-          // En modo clásico muestra emoji + texto; en asociación solo el texto cantado
-          const prefix = (data.mode === "clasico" && pastCard.emoji) ? pastCard.emoji + " " : "";
-          chip.textContent = prefix + pastCard.frontText;
-          historyBar.appendChild(chip);
-        });
+        if (data.mode === "solo_voz") {
+          historyBar.classList.add("hidden");
+        } else {
+          historyBar.classList.remove("hidden");
+          historyBar.innerHTML = "";
+          const pastIds = data.deck.slice(0, idx + 1).reverse();
+          pastIds.forEach((pastId, i) => {
+            const pastCard = TEMAS[data.theme].cartas.find(c => c.id === pastId);
+            const chip = document.createElement("span");
+            chip.className = "history-chip" + (i === 0 ? " latest" : "");
+            const prefix = (data.mode === "clasico" && pastCard.emoji) ? pastCard.emoji + " " : "";
+            chip.textContent = prefix + pastCard.frontText;
+            historyBar.appendChild(chip);
+          });
+        }
       }
+    } else if (historyBar) {
+      // Antes de iniciar la ronda, oculta o muestra la barra según el modo
+      if (data.mode === "solo_voz") {
+        historyBar.classList.add("hidden");
+      } else {
+        historyBar.classList.remove("hidden");
+      }
+    }
+
 
 
       // Cantar carta en voz alta si es nueva

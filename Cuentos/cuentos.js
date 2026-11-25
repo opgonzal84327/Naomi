@@ -918,6 +918,184 @@ const CUENTOS = {
 				texto: "Si pudieras diseñar un aparato de gimnasia mágico en lo alto de los árboles, ¿cómo sería y qué pirueta harías ahí?"
 			}
 		]
-	}
-
+	},
+    28: {
+        numero: "28",
+        categoria: "empatia", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+        temaTexto: "Amistad y Seguridad Emocional",
+        titulo: "El bosque de las luces cambiantes y la ardillita Mía",
+        resumen: "Mía, una pequeña ardilla de corazón gigante, descubre que los cambios de humor de una amiga no definen quién es ella y que el amor en su madriguera es tan constante como el sol.",
+        imagen: "imagenes/bosque-luces-cambiantes.jpg",
+        emojiRespaldo: "🐿️",
+        parrafos: [
+            "Había una vez, en un bosque muy grande y lleno de árboles altos, una pequeña ardilla llamada Mía. Mía tenía la cola más esponjosa del bosque y un corazón muy grande al que le encantaba compartir bellotas y jugar a las escondidas.",
+            "En el claro del bosque, Mía tenía una amiga llamada Luna, una conejita blanca. Durante mucho tiempo jugaron juntas todos los días. Pero un día, llegaron dos pajaritas nuevas al claro. Una de ellas miraba a Mía con el ceño fruncido y no quería que se acercara.",
+            "Mía se sintió muy triste y un poco celosa. Como no sabía cómo explicar ese nudo que sentía en su pancita, un día les escondió unas hojas secas para llamar su atención. Entonces, la conejita Luna la miró seria y le dijo: <em>«Ya no eres una buena amiga, por eso nadie quiere jugar contigo»</em>.",
+            "Esas palabras cayeron sobre Mía como una lluvia fría. Se fue corriendo a esconderse detrás de un tronco, sintiéndose muy solita y pensando que tal vez había algo malo en ella.",
+            "Lo más confuso era que, días después, Luna pasaba por ahí y le decía: <em>«¡Mía, ven, tú eres mi mejor amiga!»</em>. Pero al rato volvía a cambiar de idea y la dejaba sola otra vez. Era como jugar con una luciérnaga que se prende y se apaga sin avisar. Mía empezó a tener mucho miedo de equivocarse, pensando que si hacía algo mal, todo el bosque dejaría de quererla.",
+            "Esa tarde, Mía llegó a su madriguera con las orejitas bajas. Su mamá ardilla la vio, dejó de acomodar las hojas y la envolvió con su cola calientita. <em>«¿Qué pasa, mi pequeña?»</em>, preguntó mamá ardilla con voz suave. <em>«Mamá, tengo miedo de que si me equivoco o me enojo, tú también te alejes de mí como Luna»</em>, dijo Mía con una lagrimita en su mejilla.",
+            "Mamá ardilla la abrazó todavía más fuerte y la llevó hasta la entrada de la madriguera, señalando hacia el cielo que empezaba a oscurecer. <em>«Mira, Mía. Luna es como una luciérnaga mareada: todavía está aprendiendo a ser amiga y cambia de luz muy rápido. Lo que ella dice cuando está enojada no es la verdad sobre ti, es solo el ruido de su propia confusión»</em>.",
+            "<em>«¿Y las demás ardillas del bosque?»</em>, preguntó Mía. <em>«¿Recuerdas ayer cuando fuiste al río a jugar con las nutrias y los castores? Ellos te buscaron, se rieron contigo y la pasaron increíble porque eres dulce y divertida. Cuando alguien te quiera de verdad, no te hará sentir como en un sube y baja»</em>. Mía respiró profundo y sintió que el nudo de su pancita se hacía más chiquito.",
+            "<em>«¿Y tú, mamá? ¿Qué pasa si hago una travesura o me llamas la atención?»</em>, preguntó Mía. Mamá ardilla le dio un besito en la nariz y respondió: <em>«Las amigas del bosque pueden ir y venir, Mía. Pero yo no soy una amiga del bosque: yo soy tu mamá. Y el amor de mamá es como el sol: aunque a veces pasen nubes o tengamos que hablar serio para aprender algo, el sol nunca se va. Siempre está ahí, pase lo que pase»</em>.",
+            "Esa noche, Mía se durmió tranquilita, sabiendo que su brillo no dependía de lo que dijera una conejita confundida, y que en su madriguera siempre tendría un lugar seguro donde ser ella misma."
+        ],
+        tituloPreguntas: "Para seguir imaginando juntos",
+        preguntas: [
+            {
+                negrita: "Tus nutrias y castores:",
+                texto: "¿Quiénes son las nutrias y castores de tu vida con los que te sientes súper contenta y tranquila cuando juegas?"
+            },
+            {
+                negrita: "Sentirse como Mía:",
+                texto: "¿Alguna vez te has sentido un poco confundida como la ardillita Mía cuando alguien cambia de humor muy rápido?"
+            },
+            {
+                negrita: "El sol de tu madriguera:",
+                texto: "Si pudieras dibujar el lugar más calientito y seguro del bosque para descansar, ¿qué cosas tendría adentro?"
+            }
+        ]
+    },
+    29: {
+        numero: "29",
+        categoria: "empatia", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+        temaTexto: "Amistad y Seguridad Emocional",
+        titulo: "El pequeño pulpo y las medusas de colores",
+        resumen: "Nilo, un pequeño pulpo curioso del arrecife, descubre que las palabras hirientes de un amigo confundido son solo burbujas de aire que no cambian quién es él.",
+        imagen: "imagenes/pulpo-medusas-colores.jpg",
+        emojiRespaldo: "🐙",
+        parrafos: [
+            "En lo más profundo de un arrecife de coral vivía un pequeño pulpo llamado Nilo. Nilo era muy curioso, le encantaba hacer burbujas en forma de estrella y siempre tenía sus tentáculos listos para ayudar a los demás.",
+            "En el arrecife, Nilo solía nadar junto a un pez globo llamado Beto. Un día, llegaron unos caballitos de mar que hacían piruetas muy llamativas. Beto quiso nadar con ellos, pero cada vez que Nilo se acercaba, uno de los caballitos levantaba la nariz y le daba la espalda.",
+            "Nilo sintió un remolino frío en su pancita. Como no sabía qué hacer con esa sensación tan rara, lanzó un chorrito de tinta para llamar la atención. Entonces, Beto se dio la vuelta y le dijo: <em>«¡Qué pesado eres! Por eso nadie en el arrecife quiere nadar contigo»</em>.",
+            "Esas palabras se sintieron como una corriente helada. Nilo nadó rápido hasta esconderse dentro de una caracola gigante, pensando que quizá había algo malo en él.",
+            "Pero lo más extraño pasó al día siguiente: Beto pasó frente a la caracola y le gritó alegremente: <em>«¡Nilo, ven! ¡Eres mi compañero favorito de todo el mar!»</em>. Y un rato después, cuando volvieron los caballitos de mar, Beto volvió a ignorarlo. Era como intentar atrapar una medusa que cambia de color a cada segundo: un rato brillaba con luz cálida y al siguiente se volvía transparente y fría.",
+            "Una vieja tortuga marina que descansaba cerca lo vio tan confundido que le dijo con voz pausada: <em>«Pequeño Nilo, los peces como Beto son como las corrientes del mar: cambian de dirección a cada rato porque todavía están aprendiendo a nadar en grupo. Lo que dice un pez cuando está enojado o quiere impresionar a otros no es la verdad sobre ti; es solo una burbuja de aire que se rompe sola»</em>.",
+            "Nilo asomó un ojo fuera de la caracola. <em>«¿De verdad no soy un mal compañero?»</em>, preguntó. <em>«Piensa en las tardes que juegas en las cuevas con los delfines y las estrellas de mar. Ellos te buscan y se ríen muchísimo contigo. Quienes son buenos amigos de verdad no te hacen sentir como en una ola que sube y baja»</em>, sonrió la tortuga.",
+            "Nilo salió de la caracola, dejó escapar una burbuja en forma de estrella y siguió nadando tranquilo, sabiendo que su brillo no dependía de ninguna medusa cambiante."
+        ],
+        tituloPreguntas: "Para seguir imaginando juntos",
+        preguntas: [
+            {
+                negrita: "Tus delfines y estrellas de mar:",
+                texto: "¿Quiénes son los amigos con los que siempre te ríes muchísimo y te sientes tranquila cuando juegas?"
+            },
+            {
+                negrita: "Burbujas que se rompen solas:",
+                texto: "¿Qué cosas divertidas sabes que son verdad sobre ti, sin importar lo que diga alguien que está de mal humor?"
+            },
+            {
+                negrita: "Burbujas mágicas:",
+                texto: "Si pudieras hacer burbujas submarinas de formas diferentes como Nilo, ¿qué figuras harías en el agua?"
+            }
+        ]
+    },
+    30: {
+        numero: "30",
+        categoria: "empatia", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+        temaTexto: "Amor Incondicional y Seguridad",
+        titulo: "El faro que nunca se apaga",
+        resumen: "Tadeo, un pequeño barquito de vela, descubre que aunque a veces escuche una llamada de atención firme para cuidarlo, la luz de su Faro jamás se apaga.",
+        imagen: "imagenes/faro-nunca-apaga.jpg",
+        emojiRespaldo: "⛵",
+        parrafos: [
+            "En una isla muy tranquila vivía un pequeño barquito de vela llamado Tadeo. A Tadeo le encantaba navegar cerca de la orilla, pintar estelas blancas en el agua y aprender a dirigir su propio timón.",
+            "En la punta más alta de la isla, mirando siempre hacia el mar, estaba Clara, el gran Faro. Clara tenía una luz cálida y dorada que iluminaba el agua de día y de noche para que Tadeo siempre supiera dónde estaba su hogar.",
+            "Tadeo y Clara se llevaban tan bien que a veces jugaban a hacer señales con sus luces y tocaban sus bocinas al ritmo de las olas. Un día, mientras descansaban en el muelle, Tadeo le dijo muy orgulloso: <em>«¡Clara, eres mi mejor amiga de todo el océano!»</em>.",
+            "El Faro sonrió con una luz muy suave y le respondió: <em>«Me encanta jugar contigo, Tadeo, y eres mi alegría más grande. Pero yo no soy una amiga del mar como los otros barquitos. Yo soy tu Faro»</em>.",
+            "Tadeo ladeó su velita, un poco confundido. <em>«¿Y cuál es la diferencia?»</em>, preguntó. <em>«Mira hacia el horizonte»</em>, dijo el Faro. <em>«Los demás barquitos navegan contigo un rato, a veces toman otro rumbo, a veces se alejan si hay viento fuerte y luego regresan. Un amigo puede cambiar de ruta. Pero un Faro tiene raíces profundas en la roca: nunca se mueve y nunca se va»</em>.",
+            "Pasaron los días y, una tarde, Tadeo estaba practicando sus giros tan rápido que, sin querer, salpicó mucha agua sobre el muelle recién limpiado y casi choca contra unas rocas. El Faro tuvo que hacer sonar su campana con fuerza: <em>«¡Din, don, din!»</em> para advertirle del peligro y hablarle con voz firme para que tuviera más cuidado.",
+            "Al escuchar la campana seria, Tadeo sintió un susto enorme en su motor. Bajó su velita, empezó a temblar y pensó: <em>«¡Ya arruiné todo! Seguro el Faro está tan enojado que va a apagar su luz y me va a dejar solo en la oscuridad»</em>.",
+            "Tadeo se acercó despacio al muelle, pidiendo perdón una y otra vez con su bocina chiquita, con mucho miedo de levantar la mirada. Pero cuando por fin miró hacia arriba, vio que la luz dorada del Faro seguía brillando exactamente igual de grande y calientita sobre él.",
+            "<em>«¿Por qué no apagaste tu luz?»</em>, preguntó Tadeo sorprendido. <em>«Pensé que ya no me querías porque tocaste la campana con mucha fuerza»</em>. El Faro bajó su haz de luz hasta envolver por completo al pequeño barquito, como un abrazo gigante.",
+            "<em>«Ay, mi pequeño Tadeo»</em>, le dijo con ternura. <em>«Cuando toco mi campana fuerte es porque mi trabajo como Faro es cuidarte y enseñarte a navegar seguro, no porque deje de quererte. Las nubes pueden pasar, el viento puede soplar fuerte y a veces tenemos que hablar muy serio, pero la luz de un Faro jamás se apaga»</em>.",
+            "Tadeo dejó escapar un suspiro largo, subió su velita con tranquilidad y se quedó dormido flotando suavemente junto al muelle, sabiendo que pasara lo que pasara, esa luz siempre estaría ahí para él."
+        ],
+        tituloPreguntas: "Para seguir imaginando juntos",
+        preguntas: [
+            {
+                negrita: "El abrazo de luz:",
+                texto: "¿Cómo crees que se sintió el barquito Tadeo cuando miró hacia arriba y vio que la luz dorada del Faro seguía brillando igual?"
+            },
+            {
+                negrita: "La campana que cuida:",
+                texto: "¿Por qué el Faro tuvo que tocar su campana fuerte cuando Tadeo iba muy rápido cerca de las rocas?"
+            },
+            {
+                negrita: "Tu propio barquito:",
+                texto: "Si pudieras navegar en un barquito mágico como Tadeo, ¿de qué color sería su vela y qué dibujos tendría?"
+            }
+        ]
+    },
+    31: {
+        numero: "31",
+        categoria: "empatia", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+        temaTexto: "Amistad y Límites Sanos",
+        titulo: "El jardín de las mariposas de viento",
+        resumen: "Sofía, una pequeña catarina alegre, descubre que no necesita perseguir a una mariposa cambiante cuando el jardín está lleno de amigos firmes como árboles.",
+        imagen: "imagenes/jardin-mariposas-viento.jpg",
+        emojiRespaldo: "🐞",
+        parrafos: [
+            "En un prado lleno de flores de colores vivía una pequeña catarina llamada Sofía. A Sofía le encantaba pintar puntitos en las hojas y reírse hasta que le doliera la pancita.",
+            "En el jardín, Sofía jugaba mucho con una mariposa azul llamada Camila. Un día, llegaron al prado dos libélulas brillantes. A Camila le dio mucha curiosidad volar con ellas, pero cada vez que Sofía se acercaba, una de las libélulas hacía un gesto feo con sus antenas y daba media vuelta.",
+            "Sofía sintió un pinchazo muy triste en su corazón. No entendía por qué ya no cabía en el juego. Un día, sintiéndose muy sola y molesta, pasó volando rápido y movió una flor donde estaban posadas.",
+            "Entonces, la mariposa Camila la miró seria y le dijo: <em>«¡Qué pesada eres! Por eso nadie en el jardín quiere jugar contigo»</em>. Sofía se quedó quietecita sobre una hoja de trébol, sintiendo que sus alas pesaban como piedras. <em>«¿Será verdad lo que dijo?»</em>, pensó mientras miraba al suelo.",
+            "Pero lo más curioso ocurrió dos días después. Camila llegó volando súper contenta y le dijo: <em>«¡Sofía, ven! ¡Eres mi mejor amiga de todo el jardín!»</em>. Sofía se puso feliz y volaron juntas un rato... hasta que volvieron a pasar las libélulas, y Camila se fue otra vez sin despedirse, dejándola sola. Era como intentar jugar con una veleta de viento: un rato apuntaba hacia el sol y al siguiente giraba hacia la sombra sin avisar.",
+            "Esa tarde, un viejo y sabio grillo músico que había visto todo desde una rama se acercó tocando una melodía suave y se sentó junto a Sofía. <em>«Veo tus alitas muy caídas, pequeña catarina. ¿Por qué estás tan triste?»</em>, le preguntó el grillo. <em>«Es que Camila me dijo que nadie quiere jugar conmigo, pero luego me dice que soy su mejor amiga, y luego se va otra vez. Ya no sé qué hacer para que no cambie de idea»</em>, suspiró Sofía.",
+            "El grillo sonrió con ternura y señaló hacia el cielo. <em>«¿Ves esa nube de allá, Sofía? Se llama nube de viento. Cambia de forma a cada minuto: ahorita parece un conejo, luego un dragón y en un segundo desaparece. No cambia porque tú hagas algo mal, cambia porque todavía no sabe quedarse quieta en un lugar»</em>.",
+            "<em>«¿Y lo que me dijo de que nadie quiere jugar conmigo?»</em>, preguntó Sofía bajito. <em>«Las nubes de viento hacen ruido cuando pasan, pero no dicen la verdad»</em>, respondió el grillo. <em>«Mira hacia el arroyo: allí están las hormigas constructoras y las abejitas que conociste el otro día. Cuando juegas con ellas, ¿cómo te sientes?»</em>.",
+            "<em>«¡Súper feliz! Ellas nunca me hacen sentir mal»</em>, dijo Sofía recordando las risas. <em>«Exacto»</em>, dijo el grillo. <em>«Las verdaderas amistades son como los árboles firmes: te dan sombra tranquila todos los días, no un día sí y otro no. Cuando una mariposa ande muy mareada cambiando de dirección, tú puedes dar un pasito atrás, cuidar tu corazón y volar hacia donde sí te reciben con alegría»</em>.",
+            "Sofía estiró sus alitas rojas, respiró el aire fresco del prado y sintió que el peso desaparecía. Entendió que no tenía que perseguir a ninguna mariposa mareada para demostrar lo buena amiga que era, porque el jardín era enorme y estaba lleno de otros lugares donde jugar feliz."
+        ],
+        tituloPreguntas: "Para seguir imaginando juntos",
+        preguntas: [
+            {
+                negrita: "Tus árboles firmes:",
+                texto: "¿Quiénes son esas amigas o amigos que se sienten como árboles firmes, con los que siempre te la pasas bien y tranquila?"
+            },
+            {
+                negrita: "Dar un pasito atrás:",
+                texto: "Cuando alguien se porta como una «nube de viento» que cambia de humor a cada rato, ¿hacia qué otro juego o lugar del jardín puedes volar?"
+            },
+            {
+                negrita: "Las alas de Sofía:",
+                texto: "Si pudieras pintar puntitos mágicos de colores en las alas de una catarina, ¿de qué colores serían y qué poder tendría cada puntito?"
+            }
+        ]
+    },
+    32: {
+        numero: "32",
+        categoria: "empatia", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+        temaTexto: "Amor Incondicional y Trabajo en Equipo",
+        titulo: "La pequeña águila y la montaña del viento",
+        resumen: "Kira, una pequeña águila aprendiendo a volar, descubre que tiene el mejor equipo del mundo: un papá entrenador que fortalece sus alas y una mamá que es su calma y calor.",
+        imagen: "imagenes/aguila-montana-viento.jpg",
+        emojiRespaldo: "🦅",
+        parrafos: [
+            "En lo alto de una montaña muy grande vivía una pequeña águila llamada Kira. A Kira le encantaba aprender a volar, hacer giros en el aire y deslizarse sobre las nubes como si fueran pistas de hielo.",
+            "Kira tenía un papá águila grande y fuerte llamado Roco. Roco tenía una voz grave y potente que se escuchaba en todo el valle, y era el mejor entrenador de vuelo de toda la montaña.",
+            "Cuando Kira practicaba sus vuelos y se distraía o se rendía muy rápido, papá Roco le hablaba con su voz firme de entrenador: <em>«¡Arriba esas alas, Kira! ¡Tú puedes hacerlo mejor, inténtalo otra vez con fuerza!»</em>.",
+            "A veces, como Kira estaba cansada o frustrada porque algo no le salía a la primera, le contestaba gruñendo con el pico o haciendo caras feas. Papá Roco no se asustaba ni se iba lejos cuando ella gruñía; simplemente mantenía sus alas firmes, le recordaba las reglas con voz seria y esperaba a que ella volviera a intentarlo.",
+            "Y cuando Kira por fin lograba dar un giro perfecto en el aire, papá Roco lanzaba un grito de alegría que hacía eco en las nubes: <em>«¡Eso es, campeona! ¡Sabía que lo lograrías!»</em>.",
+            "Un día, después de practicar mucho, Kira aterrizó en el nido sintiendo las alas un poco cansadas por el viento fuerte de allá afuera. Allí estaba mamá águila, con sus plumas suaves y tibias, esperando para recibirla.",
+            "Papá Roco se acercó a mamá águila y ambos juntaron sus grandes alas en un abrazo enorme. En cuanto Kira vio ese espacio calientito entre los dos, corrió dando saltitos y se metió justo en medio, haciéndose bolita. <em>«¡Sándwich de águilas!»</em>, rieron los tres mientras papá y mamá la envolvían por completo con sus alas.",
+            "Kira suspiró feliz, sintiendo cómo por un lado tenía la suavidad tibia de mamá y por el otro la fuerza gigante de papá. <em>«Papá»</em>, dijo Kira asomando su cabecita, <em>«a veces cuando me hablas fuerte en el entrenamiento me da un poco de coraje y contesto feo, pero nunca tengo miedo de que te vayas»</em>.",
+            "Papá Roco chocó su pico suavemente contra el de ella. <em>«Claro que nunca me voy a ir, pequeña»</em>, le respondió con su voz grave pero llena de cariño. <em>«Mi trabajo como papá entrenador es ayudarte a tener alas fuertes para que ningún viento del bosque te tire. A veces tengo que hablar firme para que des tu mejor esfuerzo, pero cuando aterrizas, mis alas siempre están aquí para abrazarte junto con mamá»</em>.",
+            "Kira cerró los ojos en medio de aquel abrazo gigante, sabiendo que tenía el mejor equipo del mundo: una mamá que era su luz y su calma, y un papá que era su fuerza y su entrenador."
+        ],
+        tituloPreguntas: "Para seguir imaginando juntos",
+        preguntas: [
+            {
+                negrita: "Sándwich de águilas:",
+                texto: "¿Cómo se siente hacer un abrazo gigante de «sándwich» en el nido después de un día largo de entrenar o jugar?"
+            },
+            {
+                negrita: "Alas fuertes:",
+                texto: "¿Qué pirueta en gimnasia, patinaje o natación te gustaría lograr con ayuda de tus entrenadores y de tu equipo en casa?"
+            },
+            {
+                negrita: "Deslizarse en las nubes:",
+                texto: "Si pudieras volar sobre las nubes como Kira, ¿qué figuras o giros harías en el cielo?"
+            }
+        ]
+    }
 };

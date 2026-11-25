@@ -125,7 +125,7 @@ function renderBoard(boardIds, themeKey, boardSize, mode) {
     const cell = document.createElement("div");
     cell.className = "cell" + (markedCells.has(idx) ? " marked" : "");
 
-    if (mode === "asociacion" || mode === "solo_voz") {
+    if ((mode === "asociacion" || mode === "solo_voz") && !TEMAS[themeKey].showBothInBoard) {
       if ((card.img && card.img.trim() !== "") || card.emoji) {
         cell.appendChild(createVisualElement(card));
       } else {

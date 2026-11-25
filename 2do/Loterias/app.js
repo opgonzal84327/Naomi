@@ -28,7 +28,6 @@ let lastSpokenIndex = -1;
 let audioUnlocked = false;
 let currentRound = 1;
 
-
 // Utilidad para mezclar arreglos (Fisher-Yates)
 function shuffle(array) {
   const arr = [...array];
@@ -67,11 +66,31 @@ function speakText(text, lang, rate = 0.9) {
   window.speechSynthesis.speak(utterance);
 }
 
+// Repetir la carta actual en voz alta
+function repeatCurrentCard() {
+  if (!roomData || roomData.currentIndex < 0) return;
+  const cardId = roomData.deck[roomData.currentIndex];
+  const card = TEMAS[roomData.theme].cartas.find(c => c.id === cardId);
+  if (card) {
+    const textToSpeak = card.speech || card.frontText;
+    speakText(textToSpeak, TEMAS[roomData.theme].lang, roomData.voiceRate);
+  }
+}
+
 document.getElementById("btn-audio-toggle").addEventListener("click", () => {
   audioUnlocked = true;
-  const lang = roomData ? TEMAS[roomData.theme].lang : "es-MX";
-  const rate = roomData ? roomData.voiceRate : 0.9;
-  speakText(lang === "en-US" ? "Audio ready!" : "Audio activado", lang, rate);
+  if (roomData && roomData.currentIndex >= 0 && roomData.status === "playing") {
+    repeatCurrentCard();
+  } else {
+    const lang = roomData ? TEMAS[roomData.theme].lang : "es-MX";
+    const rate = roomData ? roomData.voiceRate : 0.9;
+    speakText(lang === "en-US" ? "Audio ready!" : "Audio activado", lang, rate);
+  }
+});
+
+// Tocar el cuadro del gritón también repite la palabra actual
+document.getElementById("caller-card-display").addEventListener("click", () => {
+  repeatCurrentCard();
 });
 
 // Renderizar visual (Imagen con respaldo automático a Emoji)
@@ -107,7 +126,6 @@ function renderBoard(boardIds, themeKey, boardSize, mode) {
     cell.className = "cell" + (markedCells.has(idx) ? " marked" : "");
 
     if (mode === "asociacion" || mode === "solo_voz") {
-      // En modo asociación: si tiene imagen o emoji, muestra solo eso; si no (multiplicaciones), muestra el resultado
       if ((card.img && card.img.trim() !== "") || card.emoji) {
         cell.appendChild(createVisualElement(card));
       } else {
@@ -118,7 +136,6 @@ function renderBoard(boardIds, themeKey, boardSize, mode) {
         cell.appendChild(txt);
       }
     } else {
-      // Modo clásico: muestra visual + texto
       if ((card.img && card.img.trim() !== "") || card.emoji) {
         cell.appendChild(createVisualElement(card));
       }
@@ -156,6 +173,21 @@ document.getElementById("btn-create").addEventListener("click", async () => {
   speakText("", TEMAS[theme].lang, voiceRate);
   audioUnlocked = true;
 
+  // Limpiar automáticamente salas con más de 24 horas de antigüedad
+  try {
+    const allRoomsSnap = await get(ref(db, "rooms"));
+    if (allRoomsSnap.exists()) {
+      const now = Date.now();
+      const maxAge = 24 * 60 * 60 * 1000;
+      const roomsObj = allRoomsSnap.val();
+      for (const [code, rData] of Object.entries(roomsObj)) {
+        if (!rData.createdAt || (now - rData.createdAt) > maxAge) {
+          remove(ref(db, `rooms/${code}`));
+        }
+      }
+    }
+  } catch (e) {}
+
   roomCode = generateRoomCode();
   isHost = true;
 
@@ -173,7 +205,7 @@ document.getElementById("btn-create").addEventListener("click", async () => {
     voiceRate,
     deck,
     currentIndex: -1,
-    status: "waiting", // waiting, playing, paused, finished
+    status: "waiting",
     winner: "",
     round: 1,
     createdAt: Date.now(),
@@ -181,24 +213,6 @@ document.getElementById("btn-create").addEventListener("click", async () => {
       [myId]: { name: myName }
     }
   };
-
-  // Limpiar automáticamente salas con más de 24 horas de antigüedad
-  try {
-    const allRoomsSnap = await get(ref(db, "rooms"));
-    if (allRoomsSnap.exists()) {
-      const now = Date.now();
-      const maxAge = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
-      const roomsObj = allRoomsSnap.val();
-      for (const [code, rData] of Object.entries(roomsObj)) {
-        if (!rData.createdAt || (now - rData.createdAt) > maxAge) {
-          remove(ref(db, `rooms/${code}`));
-        }
-      }
-    }
-  } catch (e) {
-    // Si falla la limpieza, continúa creando la sala sin interrumpir al usuario
-  }
-
 
   await set(ref(db, `rooms/${roomCode}`), initialRoom);
   enterRoom();
@@ -217,7 +231,6 @@ document.getElementById("btn-join").addEventListener("click", async () => {
   roomCode = inputCode;
   isHost = (data.hostId === myId);
 
-  // Desbloquear audio al entrar
   speakText("", TEMAS[data.theme].lang, data.voiceRate);
   audioUnlocked = true;
 
@@ -238,7 +251,6 @@ function enterRoom() {
     document.getElementById("host-controls").classList.remove("hidden");
   }
 
-  // Eliminar jugador si cierra pestaña
   onDisconnect(ref(db, `rooms/${roomCode}/players/${myId}`)).remove();
 
   onValue(ref(db, `rooms/${roomCode}`), (snapshot) => {
@@ -275,7 +287,6 @@ function enterRoom() {
       renderBoard(myBoard, data.theme, data.boardSize, data.mode);
     }
 
-
     // Actualizar contador y carta actual del gritón
     const idx = data.currentIndex;
     const total = data.deck.length;
@@ -290,8 +301,7 @@ function enterRoom() {
 
       callerBox.innerHTML = "";
       if (data.mode === "solo_voz") {
-        // Modo Solo Escuchar: oculta el texto y muestra una bocina
-        callerBox.innerHTML = `<div class="visual">🎧</div><div class="label-text">¡Escucha!</div>`;
+        callerBox.innerHTML = `<div class="visual">🎧</div><div class="label-text" style="font-size:1rem;">¡Escucha!<br><small style="font-weight:normal; color:#64748b;">(Toca para repetir)</small></div>`;
       } else {
         if (data.mode === "clasico" && ((card.img && card.img.trim() !== "") || card.emoji)) {
           callerBox.appendChild(createVisualElement(card));
@@ -328,21 +338,10 @@ function enterRoom() {
         }
       }
     } else if (historyBar) {
-      // Antes de iniciar la ronda, oculta o muestra la barra según el modo
       if (data.mode === "solo_voz") {
         historyBar.classList.add("hidden");
       } else {
         historyBar.classList.remove("hidden");
-      }
-    }
-
-
-
-      // Cantar carta en voz alta si es nueva
-      if (idx !== lastSpokenIndex && data.status === "playing") {
-        lastSpokenIndex = idx;
-        const textToSpeak = card.speech || card.frontText;
-        speakText(textToSpeak, TEMAS[data.theme].lang, data.voiceRate);
       }
     }
 
@@ -380,7 +379,6 @@ function enterRoom() {
         stopCallerLoop();
       }
     }
-
 
     // Mostrar Ganador
     const banner = document.getElementById("winner-banner");
@@ -439,7 +437,7 @@ document.getElementById("btn-pause").addEventListener("click", async () => {
 document.getElementById("btn-next").addEventListener("click", () => {
   advanceCard();
   if (roomData.status === "playing" && roomData.speed > 0) {
-    startCallerLoop(); // Reinicia el conteo del temporizador tras adelantar manualmente
+    startCallerLoop();
   }
 });
 
@@ -452,7 +450,6 @@ document.getElementById("btn-loteria").addEventListener("click", async () => {
     return alert("¡Aún te faltan casillas por marcar en tu tablero!");
   }
 
-  // Cartas que realmente ya salieron
   const calledCards = new Set(roomData.deck.slice(0, roomData.currentIndex + 1));
   const allValid = myBoard.every(cardId => calledCards.has(cardId));
 
@@ -481,7 +478,6 @@ document.getElementById("btn-restart").addEventListener("click", async () => {
     round: nextRound
   });
 });
-
 
 // SALIR DE LA SALA
 document.getElementById("btn-leave").addEventListener("click", () => {

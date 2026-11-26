@@ -182,8 +182,9 @@
 
     /* Sección 2: Banco Fijo (Sticky) + Drag & Drop / Tap */
     .sticky-word-bank {
+      position: -webkit-sticky;
       position: sticky;
-      top: 10px;
+      top: 12px;
       z-index: 100;
       background: #eef2ff;
       border: 2px solid #c7d2fe;
@@ -192,6 +193,7 @@
       margin-bottom: 20px;
       box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.12);
     }
+
 
     .bank-title {
       font-size: 0.85rem;
@@ -656,28 +658,42 @@
   function setupTouchDrag(el, chip) {
     let ghost = null;
     let isDragging = false;
+    let startX = 0;
+    let startY = 0;
 
     el.addEventListener("touchstart", e => {
       if (isGraded || chip.usedByZone !== null) return;
+      const t = e.touches[0];
+      startX = t.clientX;
+      startY = t.clientY;
       isDragging = false;
 
       const onTouchMove = moveEvent => {
-        const t = moveEvent.touches[0];
-        if (!isDragging) {
+        const moveT = moveEvent.touches[0];
+        const dx = moveT.clientX - startX;
+        const dy = moveT.clientY - startY;
+
+        if (!isDragging && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
           isDragging = true;
+          selectedChipId = null;
+          renderWordBank();
           ghost = document.createElement("div");
           ghost.className = "touch-ghost";
           ghost.textContent = chip.word;
           document.body.appendChild(ghost);
         }
-        moveEvent.preventDefault();
-        ghost.style.left = `${t.clientX}px`;
-        ghost.style.top = `${t.clientY}px`;
 
-        document.querySelectorAll(".drop-zone").forEach(z => z.classList.remove("drag-over"));
-        const target = document.elementFromPoint(t.clientX, t.clientY);
-        const zone = target ? target.closest(".drop-zone") : null;
-        if (zone) zone.classList.add("drag-over");
+        if (isDragging && ghost) {
+          moveEvent.preventDefault();
+          const offsetY = 28;
+          ghost.style.left = `${moveT.clientX}px`;
+          ghost.style.top = `${moveT.clientY - offsetY}px`;
+
+          document.querySelectorAll(".drop-zone").forEach(z => z.classList.remove("drag-over"));
+          const target = document.elementFromPoint(moveT.clientX, moveT.clientY - offsetY);
+          const zone = target ? target.closest(".drop-zone") : null;
+          if (zone) zone.classList.add("drag-over");
+        }
       };
 
       const onTouchEnd = endEvent => {
@@ -691,8 +707,9 @@
         document.querySelectorAll(".drop-zone").forEach(z => z.classList.remove("drag-over"));
 
         if (isDragging) {
-          const t = endEvent.changedTouches[0];
-          const target = document.elementFromPoint(t.clientX, t.clientY);
+          const endT = endEvent.changedTouches[0];
+          const offsetY = 28;
+          const target = document.elementFromPoint(endT.clientX, endT.clientY - offsetY);
           const zone = target ? target.closest(".drop-zone") : null;
           if (zone) {
             const zIndex = parseInt(zone.dataset.zoneIndex, 10);
@@ -705,6 +722,7 @@
       document.addEventListener("touchend", onTouchEnd);
     }, { passive: true });
   }
+
 
   function renderPart2() {
     const container = document.getElementById("part2Container");

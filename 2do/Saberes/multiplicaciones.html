@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Práctica de Multiplicaciones - 2.º Primaria</title>
+<style>
+  :root {
+    --bg-color: #f0f7ff;
+    --card-bg: #ffffff;
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --um-bg: #fef3c7; --um-border: #d97706; --um-text: #92400e;
+    --c-bg: #dcfce7;  --c-border: #16a34a;  --c-text: #166534;
+    --d-bg: #fce7f3;  --d-border: #db2777;  --d-text: #9d174d;
+    --u-bg: #dbeafe;  --u-border: #2563eb;  --u-text: #1e40af;
+    --correct: #22c55e;
+    --wrong: #ef4444;
+  }
+
+  * {
+    box-sizing: border-box;
+    font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    padding: 16px;
+    background-color: var(--bg-color);
+    color: #1e293b;
+    padding-bottom: 60px;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  header {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+    border: 3px solid #bfdbfe;
+  }
+
+  h1 {
+    margin: 0 0 12px 0;
+    color: #1e3a8a;
+    font-size: 1.8rem;
+  }
+
+  .top-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mode-selector {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    background: #e2e8f0;
+    padding: 5px;
+    border-radius: 14px;
+  }
+
+  .mode-btn {
+    border: none;
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    background: transparent;
+    color: #475569;
+    transition: all 0.2s;
+  }
+
+  .mode-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+  }
+
+  section.exercise-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    border: 2px solid #e2e8f0;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    color: #0f172a;
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+
+  .badge {
+    background: var(--primary);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+  }
+
+  .instructions {
+    color: #475569;
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 1rem;
+  }
+
+  /* Banco de fichas calibrado para iPad */
+  .tile-bank {
+    background: #f1f5f9;
+    border: 3px solid #3b82f6;
+    border-radius: 16px;
+    padding: 8px 12px 12px 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 20px;
+    min-height: 60px;
+    max-height: 165px;
+    overflow-y: auto;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 12px;
+    z-index: 100;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.16);
+  }
+
+  .bank-label {
+    width: 100%;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #1e40af;
+    background: #dbeafe;
+    padding: 4px 10px;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    flex-shrink: 0;
+  }
+
+  .tile {
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    border: 3px solid #64748b;
+    background: white;
+    box-shadow: 0 3px 0 rgba(0,0,0,0.12);
+    transition: transform 0.1s, box-shadow 0.1s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 52px;
+  }
+
+  .tile:active { cursor: grabbing; }
+  .tile.selected-tile {
+    outline: 4px solid #f59e0b;
+    transform: scale(1.08);
+  }
+
+  .tile.type-um { background: var(--um-bg); border-color: var(--um-border); color: var(--um-text); }
+  .tile.type-c  { background: var(--c-bg);  border-color: var(--c-border);  color: var(--c-text); }
+  .tile.type-d  { background: var(--d-bg);  border-color: var(--d-border);  color: var(--d-text); }
+  .tile.type-u  { background: var(--u-bg);  border-color: var(--u-border);  color: var(--u-text); }
+  .tile.digit-tile {
+    background: #ffffff;
+    border-color: #3b82f6;
+    color: #1e3a8a;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+  }
+
+  /* Filas Ejercicio 1 */
+  .ex1-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ex1-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    padding: 10px 16px;
+    border-radius: 14px;
+    border: 2px solid #e2e8f0;
+    gap: 14px;
+  }
+
+  .slots-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .plus-sign, .arrow-sign {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #64748b;
+  }
+
+  .target-number-box {
+    background: white;
+    border: 3px solid #334155;
+    border-radius: 12px;
+    padding: 8px 18px;
+    font-size: 1.35rem;
+    font-weight: bold;
+    min-width: 110px;
+    text-align: center;
+  }
+
+  /* Zonas donde soltar */
+  .dropzone {
+    min-width: 78px;
+    height: 48px;
+    border-radius: 12px;
+    border: 2px dashed #94a3b8;
+    background: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    position: relative;
+  }
+
+  .dropzone.hover-over {
+    background: #e0f2fe;
+    border-color: #0284c7;
+    transform: scale(1.04);
+  }
+
+  .dropzone.correct-zone {
+    border: 3px solid var(--correct) !important;
+    background: #dcfce7 !important;
+  }
+
+  .dropzone.wrong-zone {
+    border: 3px solid var(--wrong) !important;
+    background: #fee2e2 !important;
+  }
+
+  /* Ejercicio 2 y 3 */
+  .ex2-list, .ex3-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .ex2-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8fafc;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 2px solid #e2e8f0;
+    gap: 12px;
+  }
+
+  .word-box {
+    background: #e0e7ff;
+    border: 2px solid #6366f1;
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #1e1b4b;
+    flex: 1;
+    min-width: 220px;
+    text-align: center;
+  }
+
+  .digit-dropzone {
+    min-width: 54px;
+    width: 54px;
+    height: 52px;
+    border-radius: 10px;
+  }
+
+  .ex3-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: #f8fafc;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 2px solid #e2e8f0;
+  }
+
+  .ex3-num {
+    border: 3px solid #0d9488;
+    background: white;
+    color: #115e59;
+    font-size: 1.35rem;
+    font-weight: bold;
+    padding: 8px 18px;
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  /* Botones finales */
+  .actions-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .action-btn {
+    border: none;
+    padding: 14px 28px;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.18);
+    transition: transform 0.1s;
+  }
+
+  .action-btn:active {
+    transform: translateY(2px);
+  }
+
+  .btn-check { background: #16a34a; }
+  .btn-new   { background: #ea580c; }
+
+  #score-banner {
+    display: none;
+    margin-top: 20px;
+    background: #fef9c3;
+    border: 3px solid #eab308;
+    border-radius: 18px;
+    padding: 18px;
+    text-align: center;
+    font-size: 1.35rem;
+    font-weight: bold;
+    color: #854d0e;
+  }
+
+  /* Elemento fantasma al arrastrar en iPad/Mouse */
+  .drag-ghost {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.92;
+    transform: scale(1.1);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>✖️ Multiplicaciones — 2.º de Primaria</h1>
+    <div class="top-controls">
+      <div class="mode-selector">
+        <button class="mode-btn active" id="btnGrupo1" onclick="setMode('grupo1')">Tablas 2 y 3</button>
+        <button class="mode-btn" id="btnGrupo2" onclick="setMode('grupo2')">Tablas 4 y 5</button>
+        <button class="mode-btn" id="btnGrupo3" onclick="setMode('grupo3')">Tablas 6 y 7</button>
+        <button class="mode-btn" id="btnGrupo4" onclick="setMode('grupo4')">Tablas 8 y 9</button>
+        <button class="mode-btn" id="btnTodas"  onclick="setMode('todas')">🌟 Todas (2 al 9)</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- EJERCICIO 1 -->
+  <section class="exercise-card">
+    <h2 class="section-title"><span class="badge">Ejercicio 1</span> Encuentra el resultado</h2>
+    <p class="instructions">Toca o arrastra el resultado correcto del banco y colócalo frente a cada multiplicación.</p>
+    <div class="tile-bank" id="bank-ex1"></div>
+    <div class="ex1-list" id="list-ex1"></div>
+  </section>
+
+  <!-- EJERCICIO 2 -->
+  <section class="exercise-card">
+    <h2 class="section-title"><span class="badge">Ejercicio 2</span> El factor perdido</h2>
+    <p class="instructions">Descubre qué número hace falta en la multiplicación y colócalo en el cuadro vacío.</p>
+    <div class="tile-bank" id="bank-ex2"></div>
+    <div class="ex2-list" id="list-ex2"></div>
+  </section>
+
+  <!-- EJERCICIO 3 -->
+  <section class="exercise-card">
+    <h2 class="section-title"><span class="badge">Ejercicio 3</span> De suma repetida a multiplicación</h2>
+    <p class="instructions">Cuenta cuántas veces se repite el número y forma la multiplicación correcta (veces × número).</p>
+    <div class="tile-bank" id="bank-ex3"></div>
+    <div class="ex3-list" id="list-ex3"></div>
+  </section>
+
+  <div class="actions-bar">
+    <button class="action-btn btn-check" onclick="gradeAll()">✅ Calificar todo</button>
+    <button class="action-btn btn-new" onclick="initGame()">🔄 Nuevo juego</button>
+  </div>
+
+  <div id="score-banner"></div>
+</div>
+
+<script>
+// ================= CONFIGURACIÓN DE TABLAS =================
+const TABLES_BY_MODE = {
+  grupo1:[2, 3],
+  grupo2:[4, 5],
+  grupo3:[6, 7],
+  grupo4:[8, 9],
+  todas: [2, 3, 4, 5, 6, 7, 8, 9]
+};
+
+let currentMode = 'grupo1';
+let selectedTile = null;
+
+function shuffle(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('btnGrupo1').classList.toggle('active', mode === 'grupo1');
+  document.getElementById('btnGrupo2').classList.toggle('active', mode === 'grupo2');
+  document.getElementById('btnGrupo3').classList.toggle('active', mode === 'grupo3');
+  document.getElementById('btnGrupo4').classList.toggle('active', mode === 'grupo4');
+  document.getElementById('btnTodas').classList.toggle('active',  mode === 'todas');
+  initGame();
+}
+
+function initGame() {
+  selectedTile = null;
+  const banner = document.getElementById('score-banner');
+  banner.style.display = 'none';
+  banner.innerHTML = '';
+
+  renderEx1();
+  renderEx2();
+  renderEx3();
+}
+
+// ================= GENERADORES AUTOMÁTICOS =================
+function generateEx1(tables) {
+  const pool = [];
+  tables.forEach(a => {
+    for (let b = 1; b <= 10; b++) {
+      pool.push({ a, b, res: String(a * b) });
+    }
+  });
+  return shuffle(pool).slice(0, 10);
+}
+
+function generateEx2(tables) {
+  const pool = [];
+  tables.forEach(a => {
+    for (let b = 2; b <= 9; b++) {
+      const prod = a * b;
+      if (Math.random() < 0.5) {
+        pool.push({ left: `${a} ×`, right: `= ${prod}`, ans: String(b) });
+      } else {
+        pool.push({ left: "", right: `× ${a} = ${prod}`, ans: String(b) });
+      }
+    }
+  });
+  return shuffle(pool).slice(0, 5);
+}
+
+function generateEx3(tables) {
+  const pool = [];
+  tables.forEach(num => {
+    for (let veces = 2; veces <= 9; veces++) {
+      pool.push({
+        sum: Array(veces).fill(num).join(" + "),
+        veces: String(veces),
+        num: String(num)
+      });
+    }
+  });
+  return shuffle(pool).slice(0, 5);
+}
+
+// ================= RENDER EJERCICIO 1 =================
+function renderEx1() {
+  const bankEl = document.getElementById('bank-ex1');
+  const listEl = document.getElementById('list-ex1');
+  bankEl.innerHTML = '<div class="bank-label">📦 Banco de resultados (toca o arrastra hacia abajo)</div>';
+  listEl.innerHTML = '';
+
+  const chosen = generateEx1(TABLES_BY_MODE[currentMode]);
+  const colors = ['type-c', 'type-d', 'type-u', 'type-um'];
+  let allTiles = [];
+
+  chosen.forEach((item, idx) => {
+    const row = document.createElement('div');
+    row.className = 'ex1-row';
+
+    const opBox = document.createElement('div');
+    opBox.className = 'target-number-box';
+    opBox.textContent = `${item.a} × ${item.b}`;
+
+    const eqSign = document.createElement('span');
+    eqSign.className = 'arrow-sign';
+    eqSign.textContent = '=';
+
+    const dz = createDropzone('ex1', item.res);
+
+    row.appendChild(opBox);
+    row.appendChild(eqSign);
+    row.appendChild(dz);
+    listEl.appendChild(row);
+
+    allTiles.push({ val: item.res, type: colors[idx % colors.length] });
+  });
+
+  shuffle(allTiles).forEach(t => {
+    bankEl.appendChild(createTile(t.val, t.type, 'ex1', false));
+  });
+}
+
+// ================= RENDER EJERCICIO 2 =================
+function renderEx2() {
+  const bankEl = document.getElementById('bank-ex2');
+  const listEl = document.getElementById('list-ex2');
+  bankEl.innerHTML = '<div class="bank-label">📦 Banco de números (toca o arrastra hacia abajo)</div>';
+  listEl.innerHTML = '';
+
+  for (let d = 1; d <= 10; d++) {
+    bankEl.appendChild(createTile(String(d), 'digit-tile', 'ex2', true));
+  }
+
+  const chosen = generateEx2(TABLES_BY_MODE[currentMode]);
+
+  chosen.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'ex3-row';
+
+    if (item.left) {
+      const leftSpan = document.createElement('div');
+      leftSpan.className = 'ex3-num';
+      leftSpan.textContent = item.left;
+      row.appendChild(leftSpan);
+    }
+
+    const dz = createDropzone('ex2', item.ans);
+    dz.classList.add('digit-dropzone');
+    row.appendChild(dz);
+
+    const rightSpan = document.createElement('div');
+    rightSpan.className = 'ex3-num';
+    rightSpan.textContent = item.right;
+    row.appendChild(rightSpan);
+
+    listEl.appendChild(row);
+  });
+}
+
+// ================= RENDER EJERCICIO 3 =================
+function renderEx3() {
+  const bankEl = document.getElementById('bank-ex3');
+  const listEl = document.getElementById('list-ex3');
+  bankEl.innerHTML = '<div class="bank-label">📦 Banco de números (toca o arrastra hacia abajo)</div>';
+  listEl.innerHTML = '';
+
+  for (let d = 1; d <= 10; d++) {
+    bankEl.appendChild(createTile(String(d), 'digit-tile', 'ex3', true));
+  }
+
+  const chosen = generateEx3(TABLES_BY_MODE[currentMode]);
+
+  chosen.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'ex2-row';
+
+    const sumBox = document.createElement('div');
+    sumBox.className = 'word-box';
+    sumBox.textContent = item.sum;
+
+    const arrow = document.createElement('span');
+    arrow.className = 'arrow-sign';
+    arrow.textContent = '➔';
+
+    const multGroup = document.createElement('div');
+    multGroup.className = 'slots-group';
+
+    const dzVeces = createDropzone('ex3', item.veces);
+    dzVeces.classList.add('digit-dropzone');
+
+    const timesSign = document.createElement('span');
+    timesSign.className = 'plus-sign';
+    timesSign.textContent = '×';
+
+    const dzNum = createDropzone('ex3', item.num);
+    dzNum.classList.add('digit-dropzone');
+
+    multGroup.appendChild(dzVeces);
+    multGroup.appendChild(timesSign);
+    multGroup.appendChild(dzNum);
+
+    row.appendChild(sumBox);
+    row.appendChild(arrow);
+    row.appendChild(multGroup);
+    listEl.appendChild(row);
+  });
+}
+
+// ================= SISTEMA DE ARRASTRE TÁCTIL Y CLICK =================
+function createDropzone(group, expected) {
+  const dz = document.createElement('div');
+  dz.className = 'dropzone';
+  dz.dataset.group = group;
+  dz.dataset.expected = expected;
+
+  dz.addEventListener('click', () => {
+    if (selectedTile && selectedTile.dataset.group === group) {
+      placeTileInZone(selectedTile, dz);
+      clearSelection();
+      return;
+    }
+    if (dz.firstElementChild) {
+      returnTileToBank(dz.firstElementChild);
+    }
+  });
+
+  return dz;
+}
+
+function createTile(value, styleClass, group, isInfinite) {
+  const tile = document.createElement('div');
+  tile.className = `tile ${styleClass}`;
+  tile.textContent = value;
+  tile.dataset.value = value;
+  tile.dataset.group = group;
+  tile.dataset.infinite = isInfinite ? '1' : '0';
+
+  tile.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+    e.preventDefault();
+
+    if (tile.setPointerCapture) {
+      try { tile.setPointerCapture(e.pointerId); } catch (err) {}
+    }
+
+    const startX = e.clientX;
+    const startY = e.clientY;
+    let isDragging = false;
+    let ghost = null;
+
+    const onPointerMove = (moveEvent) => {
+      const dx = moveEvent.clientX - startX;
+      const dy = moveEvent.clientY - startY;
+
+      if (!isDragging && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
+        isDragging = true;
+        clearSelection();
+        ghost = tile.cloneNode(true);
+        ghost.classList.add('drag-ghost');
+        ghost.style.width = tile.offsetWidth + 'px';
+        ghost.style.height = tile.offsetHeight + 'px';
+        document.body.appendChild(ghost);
+      }
+
+      if (isDragging && ghost) {
+        const offsetY = moveEvent.pointerType === 'touch' ? 28 : 0;
+        ghost.style.left = (moveEvent.clientX - ghost.offsetWidth / 2) + 'px';
+        ghost.style.top = (moveEvent.clientY - ghost.offsetHeight / 2 - offsetY) + 'px';
+
+        document.querySelectorAll('.dropzone.hover-over').forEach(z => z.classList.remove('hover-over'));
+        const elemBelow = document.elementFromPoint(moveEvent.clientX, moveEvent.clientY - offsetY);
+        const dz = elemBelow ? elemBelow.closest('.dropzone') : null;
+        if (dz && dz.dataset.group === group) {
+          dz.classList.add('hover-over');
+        }
+      }
+    };
+
+    const onPointerUp = (upEvent) => {
+      tile.removeEventListener('pointermove', onPointerMove);
+      tile.removeEventListener('pointerup', onPointerUp);
+      tile.removeEventListener('pointercancel', onPointerUp);
+
+      if (tile.releasePointerCapture) {
+        try { tile.releasePointerCapture(upEvent.pointerId); } catch (err) {}
+      }
+
+      if (isDragging) {
+        if (ghost) ghost.remove();
+        document.querySelectorAll('.dropzone.hover-over').forEach(z => z.classList.remove('hover-over'));
+
+        const offsetY = upEvent.pointerType === 'touch' ? 28 : 0;
+        const elemBelow = document.elementFromPoint(upEvent.clientX, upEvent.clientY - offsetY);
+        const dz = elemBelow ? elemBelow.closest('.dropzone') : null;
+
+        if (dz && dz.dataset.group === group) {
+          placeTileInZone(tile, dz);
+        } else if (tile.parentElement && tile.parentElement.classList.contains('dropzone')) {
+          returnTileToBank(tile);
+        }
+      } else {
+        // Modo toque rápido (Tap)
+        if (tile.parentElement && tile.parentElement.classList.contains('dropzone')) {
+          returnTileToBank(tile);
+        } else if (selectedTile === tile) {
+          clearSelection();
+        } else {
+          clearSelection();
+          selectedTile = tile;
+          tile.classList.add('selected-tile');
+        }
+      }
+    };
+
+        tile.addEventListener('pointermove', onPointerMove);
+    tile.addEventListener('pointerup', onPointerUp);
+    tile.addEventListener('pointercancel', onPointerUp);
+  });
+
+  return tile;
+}
+
+function clearSelection() {
+  if (selectedTile) {
+    selectedTile.classList.remove('selected-tile');
+    selectedTile = null;
+  }
+}
+
+function placeTileInZone(tile, dz) {
+  dz.classList.remove('correct-zone', 'wrong-zone');
+
+  if (dz.firstElementChild) {
+    returnTileToBank(dz.firstElementChild);
+  }
+
+  if (tile.dataset.infinite === '1' && !tile.parentElement.classList.contains('dropzone')) {
+    const clone = createTile(tile.dataset.value, 'digit-tile', tile.dataset.group, true);
+    dz.appendChild(clone);
+  } else {
+    dz.appendChild(tile);
+  }
+}
+
+function returnTileToBank(tile) {
+  const dz = tile.parentElement;
+  if (dz && dz.classList.contains('dropzone')) {
+    dz.classList.remove('correct-zone', 'wrong-zone');
+  }
+  if (tile.dataset.infinite === '1') {
+    tile.remove();
+  } else {
+    const bank = document.getElementById('bank-' + tile.dataset.group);
+    bank.appendChild(tile);
+  }
+}
+
+// ================= CALIFICACIÓN =================
+function gradeAll() {
+  clearSelection();
+  let totalCorrect = 0;
+  let totalQuestions = 0;
+
+  // Calificar Ejercicio 1 (10 reactivos)
+  document.querySelectorAll('#list-ex1 .ex1-row').forEach(row => {
+    totalQuestions++;
+    const dz = row.querySelector('.dropzone');
+    dz.classList.remove('correct-zone', 'wrong-zone');
+    const placed = dz.firstElementChild ? dz.firstElementChild.dataset.value : '';
+    if (placed === dz.dataset.expected) {
+      dz.classList.add('correct-zone');
+      totalCorrect++;
+    } else {
+      dz.classList.add('wrong-zone');
+    }
+  });
+
+  // Calificar Ejercicio 2 (5 reactivos)
+  document.querySelectorAll('#list-ex2 .ex3-row').forEach(row => {
+    totalQuestions++;
+    const dz = row.querySelector('.dropzone');
+    dz.classList.remove('correct-zone', 'wrong-zone');
+    const placed = dz.firstElementChild ? dz.firstElementChild.dataset.value : '';
+    if (placed === dz.dataset.expected) {
+      dz.classList.add('correct-zone');
+      totalCorrect++;
+    } else {
+      dz.classList.add('wrong-zone');
+    }
+  });
+
+  // Calificar Ejercicio 3 (5 reactivos)
+  document.querySelectorAll('#list-ex3 .ex2-row').forEach(row => {
+    totalQuestions++;
+    const zones = row.querySelectorAll('.dropzone');
+    let rowAllRight = true;
+    zones.forEach(dz => {
+      dz.classList.remove('correct-zone', 'wrong-zone');
+      const placed = dz.firstElementChild ? dz.firstElementChild.dataset.value : '';
+      if (placed === dz.dataset.expected) {
+        dz.classList.add('correct-zone');
+      } else {
+        dz.classList.add('wrong-zone');
+        rowAllRight = false;
+      }
+    });
+    if (rowAllRight) totalCorrect++;
+  });
+
+  const banner = document.getElementById('score-banner');
+  banner.style.display = 'block';
+  banner.innerHTML = `¡Buen trabajo! Obtuviste <strong>${totalCorrect} de ${totalQuestions}</strong> aciertos. ${totalCorrect === totalQuestions ? '🌟 ¡Excelente!' : 'Revisa los cuadros en rojo y vuelve a intentarlo.'}`;
+  banner.scrollIntoView({ behavior: 'smooth' });
+}
+
+initGame();
+</script>
+</body>
+</html>
+

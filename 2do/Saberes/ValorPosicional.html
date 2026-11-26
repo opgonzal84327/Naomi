@@ -61,15 +61,6 @@
     gap: 12px;
   }
 
-  .name-input {
-    padding: 10px 16px;
-    border-radius: 12px;
-    border: 2px solid #93c5fd;
-    font-size: 1rem;
-    width: 240px;
-    outline: none;
-  }
-
   .mode-selector {
     display: inline-flex;
     background: #e2e8f0;
@@ -129,7 +120,7 @@
     font-size: 1rem;
   }
 
-  /* Banco de fichas */
+  /* Banco de fichas calibrado para iPad */
   .tile-bank {
     background: #f1f5f9;
     border: 3px solid #3b82f6;
@@ -163,15 +154,14 @@
     flex-shrink: 0;
   }
 
-
-
   .tile {
-    padding: 8px 16px;
+    padding: 8px 14px;
     border-radius: 12px;
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: bold;
     cursor: grab;
     user-select: none;
+    -webkit-user-select: none;
     touch-action: none;
     border: 3px solid #64748b;
     background: white;
@@ -180,7 +170,6 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 52px;
   }
 
   .tile:active { cursor: grabbing; }
@@ -197,9 +186,10 @@
     background: #ffffff;
     border-color: #3b82f6;
     color: #1e3a8a;
-    width: 48px;
-    height: 48px;
+    width: 46px;
+    height: 46px;
     padding: 0;
+    font-size: 1.3rem;
   }
 
   /* Filas Ejercicio 1 */
@@ -218,18 +208,18 @@
     padding: 10px 14px;
     border-radius: 14px;
     border: 2px solid #e2e8f0;
-    gap: 10px;
+    gap: 8px;
   }
 
   .slots-group {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
   }
 
   .plus-sign, .arrow-sign {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: bold;
     color: #64748b;
   }
@@ -238,23 +228,24 @@
     background: white;
     border: 3px solid #334155;
     border-radius: 12px;
-    padding: 8px 18px;
-    font-size: 1.35rem;
+    padding: 6px 14px;
+    font-size: 1.3rem;
     font-weight: bold;
-    min-width: 90px;
+    min-width: 85px;
     text-align: center;
   }
 
   /* Zonas donde soltar */
   .dropzone {
-    min-width: 78px;
-    height: 48px;
+    min-width: 72px;
+    height: 46px;
     border-radius: 12px;
     border: 2px dashed #94a3b8;
     background: #ffffff;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
     transition: background 0.15s, border-color 0.15s;
     position: relative;
   }
@@ -303,35 +294,36 @@
     font-weight: bold;
     color: #1e1b4b;
     flex: 1;
-    min-width: 220px;
+    min-width: 240px;
+    text-align: center;
   }
 
   .pos-table {
-    display: flex;
-    gap: 6px;
+    border-collapse: collapse;
   }
 
-  .pos-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .pos-table th {
+    padding: 4px 10px;
+    font-size: 0.9rem;
+    border: 2px solid #94a3b8;
   }
 
-  .pos-header {
-    font-weight: bold;
-    font-size: 0.95rem;
-    margin-bottom: 4px;
-  }
+  .th-um { background: var(--um-bg); color: var(--um-text); }
+  .th-c  { background: var(--c-bg);  color: var(--c-text); }
+  .th-d  { background: var(--d-bg);  color: var(--d-text); }
+  .th-u  { background: var(--u-bg);  color: var(--u-text); }
 
-  .pos-header.h-um { color: var(--um-border); }
-  .pos-header.h-c  { color: var(--c-border); }
-  .pos-header.h-d  { color: var(--d-border); }
-  .pos-header.h-u  { color: var(--u-border); }
+  .pos-table td {
+    border: 2px solid #94a3b8;
+    padding: 4px;
+    background: white;
+    text-align: center;
+  }
 
   .digit-dropzone {
-    min-width: 52px;
-    width: 52px;
-    height: 52px;
+    min-width: 50px;
+    width: 50px;
+    height: 50px;
     border-radius: 10px;
   }
 
@@ -346,8 +338,8 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
-    gap: 14px;
+    justify-content: space-between;
+    gap: 12px;
     background: #f8fafc;
     padding: 12px 16px;
     border-radius: 14px;
@@ -358,32 +350,18 @@
     border: 3px solid #0d9488;
     background: white;
     color: #115e59;
-    font-size: 1.4rem;
+    font-size: 1.35rem;
     font-weight: bold;
-    padding: 8px 20px;
+    padding: 6px 16px;
     border-radius: 12px;
-    min-width: 110px;
+    min-width: 90px;
     text-align: center;
   }
 
-  .ex3-label {
-    border: 2px solid #0d9488;
-    background: #ccfbf1;
-    color: #134e4a;
-    font-weight: bold;
-    padding: 8px 16px;
-    border-radius: 10px;
-    min-width: 185px;
-    text-align: center;
-    font-size: 1rem;
-  }
-
-  .circle-dropzone {
-    min-width: 58px;
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    border: 3px dashed #0d9488;
+  .ex3-prompt {
+    font-size: 1.1rem;
+    flex: 1;
+    min-width: 220px;
   }
 
   /* Botones finales */
@@ -427,7 +405,6 @@
     color: #854d0e;
   }
 
-  /* Elemento fantasma al arrastrar en iPad/Mouse */
   .drag-ghost {
     position: fixed;
     pointer-events: none;
@@ -441,35 +418,35 @@
 
 <div class="container">
   <header>
-    <h1>🧩 Valor Posicional — 2.º de Primaria</h1>
+    <h1>🔢 Valor Posicional — 2.º de Primaria</h1>
     <div class="top-controls">
       <div class="mode-selector">
-        <button class="mode-btn active" id="btnCentenas" onclick="setMode('centenas')">Centenas (3 cifras)</button>
-        <button class="mode-btn" id="btnMillares" onclick="setMode('millares')">Unidades de Millar (4 cifras)</button>
+        <button class="mode-btn active" id="btnCentenas" onclick="setMode('centenas')">Centenas (hasta 999)</button>
+        <button class="mode-btn" id="btnMillares" onclick="setMode('millares')">Unidades de Millar (hasta 9,999)</button>
       </div>
     </div>
   </header>
 
   <!-- EJERCICIO 1 -->
   <section class="exercise-card">
-    <h2 class="section-title"><span class="badge">Ejercicio 1</span> Descomposición de números</h2>
-    <p class="instructions">Arrastra (o toca) cada ficha de color y colócala en el lugar correcto para formar el número de la derecha.</p>
+    <h2 class="section-title"><span class="badge">Ejercicio 1</span> Descomposición aditiva</h2>
+    <p class="instructions">Toca o arrastra las fichas de valores del banco para formar cada número.</p>
     <div class="tile-bank" id="bank-ex1"></div>
     <div class="ex1-list" id="list-ex1"></div>
   </section>
 
   <!-- EJERCICIO 2 -->
   <section class="exercise-card">
-    <h2 class="section-title"><span class="badge">Ejercicio 2</span> Lee y forma el número</h2>
-    <p class="instructions">Lee el nombre del número y arrastra los dígitos del banco para acomodarlos en su tabla posicional.</p>
+    <h2 class="section-title"><span class="badge">Ejercicio 2</span> De letra a tabla posicional</h2>
+    <p class="instructions">Lee cada número con letra y coloca los dígitos del 0 al 9 en la posición correcta.</p>
     <div class="tile-bank" id="bank-ex2"></div>
     <div class="ex2-list" id="list-ex2"></div>
   </section>
 
-    <!-- EJERCICIO 3 -->
+  <!-- EJERCICIO 3 -->
   <section class="exercise-card">
-    <h2 class="section-title"><span class="badge">Ejercicio 3</span> ¿Qué dígito ocupa esa posición?</h2>
-    <p class="instructions">Observa el número, lee la posición que te piden y coloca el dígito correcto dentro del círculo.</p>
+    <h2 class="section-title"><span class="badge">Ejercicio 3</span> ¿Qué dígito ocupa cada posición?</h2>
+    <p class="instructions">Observa cada número y arrastra el dígito que corresponde a la posición indicada.</p>
     <div class="tile-bank" id="bank-ex3"></div>
     <div class="ex3-list" id="list-ex3"></div>
   </section>
@@ -483,95 +460,7 @@
 </div>
 
 <script>
-// ================= BANCOS DE DATOS =================
-// Banco Ejercicio 1: 30 combinaciones por modo
-const BANK_EX1_CENTENAS = [
-  453, 681, 847, 264, 512, 795, 129, 376, 938, 145,
-  238, 391, 417, 564, 629, 753, 816, 942, 183, 275,
-  368, 492, 537, 641, 784, 893, 915, 162, 249, 354
-];
-
-const BANK_EX1_MILLARES = [
-  1453, 2681, 3847, 4264, 5512, 6795, 7129, 8376, 9938, 1245,
-  2389, 3914, 4176, 5642, 6298, 7531, 8165, 9427, 1834, 2759,
-  3682, 4925, 5378, 6419, 7843, 8936, 9152, 1627, 2491, 3546
-];
-
-
-// Banco Ejercicio 2: 15 por modo
-const BANK_EX2_CENTENAS = [
-  { text: "Ciento cuarenta y tres", digits: ["1", "4", "3"] },
-  { text: "Ochocientos cuatro", digits: ["8", "0", "4"] },
-  { text: "Dieciocho", digits: ["", "1", "8"] },
-  { text: "Cuatrocientos quince", digits: ["4", "1", "5"] },
-  { text: "Nueve", digits: ["", "", "9"] },
-  { text: "Trescientos setenta y dos", digits: ["3", "7", "2"] },
-  { text: "Quinientos noventa", digits: ["5", "9", "0"] },
-  { text: "Seiscientos once", digits: ["6", "1", "1"] },
-  { text: "Novecientos treinta y seis", digits: ["9", "3", "6"] },
-  { text: "Doscientos cincuenta y ocho", digits: ["2", "5", "8"] },
-  { text: "Setecientos cuatro", digits: ["7", "0", "4"] },
-  { text: "Ochenta y siete", digits: ["", "8", "7"] },
-  { text: "Ciento nueve", digits: ["1", "0", "9"] },
-  { text: "Cuatrocientos sesenta", digits: ["4", "6", "0"] },
-  { text: "Novecientos noventa y nueve", digits: ["9", "9", "9"] }
-];
-
-const BANK_EX2_MILLARES = [
-  { text: "Mil doscientos cuarenta y cinco", digits: ["1", "2", "4", "5"] },
-  { text: "Tres mil ochenta y dos", digits: ["3", "0", "8", "2"] },
-  { text: "Cinco mil cuatrocientos diez", digits: ["5", "4", "1", "0"] },
-  { text: "Dos mil nueve", digits: ["2", "0", "0", "9"] },
-  { text: "Cuatro mil setecientos treinta y seis", digits: ["4", "7", "3", "6"] },
-  { text: "Seis mil quinientos cuatro", digits: ["6", "5", "0", "4"] },
-  { text: "Ocho mil novecientos veinte", digits: ["8", "9", "2", "0"] },
-  { text: "Mil ciento quince", digits: ["1", "1", "1", "5"] },
-  { text: "Siete mil sesenta y tres", digits: ["7", "0", "6", "3"] },
-  { text: "Nueve mil trescientos ochenta y uno", digits: ["9", "3", "8", "1"] },
-  { text: "Dos mil quinientos", digits: ["2", "5", "0", "0"] },
-  { text: "Cuatro mil diecinueve", digits: ["4", "0", "1", "9"] },
-  { text: "Seiscientos cuarenta y dos", digits: ["", "6", "4", "2"] },
-  { text: "Cinco mil ochenta", digits: ["5", "0", "8", "0"] },
-  { text: "Tres mil novecientos cuatro", digits: ["3", "9", "0", "4"] }
-];
-
-// Banco Ejercicio 3: 15 por modo
-const BANK_EX3_CENTENAS = [
-  { num: 456, pos: "DECENAS", ans: "5" },
-  { num: 569, pos: "CENTENAS", ans: "5" },
-  { num: 823, pos: "UNIDADES", ans: "3" },
-  { num: 194, pos: "CENTENAS", ans: "1" },
-  { num: 708, pos: "DECENAS", ans: "0" },
-  { num: 342, pos: "UNIDADES", ans: "2" },
-  { num: 615, pos: "DECENAS", ans: "1" },
-  { num: 930, pos: "CENTENAS", ans: "9" },
-  { num: 287, pos: "UNIDADES", ans: "7" },
-  { num: 504, pos: "CENTENAS", ans: "5" },
-  { num: 871, pos: "DECENAS", ans: "7" },
-  { num: 396, pos: "UNIDADES", ans: "6" },
-  { num: 140, pos: "UNIDADES", ans: "0" },
-  { num: 628, pos: "CENTENAS", ans: "6" },
-  { num: 495, pos: "DECENAS", ans: "9" }
-];
-
-const BANK_EX3_MILLARES = [
-  { num: 3457, pos: "CENTENAS", ans: "4" },
-  { num: 2040, pos: "UNIDADES DE MILLAR", ans: "2" },
-  { num: 1270, pos: "UNIDADES DE MILLAR", ans: "1" },
-  { num: 1100, pos: "UNIDADES DE MILLAR", ans: "1" },
-  { num: 1234, pos: "CENTENAS", ans: "2" },
-  { num: 4892, pos: "DECENAS", ans: "9" },
-  { num: 5613, pos: "UNIDADES", ans: "3" },
-  { num: 7045, pos: "CENTENAS", ans: "0" },
-  { num: 8329, pos: "UNIDADES DE MILLAR", ans: "8" },
-  { num: 6501, pos: "DECENAS", ans: "0" },
-  { num: 9478, pos: "CENTENAS", ans: "4" },
-  { num: 2916, pos: "UNIDADES", ans: "6" },
-  { num: 4083, pos: "DECENAS", ans: "8" },
-  { num: 5720, pos: "UNIDADES DE MILLAR", ans: "5" },
-  { num: 3164, pos: "CENTENAS", ans: "1" }
-];
-
+// ================= GENERADOR AUTOMÁTICO DE NÚMEROS Y LETRAS =================
 let currentMode = 'centenas';
 let selectedTile = null;
 
@@ -582,6 +471,76 @@ function shuffle(array) {
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
   return arr;
+}
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function formatNumber(n) {
+  return n >= 1000 ? n.toLocaleString('en-US') : String(n);
+}
+
+// Convierte cualquier número del 1 al 9,999 a texto en español
+function numberToWords(n) {
+  const units = ["", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"];
+  const teens = ["diez", "once", "doce", "trece", "catorce", "quince", "dieciséis", "diecisiete", "dieciocho", "diecinueve"];
+  const twenties = ["veinte", "veintiuno", "veintidós", "veintitrés", "veinticuatro", "veinticinco", "veintiséis", "veintisiete", "veintiocho", "veintinueve"];
+  const tens = ["", "", "veinte", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta", "noventa"];
+  const hundreds = ["", "ciento", "doscientos", "trescientos", "cuatrocientos", "quinientos", "seiscientos", "setecientos", "ochocientos", "novecientos"];
+
+  let parts = [];
+
+  const um = Math.floor(n / 1000);
+  const remAfterUm = n % 1000;
+
+  if (um > 0) {
+    if (um === 1) parts.push("mil");
+    else parts.push(`${units[um]} mil`);
+  }
+
+  const c = Math.floor(remAfterUm / 100);
+  const remAfterC = remAfterUm % 100;
+
+  if (c > 0) {
+    if (c === 1 && remAfterC === 0) parts.push("cien");
+    else parts.push(hundreds[c]);
+  }
+
+  if (remAfterC > 0) {
+    if (remAfterC < 10) {
+      parts.push(units[remAfterC]);
+    } else if (remAfterC < 20) {
+      parts.push(teens[remAfterC - 10]);
+    } else if (remAfterC < 30) {
+      parts.push(twenties[remAfterC - 20]);
+    } else {
+      const d = Math.floor(remAfterC / 10);
+      const u = remAfterC % 10;
+      if (u === 0) parts.push(tens[d]);
+      else parts.push(`${tens[d]} y ${units[u]}`);
+    }
+  }
+
+  const sentence = parts.join(" ");
+  return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+}
+
+// Genera N números únicos según el nivel actual
+function generateUniqueNumbers(count, requireDistinctDigits = false) {
+  const min = currentMode === 'centenas' ? 101 : 1001;
+  const max = currentMode === 'centenas' ? 999 : 9999;
+  const chosen = new Set();
+
+  while (chosen.size < count) {
+    const n = randomInt(min, max);
+    if (requireDistinctDigits) {
+      const digits = String(n).split('');
+      if (new Set(digits).size !== digits.length) continue;
+    }
+    chosen.add(n);
+  }
+  return Array.from(chosen);
 }
 
 function setMode(mode) {
@@ -602,171 +561,193 @@ function initGame() {
   renderEx3();
 }
 
-// ================= RENDER EJERCICIO 1 =================
+// ================= RENDER EJERCICIO 1 (10 reactivos) =================
 function renderEx1() {
   const bankEl = document.getElementById('bank-ex1');
   const listEl = document.getElementById('list-ex1');
   bankEl.innerHTML = '<div class="bank-label">📦 Banco de fichas (toca o arrastra hacia abajo)</div>';
   listEl.innerHTML = '';
 
-  const source = currentMode === 'centenas' ? BANK_EX1_CENTENAS : BANK_EX1_MILLARES;
-  const chosen = shuffle(source).slice(0, 10);
+  const nums = generateUniqueNumbers(10, false);
   let allTiles = [];
 
-  chosen.forEach((num) => {
-    const str = String(num);
+  nums.forEach(num => {
     const row = document.createElement('div');
     row.className = 'ex1-row';
 
     const slotsGroup = document.createElement('div');
     slotsGroup.className = 'slots-group';
 
-    let parts = [];
+    const um = Math.floor(num / 1000) * 1000;
+    const c  = Math.floor((num % 1000) / 100) * 100;
+    const d  = Math.floor((num % 100) / 10) * 10;
+    const u  = num % 10;
+
+    let slots = [];
     if (currentMode === 'millares') {
-      parts = [
-        { val: str[0] + '000', type: 'type-um' },
-        { val: str[1] + '00',  type: 'type-c' },
-        { val: str[2] + '0',   type: 'type-d' },
-        { val: str[3],         type: 'type-u' }
+      slots = [
+        { val: String(um), type: 'type-um' },
+        { val: String(c),  type: 'type-c' },
+        { val: String(d),  type: 'type-d' },
+        { val: String(u),  type: 'type-u' }
       ];
     } else {
-      parts = [
-        { val: str[0] + '00', type: 'type-c' },
-        { val: str[1] + '0',  type: 'type-d' },
-        { val: str[2],        type: 'type-u' }
+      slots = [
+        { val: String(c), type: 'type-c' },
+        { val: String(d), type: 'type-d' },
+        { val: String(u), type: 'type-u' }
       ];
     }
 
-
-    parts.forEach((part, pIdx) => {
-      const dz = createDropzone('ex1', part.val);
+    slots.forEach((slot, idx) => {
+      const dz = createDropzone('ex1', slot.val);
       slotsGroup.appendChild(dz);
-      if (pIdx < parts.length - 1) {
+      if (idx < slots.length - 1) {
         const plus = document.createElement('span');
         plus.className = 'plus-sign';
         plus.textContent = '+';
         slotsGroup.appendChild(plus);
       }
-      allTiles.push({ val: part.val, type: part.type });
+      allTiles.push({ val: slot.val, type: slot.type });
     });
 
     const arrow = document.createElement('span');
     arrow.className = 'arrow-sign';
     arrow.textContent = '➔';
 
-    const targetBox = document.createElement('div');
-    targetBox.className = 'target-number-box';
-    targetBox.textContent = num;
+    const numBox = document.createElement('div');
+    numBox.className = 'target-number-box';
+    numBox.textContent = formatNumber(num);
 
     row.appendChild(slotsGroup);
     row.appendChild(arrow);
-    row.appendChild(targetBox);
+    row.appendChild(numBox);
     listEl.appendChild(row);
   });
 
   shuffle(allTiles).forEach(t => {
-    const tile = createTile(t.val, t.type, 'ex1', false);
-    bankEl.appendChild(tile);
+    bankEl.appendChild(createTile(t.val, t.type, 'ex1', false));
   });
 }
 
-// ================= RENDER EJERCICIO 2 =================
+// ================= RENDER EJERCICIO 2 (5 reactivos) =================
 function renderEx2() {
   const bankEl = document.getElementById('bank-ex2');
   const listEl = document.getElementById('list-ex2');
-  bankEl.innerHTML = '<div class="bank-label">📦 Banco de fichas (toca o arrastra hacia abajo)</div>';
+  bankEl.innerHTML = '<div class="bank-label">📦 Banco de dígitos (toca o arrastra hacia abajo)</div>';
   listEl.innerHTML = '';
 
-  // Fichas infinitas 0-9
   for (let d = 0; d <= 9; d++) {
     bankEl.appendChild(createTile(String(d), 'digit-tile', 'ex2', true));
   }
 
-  const source = currentMode === 'centenas' ? BANK_EX2_CENTENAS : BANK_EX2_MILLARES;
-  const chosen = shuffle(source).slice(0, 5);
-  const headers = currentMode === 'centenas'
-    ? [{ label: 'C', cls: 'h-c' }, { label: 'D', cls: 'h-d' }, { label: 'U', cls: 'h-u' }]
-    : [{ label: 'UM', cls: 'h-um' }, { label: 'C', cls: 'h-c' }, { label: 'D', cls: 'h-d' }, { label: 'U', cls: 'h-u' }];
+  const nums = generateUniqueNumbers(5, false);
 
-  chosen.forEach(item => {
+  nums.forEach(num => {
     const row = document.createElement('div');
     row.className = 'ex2-row';
 
     const wordBox = document.createElement('div');
     wordBox.className = 'word-box';
-    wordBox.textContent = item.text;
+    wordBox.textContent = numberToWords(num);
 
-    const arrow = document.createElement('span');
-    arrow.className = 'arrow-sign';
-    arrow.textContent = '➔';
-
-    const table = document.createElement('div');
+    const table = document.createElement('table');
     table.className = 'pos-table';
 
-    item.digits.forEach((expectedDigit, idx) => {
-      const col = document.createElement('div');
-      col.className = 'pos-col';
+    const um = String(Math.floor(num / 1000));
+    const c  = String(Math.floor((num % 1000) / 100));
+    const d  = String(Math.floor((num % 100) / 10));
+    const u  = String(num % 10);
 
-      const head = document.createElement('div');
-      head.className = 'pos-header ' + headers[idx].cls;
-      head.textContent = headers[idx].label;
+    const cols = currentMode === 'millares'
+      ? [
+          { label: 'UM', cls: 'th-um', val: um },
+          { label: 'C',  cls: 'th-c',  val: c },
+          { label: 'D',  cls: 'th-d',  val: d },
+          { label: 'U',  cls: 'th-u',  val: u }
+        ]
+      : [
+          { label: 'C', cls: 'th-c', val: c },
+          { label: 'D', cls: 'th-d', val: d },
+          { label: 'U', cls: 'th-u', val: u }
+        ];
 
-      const dz = createDropzone('ex2', expectedDigit);
-      dz.classList.add('digit-dropzone');
-
-      col.appendChild(head);
-      col.appendChild(dz);
-      table.appendChild(col);
+    const thead = document.createElement('thead');
+    const trHead = document.createElement('tr');
+    cols.forEach(col => {
+      const th = document.createElement('th');
+      th.className = col.cls;
+      th.textContent = col.label;
+      trHead.appendChild(th);
     });
+    thead.appendChild(trHead);
+
+    const tbody = document.createElement('tbody');
+    const trBody = document.createElement('tr');
+    cols.forEach(col => {
+      const td = document.createElement('td');
+      const dz = createDropzone('ex2', col.val);
+      dz.classList.add('digit-dropzone');
+      td.appendChild(dz);
+      trBody.appendChild(td);
+    });
+    tbody.appendChild(trBody);
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
 
     row.appendChild(wordBox);
-    row.appendChild(arrow);
     row.appendChild(table);
     listEl.appendChild(row);
   });
 }
 
-// ================= RENDER EJERCICIO 3 =================
+// ================= RENDER EJERCICIO 3 (5 reactivos) =================
 function renderEx3() {
   const bankEl = document.getElementById('bank-ex3');
   const listEl = document.getElementById('list-ex3');
-  bankEl.innerHTML = '<div class="bank-label">📦 Banco de fichas (toca o arrastra hacia abajo)</div>';
+  bankEl.innerHTML = '<div class="bank-label">📦 Banco de dígitos (toca o arrastra hacia abajo)</div>';
   listEl.innerHTML = '';
 
   for (let d = 0; d <= 9; d++) {
     bankEl.appendChild(createTile(String(d), 'digit-tile', 'ex3', true));
   }
 
-  const source = currentMode === 'centenas' ? BANK_EX3_CENTENAS : BANK_EX3_MILLARES;
-  const chosen = shuffle(source).slice(0, 5);
+  // Números con dígitos distintos para que no haya ambigüedad
+  const nums = generateUniqueNumbers(5, true);
+  const positions = currentMode === 'millares'
+    ? [
+        { name: 'Unidades de Millar', getDigit: n => String(Math.floor(n / 1000)) },
+        { name: 'Centenas',           getDigit: n => String(Math.floor((n % 1000) / 100)) },
+        { name: 'Decenas',            getDigit: n => String(Math.floor((n % 100) / 10)) },
+        { name: 'Unidades',           getDigit: n => String(n % 10) }
+      ]
+    : [
+        { name: 'Centenas', getDigit: n => String(Math.floor((n % 1000) / 100)) },
+        { name: 'Decenas',  getDigit: n => String(Math.floor((n % 100) / 10)) },
+        { name: 'Unidades', getDigit: n => String(n % 10) }
+      ];
 
-  chosen.forEach(item => {
+  nums.forEach((num, idx) => {
+    const pos = positions[(idx + randomInt(0, positions.length - 1)) % positions.length];
+    const expectedDigit = pos.getDigit(num);
+
     const row = document.createElement('div');
     row.className = 'ex3-row';
 
-    const numBox = document.createElement('div');
-    numBox.className = 'ex3-num';
-    numBox.textContent = item.num;
+    const numBadge = document.createElement('div');
+    numBadge.className = 'ex3-num';
+    numBadge.textContent = formatNumber(num);
 
-    const a1 = document.createElement('span');
-    a1.className = 'arrow-sign';
-    a1.textContent = '➔';
+    const prompt = document.createElement('div');
+    prompt.className = 'ex3-prompt';
+    prompt.innerHTML = `Dígito en las <strong>${pos.name}</strong>:`;
 
-    const lblBox = document.createElement('div');
-    lblBox.className = 'ex3-label';
-    lblBox.textContent = item.pos;
+    const dz = createDropzone('ex3', expectedDigit);
+    dz.classList.add('digit-dropzone');
 
-    const a2 = document.createElement('span');
-    a2.className = 'arrow-sign';
-    a2.textContent = '➔';
-
-    const dz = createDropzone('ex3', item.ans);
-    dz.classList.add('circle-dropzone');
-
-    row.appendChild(numBox);
-    row.appendChild(a1);
-    row.appendChild(lblBox);
-    row.appendChild(a2);
+    row.appendChild(numBadge);
+    row.appendChild(prompt);
     row.appendChild(dz);
     listEl.appendChild(row);
   });
@@ -801,24 +782,13 @@ function createTile(value, styleClass, group, isInfinite) {
   tile.dataset.group = group;
   tile.dataset.infinite = isInfinite ? '1' : '0';
 
-  tile.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (tile.parentElement && tile.parentElement.classList.contains('dropzone')) {
-      returnTileToBank(tile);
-      return;
-    }
-    if (selectedTile === tile) {
-      clearSelection();
-    } else {
-      clearSelection();
-      selectedTile = tile;
-      tile.classList.add('selected-tile');
-    }
-  });
-
   tile.addEventListener('pointerdown', (e) => {
     if (e.button !== 0 && e.pointerType === 'mouse') return;
     e.preventDefault();
+
+    if (tile.setPointerCapture) {
+      try { tile.setPointerCapture(e.pointerId); } catch (err) {}
+    }
 
     const startX = e.clientX;
     const startY = e.clientY;
@@ -829,7 +799,7 @@ function createTile(value, styleClass, group, isInfinite) {
       const dx = moveEvent.clientX - startX;
       const dy = moveEvent.clientY - startY;
 
-      if (!isDragging && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+      if (!isDragging && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
         isDragging = true;
         clearSelection();
         ghost = tile.cloneNode(true);
@@ -840,11 +810,12 @@ function createTile(value, styleClass, group, isInfinite) {
       }
 
       if (isDragging && ghost) {
+        const offsetY = moveEvent.pointerType === 'touch' ? 28 : 0;
         ghost.style.left = (moveEvent.clientX - ghost.offsetWidth / 2) + 'px';
-        ghost.style.top = (moveEvent.clientY - ghost.offsetHeight / 2) + 'px';
+        ghost.style.top = (moveEvent.clientY - ghost.offsetHeight / 2 - offsetY) + 'px';
 
         document.querySelectorAll('.dropzone.hover-over').forEach(z => z.classList.remove('hover-over'));
-        const elemBelow = document.elementFromPoint(moveEvent.clientX, moveEvent.clientY);
+        const elemBelow = document.elementFromPoint(moveEvent.clientX, moveEvent.clientY - offsetY);
         const dz = elemBelow ? elemBelow.closest('.dropzone') : null;
         if (dz && dz.dataset.group === group) {
           dz.classList.add('hover-over');
@@ -853,14 +824,20 @@ function createTile(value, styleClass, group, isInfinite) {
     };
 
     const onPointerUp = (upEvent) => {
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
+      tile.removeEventListener('pointermove', onPointerMove);
+      tile.removeEventListener('pointerup', onPointerUp);
+      tile.removeEventListener('pointercancel', onPointerUp);
 
-      if (ghost) {
-        ghost.remove();
+      if (tile.releasePointerCapture) {
+        try { tile.releasePointerCapture(upEvent.pointerId); } catch (err) {}
+      }
+
+      if (isDragging) {
+        if (ghost) ghost.remove();
         document.querySelectorAll('.dropzone.hover-over').forEach(z => z.classList.remove('hover-over'));
 
-        const elemBelow = document.elementFromPoint(upEvent.clientX, upEvent.clientY);
+        const offsetY = upEvent.pointerType === 'touch' ? 28 : 0;
+        const elemBelow = document.elementFromPoint(upEvent.clientX, upEvent.clientY - offsetY);
         const dz = elemBelow ? elemBelow.closest('.dropzone') : null;
 
         if (dz && dz.dataset.group === group) {
@@ -868,11 +845,22 @@ function createTile(value, styleClass, group, isInfinite) {
         } else if (tile.parentElement && tile.parentElement.classList.contains('dropzone')) {
           returnTileToBank(tile);
         }
+      } else {
+        if (tile.parentElement && tile.parentElement.classList.contains('dropzone')) {
+          returnTileToBank(tile);
+        } else if (selectedTile === tile) {
+          clearSelection();
+        } else {
+          clearSelection();
+          selectedTile = tile;
+          tile.classList.add('selected-tile');
+        }
       }
     };
 
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
+    tile.addEventListener('pointermove', onPointerMove);
+    tile.addEventListener('pointerup', onPointerUp);
+    tile.addEventListener('pointercancel', onPointerUp);
   });
 
   return tile;
@@ -919,6 +907,7 @@ function gradeAll() {
   let totalCorrect = 0;
   let totalQuestions = 0;
 
+  // Calificar Ejercicio 1 (10 reactivos)
   document.querySelectorAll('#list-ex1 .ex1-row').forEach(row => {
     totalQuestions++;
     const zones = row.querySelectorAll('.dropzone');
@@ -936,6 +925,7 @@ function gradeAll() {
     if (rowAllRight) totalCorrect++;
   });
 
+  // Calificar Ejercicio 2 (5 reactivos)
   document.querySelectorAll('#list-ex2 .ex2-row').forEach(row => {
     totalQuestions++;
     const zones = row.querySelectorAll('.dropzone');
@@ -943,9 +933,7 @@ function gradeAll() {
     zones.forEach(dz => {
       dz.classList.remove('correct-zone', 'wrong-zone');
       const placed = dz.firstElementChild ? dz.firstElementChild.dataset.value : '';
-      const expected = dz.dataset.expected;
-      const isValid = (expected === '') ? (placed === '' || placed === '0') : (placed === expected);
-      if (isValid) {
+      if (placed === dz.dataset.expected) {
         dz.classList.add('correct-zone');
       } else {
         dz.classList.add('wrong-zone');
@@ -955,6 +943,7 @@ function gradeAll() {
     if (rowAllRight) totalCorrect++;
   });
 
+  // Calificar Ejercicio 3 (5 reactivos)
   document.querySelectorAll('#list-ex3 .ex3-row').forEach(row => {
     totalQuestions++;
     const dz = row.querySelector('.dropzone');
@@ -968,11 +957,9 @@ function gradeAll() {
     }
   });
 
-    const greeting = '¡Buen trabajo! ';
-
   const banner = document.getElementById('score-banner');
   banner.style.display = 'block';
-  banner.innerHTML = `${greeting}Obtuviste <strong>${totalCorrect} de ${totalQuestions}</strong> aciertos. ${totalCorrect === totalQuestions ? '🌟 ¡Excelente!' : 'Revisa los cuadros en rojo y vuelve a intentarlo.'}`;
+  banner.innerHTML = `¡Buen trabajo! Obtuviste <strong>${totalCorrect} de ${totalQuestions}</strong> aciertos. ${totalCorrect === totalQuestions ? '🌟 ¡Excelente!' : 'Revisa los cuadros en rojo y vuelve a intentarlo.'}`;
   banner.scrollIntoView({ behavior: 'smooth' });
 }
 

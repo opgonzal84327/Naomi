@@ -131,18 +131,25 @@
 
   /* Banco de fichas */
   .tile-bank {
-    background: #f8fafc;
-    border: 2px dashed #94a3b8;
+    background: #f1f5f9;
+    border: 3px solid #3b82f6;
     border-radius: 16px;
-    padding: 12px;
+    padding: 10px 12px;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
     justify-content: center;
     margin-bottom: 20px;
-    min-height: 64px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    min-height: 60px;
+    max-height: 155px;
+    overflow-y: auto;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 6px;
+    z-index: 100;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.16);
   }
+
 
   .tile {
     padding: 8px 16px;

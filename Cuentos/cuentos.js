@@ -1097,5 +1097,203 @@ const CUENTOS = {
                 texto: "Si pudieras volar sobre las nubes como Kira, ¿qué figuras o giros harías en el cielo?"
             }
         ]
+    },
+    33: {
+        numero: "33",
+        categoria: "risa", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+        temaTexto: "Pura Risa y Fantasía",
+        titulo: "La escuela de vuelos para pingüinos despistados",
+        resumen: "Tito, un pingüino con bufanda de rayas, intenta ganar el concurso de vuelo usando un paraguas de flores y dos globos de gelatina.",
+        imagen: "imagenes/pinguinos-despistados.jpg",
+        emojiRespaldo: "🐧",
+        parrafos: [
+            "En el Glaciar de los Carámbanos Risueños se organizó el primer concurso anual de vuelo para aves sin alas. El jurado estaba formado por tres focas con gafas de sol y una morsa con bigotes de helado.",
+            "El primer participante fue Tito, un pingüino gordito que llegó muy serio cargando un paraguas de flores rosas, un ventilador de mano y unas aletas de buceo puestas al revés.",
+            "<em>«¡Atención, público!»</em>, anunció Tito con voz de capitán. <em>«Voy a despegar hasta la nube más alta y haré tres volteretas con tirabuzón»</em>. Tomó vuelo corriendo sobre el hielo: <em>«¡PATAPUF, PATAPUF, PATAPUF!»</em>.",
+            "Al llegar a la rampa de nieve, Tito abrió el paraguas de flores, encendió el ventilador y dio un brinco gigante. Subió exactamente cinco centímetros del suelo, el viento le volteó el paraguas al revés como una ensaladera y cayó panza abajo sobre un montículo de nieve esponjosa: <em>«¡PLOF!»</em>.",
+            "Lejos de rendirse, Tito salió de la nieve con el paraguas en la cabeza como corona y empezó a deslizarse de panza a toda velocidad, rebotando de barriga contra cada bola de nieve como si fuera una pelota de pinball gigante.",
+            "Al final cruzó la meta de espaldas, haciendo malabares con un pescado de goma y saludando al público con las aletas. Las focas aplaudieron tanto que se cayeron al agua de la risa, y Tito ganó la medalla de oro al aterrizaje más elegante de todo el Polo Sur."
+        ],
+        tituloPreguntas: "Para seguir imaginando juntos",
+        preguntas: [
+            {
+                negrita: "Invento volador:",
+                texto: "Si tuvieras que ayudar a Tito a volar usando objetos chistosos de la casa, ¿qué le pondrías en la espalda?"
+            },
+            {
+                negrita: "Carrera de panza:",
+                texto: "¿Cómo se vería una carrera donde todos los animales tuvieran que deslizarse de panza sobre gelatina?"
+            },
+            {
+                negrita: "El jurado de focas:",
+                texto: "¿Qué calificación le pondrías tú al aterrizaje con paraguas de Tito del 1 al 100?"
+            }
+        ]
+    },
+
+    34: {
+        numero: "34",
+        categoria: "risa", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+        temaTexto: "Pura Risa y Fantasía",
+        titulo: "El restaurante de los espaguetis bailarines",
+        resumen: "Bruno, un oso chef muy elegante, cocina por error una olla de pasta con polvo de cosquillas que empieza a bailar salsa por toda la cocina.",
+        imagen: "imagenes/espaguetis-bailarines.jpg",
+        emojiRespaldo: "🐻",
+        parrafos: [
+            "En el corazón del bosque funcionaba El Tenador Dorado, el restaurante más fino de toda la montaña, dirigido por el chef Bruno, un oso pardo con un gorro blanco tan alto que a veces chocaba con las lámparas.",
+            "Aquella noche llegó a cenar la familia de los ciervos reales, pidiendo el platillo estrella de la casa: espaguetis con salsa de tomates silvestres y queso rallado.",
+            "Bruno puso a hervir la pasta y, sin ponerse sus lentes de lectura, agarró el frasco equivocado de especias. En lugar de orégano, le echó tres cucharadas copeteadas de polvo mágico de cosquillas de duende.",
+            "En cuanto la salsa tocó los fideos, la olla entera empezó a vibrar: <em>«¡BBRRRR-TACA-TACA-TÁ!»</em>. Los espaguetis saltaron fuera del plato, se agarraron de las puntas formando parejas y empezaron a bailar salsa encima de la mesa.",
+            "Una albóndiga gigante salió rodando como bola de boliche, rebotó en la nariz de un mapache mesero y aterrizó justo dentro del gorro alto del chef Bruno, haciendo que el gorro diera saltitos solo.",
+            "Los ciervos reales se rieron tanto al ver a los fideos haciendo piruetas con sombreritos de queso que pidieron repetir el espectáculo tres veces, convirtiendo los espaguetis bailarines en el platillo más famoso del bosque."
+        ],
+        tituloPreguntas: "Para seguir imaginando juntos",
+        preguntas: [
+            {
+                negrita: "Comida bailarina:",
+                texto: "Si pudieras echarle polvo de cosquillas a otra comida, ¿qué alimento se vería más chistoso bailando?"
+            },
+            {
+                negrita: "El gorro del chef:",
+                texto: "¿Qué otras cosas locas crees que podrían esconderse debajo del gorro gigante del oso Bruno?"
+            },
+            {
+                negrita: "Menú mágico:",
+                texto: "Si abrieras un restaurante de fantasía en el bosque, ¿qué nombre gracioso le pondrías a tu platillo estrella?"
+            }
+        ]
+    },
+
+    35: {
+        numero: "35",
+        categoria: "risa", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+        temaTexto: "Pura Risa y Fantasía",
+        titulo: "La orquesta de los hipopótamos con tutú",
+        resumen: "Pancha, una hipopótama directora de ballet, organiza una función de gala donde los instrumentos musicales intercambian sus sonidos.",
+        imagen: "imagenes/hipopotamos-tutu.jpg",
+        emojiRespaldo: "🦛",
+        parrafos: [
+            "En la laguna del Sauce Brillante vivía Pancha, una hipopótama enorme que amaba usar tutús de tul color rosa neón y zapatillas de ballet con moños dorados.",
+            "Pancha había pasado semanas ensayando con sus cuatro primos hipopótamos para presentar El Lago de los Cisnes versión acuática, acompañados por una orquesta de ranas y flamencos.",
+            "Pero minutos antes de abrir el telón de hojas de plátano, un travieso camaleón cambió las boquillas de todos los instrumentos. Cuando Pancha dio la señal con su batuta de bambú, empezó el caos más chistoso del pantano.",
+            "El violín del flamenco sonó como bocina de camión: <em>«¡HONK, HONK!»</em>. La trompeta de la rana soltó un maullido de gatito: <em>«¡MIAU!»</em>, y el tambor grande hizo sonido de pato de hule: <em>«¡CUAC-CUAC-CUAC!»</em>.",
+            "Los hipopótamos con tutú intentaron seguir bailando de puntitas, pero cada vez que escuchaban un <em>«¡CUAC!»</em> en lugar de música clásica, les daba un ataque de risa y caían al agua levantando olas gigantes que mojaban hasta a los pájaros de las ramas altas.",
+            "El público del pantano aplaudió con patas, alas y aletas pidiendo otra función, porque nunca nadie había visto un ballet tan mojado, ruidoso y divertido."
+        ],
+        tituloPreguntas: "Para seguir imaginando juntos",
+        preguntas: [
+            {
+                negrita: "Sonidos cambiados:",
+                texto: "Si pudieras cambiarle el sonido a las cosas de la casa por un día, ¿qué sonido chistoso le pondrías al timbre de la puerta?"
+            },
+            {
+                negrita: "Ballet en el agua:",
+                texto: "¿Qué pirueta de gimnasia o ballet harías tú si tuvieras puesto un tutú rosa neón como Pancha?"
+            },
+            {
+                negrita: "El camaleón travieso:",
+                texto: "¿Qué otra broma inocente y divertida crees que haría el camaleón en el teatro del pantano?"
+            }
+        ]
+    },
+    36: {
+        numero: "36",
+        categoria: "risa", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+        temaTexto: "Pura Risa y Fantasía",
+        titulo: "El peluquero de los leones despeinados",
+        resumen: "Rufus, un pequeño ratón estilista, intenta domar la melena eléctrica de un león que acaba de frotarse contra diez globos de fiesta.",
+        imagen: "imagenes/leones-despeinados.jpg",
+        emojiRespaldo: "🦁",
+        parrafos: [
+            "En medio de la sabana funcionaba la estética más famosa del reino animal, atendida por Rufus, un ratoncito muy elegante que usaba una escalera de caracol para poder alcanzar las cabezas de sus clientes.",
+            "Una mañana entró al salón Leonardo, un león enorme que necesitaba un corte impecable para la foto anual de la selva. El único problema era que Leonardo venía rodando por una alfombra mágica y traía la melena cargada de electricidad estática.",
+            "En cuanto Rufus acercó su peine de madera, cada pelo de la melena de Leonardo se paró derecho como antena de televisión, haciendo que su cabeza pareciera un diente de león gigante a punto de volar.",
+            "Rufus intentó aplastar los pelos usando gelatina de mango, pero la melena hizo: <em>«¡ZAS-CHIS!»</em> y lanzó la gelatina directo hacia el techo, donde se quedó pegada como una lámpara amarilla brillante.",
+            "Desesperado, el ratoncito probó hacerle trenzas, moños con ligas de colores y hasta le puso un casco de sandía para bajarle los pelos, pero en cuanto quitó la sandía, la melena explotó hacia afuera: <em>«¡POOF!»</em>, dejando a Rufus atrapado entre los rizos como si estuviera en un sofá de algodón.",
+            "Leonardo se miró al espejo con su melena gigante llena de moños neón, soltó una carcajada que hizo temblar las hojas de los árboles y salió corriendo feliz a tomarse la foto más loca de toda la sabana."
+        ],
+        tituloPreguntas: "Para seguir imaginando juntos",
+        preguntas: [
+            {
+                negrita: "Peinados locos:",
+                texto: "Si pudieras hacerle un peinado súper loco al león Leonardo para su foto, ¿qué accesorios chistosos le pondrías?"
+            },
+            {
+                negrita: "Pelos de punta:",
+                texto: "¿Alguna vez te ha pasado que te frotas un globo en la cabeza o te bajas de una resbaladilla y se te paran todos los pelos?"
+            },
+            {
+                negrita: "El sofá de melena:",
+                texto: "¿Cómo crees que se sentía el ratoncito Rufus viajando escondido adentro de la melena esponjosa del león?"
+            }
+        ]
+    },
+
+    37: {
+        numero: "37",
+        categoria: "risa", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+        temaTexto: "Pura Risa y Fantasía",
+        titulo: "La carrera de caracoles con patines turbo",
+        resumen: "Beto, un caracol muy tranquilo, decide ponerse unos mini patines de cuatro ruedas con resortes para competir contra una liebre presumida.",
+        imagen: "imagenes/caracoles-patines.jpg",
+        emojiRespaldo: "🐌",
+        parrafos: [
+            "En el jardín de las lechugas gigantes se organizó una carrera de velocidad. Todos esperaban que ganara la liebre Relámpago, hasta que llegó a la línea de salida Beto, un caracol con casco de bellota y cuatro mini patines de ruedas luminosas.",
+            "<em>«¿Un caracol en patines? ¡Te voy a ganar antes de que des la primera vuelta!»</em>, se burló la liebre estirando sus orejas.",
+            "Sonó el silbato de partida: <em>«¡PIIII!»</em>. La liebre salió disparada levantando polvo, mientras Beto dio un pequeño empujoncito... pero olvidó que sus patines tenían resortes saltarines.",
+            "En lugar de rodar derecho, Beto empezó a rebotar por todo el jardín como pelota loca: <em>«¡BOING-ZUM, BOING-ZUM!»</em>. Rebotó encima de un hongo elástico, salió volando por encima de un charco y aterrizó justo en el lomo de una tortuga que iba pasando.",
+            "Sin perder el equilibrio, Beto hizo una pirueta en el aire, cayó sobre una hoja de col como si fuera patineta y se deslizó a toda velocidad haciendo giros de patinaje artístico mientras dejaba un rastro de burbujas brillantes.",
+            "Cuando la liebre llegó cansada a la meta, encontró a Beto ya sentado tomando jugo de fresa con popote y firmando autógrafos con su antenita, celebrando el triunfo más acrobático del jardín."
+        ],
+        tituloPreguntas: "Para seguir imaginando juntos",
+        preguntas: [
+            {
+                negrita: "Patines mágicos:",
+                texto: "Si tus patines tuvieran un botón secreto de fantasía como los de Beto, ¿qué truco o poder especial te gustaría que hicieran?"
+            },
+            {
+                negrita: "Pista de jardín:",
+                texto: "Si pudieras armar una pista de patinaje usando hongos gigantes, hojas de col y toboganes de agua, ¿cómo sería?"
+            },
+            {
+                negrita: "Casco de bellota:",
+                texto: "¿Qué otros accesorios chistosos usarían los insectos para protegerse en una carrera loca?"
+            }
+        ]
+    },
+
+    38: {
+        numero: "38",
+        categoria: "risa", // Opciones: 'valentia', 'empatia', 'frustracion', 'risa'
+        temaTexto: "Pura Risa y Fantasía",
+        titulo: "El fantasma alérgico a las sábanas",
+        resumen: "Gasparín, un pequeño fantasma del castillo encantado, intenta asustar a unos ratones pero cada vez que se pone su sábana le da un ataque de estornudos.",
+        imagen: "imagenes/fantasma-alergico.jpg",
+        emojiRespaldo: "👻",
+        parrafos: [
+            "En la torre más alta del Castillo de los Búhos vivía Gasparín, un fantasmita muy amable que tenía que pasar su examen anual de sustos para graduarse de fantasma oficial.",
+            "Su misión era entrar de puntitas al comedor y decir <em>«¡BUUU!»</em> para sorprender a tres ratoncitos que cenaban queso.",
+            "Gasparín se puso su sábana blanca recién lavada con jabón de flores silvestres, flotó silenciosamente por el pasillo y apareció detrás del queso poniendo cara de monstruo: <em>«¡BUUU... A-A-ACHÚÚÚ!»</em>.",
+            "El estornudo fue tan fuerte que Gasparín salió volando hacia atrás como globo desinflado, dando vueltas por el techo mientras hacía: <em>«¡FFFFF-PLOF!»</em> y aterrizó enredado dentro de un candelabro.",
+            "Lo intentó una segunda vez poniéndose una sábana de rayas, pero el polvito mágico le volvió a picar la nariz: <em>«¡ACHÍS-CHIS-CHÍS!»</em>. Con cada estornudo cambiaba de color: primero se puso morado uva, luego verde limón y después naranja zanahoria.",
+            "Los ratoncitos se rieron tanto viendo al fantasma arcoíris rebotar por las paredes que le invitaron un pedazo de pastel de queso, y Gasparín descubrió que hacer reír era mil veces más divertido que dar sustos."
+        ],
+        tituloPreguntas: "Para seguir imaginando juntos",
+        preguntas: [
+            {
+                negrita: "Fantasma de colores:",
+                texto: "Si pudieras cambiar de color cada vez que estornudas como Gasparín, ¿qué tres colores te gustaría que aparecieran?"
+            },
+            {
+                negrita: "Globo desinflado:",
+                texto: "¿Cómo se vería imitar el vuelo loco de Gasparín dando vueltas por el cuarto cuando se desinfla?"
+            },
+            {
+                negrita: "Examen de risas:",
+                texto: "Si tú fueras la maestra de la escuela de fantasmas, ¿qué prueba divertida les pondrías para graduarse?"
+            }
+        ]
     }
+
+
 };

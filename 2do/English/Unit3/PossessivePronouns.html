@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Possessive Pronouns - Practice Quiz</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --secondary: #0ea5e9;
+      --secondary-hover: #0284c7;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #cbd5e1;
+      --correct-bg: #dcfce7;
+      --correct-border: #22c55e;
+      --correct-text: #15803d;
+      --wrong-bg: #fee2e2;
+      --wrong-border: #ef4444;
+      --wrong-text: #b91c1c;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 16px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 840px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+      color: white;
+      padding: 24px 18px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.25);
+    }
+
+    header h1 {
+      margin: 0 0 6px 0;
+      font-size: 1.75rem;
+    }
+
+    header p {
+      margin: 0;
+      opacity: 0.92;
+      font-size: 0.98rem;
+    }
+
+    .score-banner {
+      display: none;
+      background: var(--card);
+      border: 2px solid var(--primary);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 24px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .score-banner h2 {
+      margin: 0 0 8px 0;
+      color: var(--primary);
+      font-size: 1.5rem;
+    }
+
+    .score-details {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .section-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      color: var(--primary);
+    }
+
+    .badge {
+      background: #eef2ff;
+      color: var(--primary);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .question-item {
+      padding: 14px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      background: #ffffff;
+      transition: all 0.2s ease;
+    }
+
+    .question-item.correct {
+      background-color: var(--correct-bg);
+      border-color: var(--correct-border);
+    }
+
+    .question-item.wrong {
+      background-color: var(--wrong-bg);
+      border-color: var(--wrong-border);
+    }
+
+    /* Sección 1: Combo integrado en la oración */
+    .question-text {
+      font-size: 1.05rem;
+      font-weight: 500;
+      line-height: 2;
+    }
+
+    .inline-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-color: #f8fafc;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://w3.org' viewBox='0 0 24 24' fill='none' stroke='%234f46e5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 16px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 34px 4px 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+      margin: 0 4px;
+      min-width: 125px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .inline-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+
+    .inline-select:disabled {
+      opacity: 0.9;
+      cursor: default;
+    }
+
+    /* Sección 2: Banco Fijo (Sticky) + Drag & Drop / Tap */
+    .sticky-word-bank {
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+      background: #eef2ff;
+      border: 2px solid #c7d2fe;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.12);
+    }
+
+    .bank-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .bank-hint {
+      font-weight: 500;
+      color: #475569;
+      font-size: 0.8rem;
+    }
+
+    .word-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 40px;
+    }
+
+    .word-chip {
+      background: white;
+      color: var(--text);
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+      transition: transform 0.15s, background-color 0.15s, box-shadow 0.15s;
+    }
+
+    .word-chip:active {
+      cursor: grabbing;
+    }
+
+    .word-chip.selected-chip {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.06);
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.35);
+    }
+
+    .word-chip.used {
+      opacity: 0.35;
+      border-color: #94a3b8;
+      pointer-events: none;
+    }
+
+    .rewrite-box {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 1.05rem;
+    }
+
+    .prompt-italic {
+      font-style: italic;
+      color: #334155;
+    }
+
+    .arrow {
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .drop-zone {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 115px;
+      height: 38px;
+      padding: 0 12px;
+      border: 2px dashed #94a3b8;
+      border-radius: 8px;
+      background: #f8fafc;
+      font-weight: 700;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .drop-zone.drag-over {
+      border-color: var(--primary);
+      background: #e0e7ff;
+      transform: scale(1.03);
+    }
+
+    .drop-zone.filled {
+      border-style: solid;
+      border-color: var(--primary);
+      background: #eef2ff;
+    }
+
+    .drop-zone.locked {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* Fantasma flotante al arrastrar con el dedo en iPad/móvil */
+    .touch-ghost {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      background: var(--primary);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      transform: translate(-50%, -50%);
+    }
+
+    .feedback {
+      margin-top: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: none;
+    }
+
+    .feedback.correct {
+      color: var(--correct-text);
+      display: block;
+    }
+
+    .feedback.wrong {
+      color: var(--wrong-text);
+      display: block;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin: 28px 0 40px 0;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      padding: 14px 30px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      color: white;
+      transition: transform 0.1s ease, background 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-action:active {
+      transform: scale(0.98);
+    }
+
+    .btn-grade {
+      background: var(--primary);
+    }
+
+    .btn-grade:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-grade:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    .btn-new {
+      background: var(--secondary);
+    }
+
+    .btn-new:hover {
+      background: var(--secondary-hover);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Practice Exercises: Possessive Pronouns</h1>
+    <p>Complete both parts carefully, then tap "Grade Test" to check your score!</p>
+  </header>
+
+  <div id="scoreBanner" class="score-banner">
+    <h2 id="totalScoreText">Total Score: 0 / 20</h2>
+    <div class="score-details">
+      <span id="part1ScoreText">Part 1: 0 / 10</span>
+      <span id="part2ScoreText">Part 2: 0 / 10</span>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 1: COMBO -->
+  <div class="section-card">
+    <div class="section-header">
+      <h2>Part 1: Choose the correct word</h2>
+      <span class="badge">10 Questions</span>
+    </div>
+    <div id="part1Container"></div>
+  </div>
+
+  <!-- SECCIÓN 2: BANCO FIJO Y ARRASTRAR -->
+  <div class="section-card">
+    <div class="section-header">
+      <h2>Part 2: Rewrite using a possessive pronoun</h2>
+      <span class="badge">10 Questions</span>
+    </div>
+
+    <div class="sticky-word-bank" id="stickyBank">
+      <div class="bank-title">
+        <span>Word Bank (Drag & Drop or Tap to place)</span>
+        <span class="bank-hint">Tap a filled box to return the word</span>
+      </div>
+      <div class="word-chips" id="wordBankChips"></div>
+    </div>
+
+    <div id="part2Container"></div>
+  </div>
+
+  <div class="actions">
+    <button id="gradeBtn" class="btn-action btn-grade" onclick="gradeQuiz()">Grade Test</button>
+    <button id="newTestBtn" class="btn-action btn-new" onclick="generateNewTest()">New Test</button>
+  </div>
+</div>
+
+<script>
+  const bankPart1 = [
+    { q: "Excuse me, is this notebook ________?", options: ["your", "yours"], answer: "yours" },
+    { q: "We brought ________ own snacks to the movie theater.", options: ["our", "ours"], answer: "our" },
+    { q: "Lucia couldn't find ________ phone anywhere in the house.", options: ["her", "hers"], answer: "her" },
+    { q: "The blue bicycle parked outside is ________.", options: ["my", "mine"], answer: "mine" },
+    { q: "The cat licked ________ paws after eating dinner.", options: ["its", "it's"], answer: "its" },
+    { q: "Mr. and Mrs. Gomez live here; this garden is ________.", options: ["their", "theirs"], answer: "theirs" },
+    { q: "Daniel forgot ________ lunchbox on the school bus.", options: ["his", "he's"], answer: "his" },
+    { q: "Are these green sneakers ________, or do they belong to your sister?", options: ["your", "yours"], answer: "yours" },
+    { q: "Our team won the trophy, so now it is ________!", options: ["our", "ours"], answer: "ours" },
+    { q: "I like your drawings, but ________ are more colorful.", options: ["her", "hers"], answer: "hers" },
+    { q: "Please don't touch that tablet; it isn't ________.", options: ["your", "yours"], answer: "yours" },
+    { q: "My brother and I share a room, so that big desk is ________.", options: ["our", "ours"], answer: "ours" },
+    { q: "Elena is wearing ________ new winter coat today.", options: ["her", "hers"], answer: "her" },
+    { q: "All of these comic books on the shelf are ________.", options: ["my", "mine"], answer: "mine" },
+    { q: "The bird built ________ nest high up in the oak tree.", options: ["its", "it's"], answer: "its" },
+    { q: "They painted ________ house yellow last summer.", options: ["their", "theirs"], answer: "their" },
+    { q: "Is that black skateboard ________ or Pablo's?", options: ["his", "he"], answer: "his" },
+    { q: "You should always wash ________ hands before eating.", options: ["your", "yours"], answer: "your" },
+    { q: "Their seats are in the front row, and ________ are in the back.", options: ["our", "ours"], answer: "ours" },
+    { q: "Valeria said the pink water bottle is ________.", options: ["her", "hers"], answer: "hers" },
+    { q: "I gave him my pencil because he lost ________.", options: ["his", "he's"], answer: "his" },
+    { q: "Take ________ umbrella; it looks like it is going to rain.", options: ["your", "yours"], answer: "your" },
+    { q: "That white puppy running in the park is ________.", options: ["their", "theirs"], answer: "theirs" },
+    { q: "I finished ________ homework before watching television.", options: ["my", "mine"], answer: "my" },
+    { q: "The robot lost ________ balance and fell on the floor.", options: ["its", "it's"], answer: "its" },
+    { q: "We love ________ new science teacher at school.", options: ["our", "ours"], answer: "our" },
+    { q: "My laptop is broken, so Camila let me borrow ________.", options: ["her", "hers"], answer: "hers" },
+    { q: "Whose gloves are these? Are they ________?", options: ["your", "yours"], answer: "yours" },
+    { q: "The students put ________ backpacks under their desks.", options: ["their", "theirs"], answer: "their" },
+    { q: "Diego says that red soccer ball is ________.", options: ["his", "him"], answer: "his" },
+    { q: "Your pizza looks delicious, and ________ is super cheesy too!", options: ["my", "mine"], answer: "mine" },
+    { q: "The company celebrated ________ tenth anniversary yesterday.", options: ["its", "it's"], answer: "its" },
+    { q: "We parked ________ car near the entrance of the mall.", options: ["our", "ours"], answer: "our" },
+    { q: "Is this silver bracelet ________, Mariana?", options: ["your", "yours"], answer: "yours" },
+    { q: "Fernanda always brushes ________ hair before going to bed.", options: ["her", "hers"], answer: "her" },
+    { q: "They didn't bring a ball, so we shared ________.", options: ["our", "ours"], answer: "ours" },
+    { q: "My shoes are muddy, but ________ are completely clean.", options: ["their", "theirs"], answer: "theirs" },
+    { q: "Can I use ________ eraser for a second?", options: ["your", "yours"], answer: "your" },
+    { q: "That big slice of chocolate cake is ________!", options: ["my", "mine"], answer: "mine" },
+    { q: "Look at that turtle hiding inside ________ shell.", options: ["its", "it's"], answer: "its" },
+    { q: "Javier loves riding ________ new mountain bike on weekends.", options: ["his", "he's"], answer: "his" },
+    { q: "We have our tickets, do they have ________?", options: ["their", "theirs"], answer: "theirs" },
+    { q: "Paula forgot her dictionary, so I lent her ________.", options: ["my", "mine"], answer: "mine" },
+    { q: "The children are playing with ________ toys in the living room.", options: ["their", "theirs"], answer: "their" },
+    { q: "Her bedroom is upstairs, while ________ is next to the kitchen.", options: ["his", "him"], answer: "his" },
+    { q: "Did you remember to pack ________ toothbrush?", options: ["your", "yours"], answer: "your" },
+    { q: "This little kitten is ________; we adopted her yesterday.", options: ["our", "ours"], answer: "ours" },
+    { q: "Natalia won first place with ________ science project.", options: ["her", "hers"], answer: "her" },
+    { q: "I found a set of keys, are they ________?", options: ["your", "yours"], answer: "yours" },
+    { q: "Our neighbors love ________ garden and water the flowers every day.", options: ["their", "theirs"], answer: "their" }
+  ];
+
+  const bankPart2 = [
+    { prompt: "This is her bicycle.", prefix: "This bicycle is", suffix: ".", answer: "hers" },
+    { prompt: "Those are their shoes.", prefix: "Those shoes are", suffix: ".", answer: "theirs" },
+    { prompt: "That is my guitar.", prefix: "That guitar is", suffix: ".", answer: "mine" },
+    { prompt: "These are your pencils.", prefix: "These pencils are", suffix: ".", answer: "yours" },
+    { prompt: "This is his skateboard.", prefix: "This skateboard is", suffix: ".", answer: "his" },
+    { prompt: "That is our classroom.", prefix: "That classroom is", suffix: ".", answer: "ours" },
+    { prompt: "These are her earrings.", prefix: "These earrings are", suffix: ".", answer: "hers" },
+    { prompt: "Those are my books.", prefix: "Those books are", suffix: ".", answer: "mine" },
+    { prompt: "This is their apartment.", prefix: "This apartment is", suffix: ".", answer: "theirs" },
+    { prompt: "That is your sandwich.", prefix: "That sandwich is", suffix: ".", answer: "yours" },
+    { prompt: "These are his headphones.", prefix: "These headphones are", suffix: ".", answer: "his" },
+    { prompt: "Those are our chairs.", prefix: "Those chairs are", suffix: ".", answer: "ours" },
+    { prompt: "This is my tablet.", prefix: "This tablet is", suffix: ".", answer: "mine" },
+    { prompt: "That is her scarf.", prefix: "That scarf is", suffix: ".", answer: "hers" },
+    { prompt: "These are their toys.", prefix: "These toys are", suffix: ".", answer: "theirs" },
+    { prompt: "Those are your markers.", prefix: "Those markers are", suffix: ".", answer: "yours" },
+    { prompt: "This is our dog.", prefix: "This dog is", suffix: ".", answer: "ours" },
+    { prompt: "That is his camera.", prefix: "That camera is", suffix: ".", answer: "his" },
+    { prompt: "These are my glasses.", prefix: "These glasses are", suffix: ".", answer: "mine" },
+    { prompt: "Those are her boots.", prefix: "Those boots are", suffix: ".", answer: "hers" },
+    { prompt: "This is your desk.", prefix: "This desk is", suffix: ".", answer: "yours" },
+    { prompt: "That is their boat.", prefix: "That boat is", suffix: ".", answer: "theirs" },
+    { prompt: "These are our suitcases.", prefix: "These suitcases are", suffix: ".", answer: "ours" },
+    { prompt: "Those are his comic books.", prefix: "Those comic books are", suffix: ".", answer: "his" },
+    { prompt: "This is her water bottle.", prefix: "This water bottle is", suffix: ".", answer: "hers" },
+    { prompt: "That is my pillow.", prefix: "That pillow is", suffix: ".", answer: "mine" },
+    { prompt: "These are your keys.", prefix: "These keys are", suffix: ".", answer: "yours" },
+    { prompt: "Those are their bicycles.", prefix: "Those bicycles are", suffix: ".", answer: "theirs" },
+    { prompt: "This is his watch.", prefix: "This watch is", suffix: ".", answer: "his" },
+    { prompt: "That is our table.", prefix: "That table is", suffix: ".", answer: "ours" },
+    { prompt: "These are my drawings.", prefix: "These drawings are", suffix: ".", answer: "mine" },
+    { prompt: "Those are her notebooks.", prefix: "Those notebooks are", suffix: ".", answer: "hers" },
+    { prompt: "This is their garden.", prefix: "This garden is", suffix: ".", answer: "theirs" },
+    { prompt: "That is your hat.", prefix: "That hat is", suffix: ".", answer: "yours" },
+    { prompt: "These are his video games.", prefix: "These video games are", suffix: ".", answer: "his" },
+    { prompt: "Those are our towels.", prefix: "Those towels are", suffix: ".", answer: "ours" },
+    { prompt: "This is my umbrella.", prefix: "This umbrella is", suffix: ".", answer: "mine" },
+    { prompt: "That is her necklace.", prefix: "That necklace is", suffix: ".", answer: "hers" },
+    { prompt: "These are their snacks.", prefix: "These snacks are", suffix: ".", answer: "theirs" },
+    { prompt: "Those are your crayons.", prefix: "Those crayons are", suffix: ".", answer: "yours" },
+    { prompt: "This is our project.", prefix: "This project is", suffix: ".", answer: "ours" },
+    { prompt: "That is his helmet.", prefix: "That helmet is", suffix: ".", answer: "his" },
+    { prompt: "These are my sneakers.", prefix: "These sneakers are", suffix: ".", answer: "mine" },
+    { prompt: "Those are her bracelets.", prefix: "Those bracelets are", suffix: ".", answer: "hers" },
+    { prompt: "This is your seat.", prefix: "This seat is", suffix: ".", answer: "yours" },
+    { prompt: "That is their car.", prefix: "That car is", suffix: ".", answer: "theirs" },
+    { prompt: "These are our drinks.", prefix: "These drinks are", suffix: ".", answer: "ours" },
+    { prompt: "Those are his gloves.", prefix: "Those gloves are", suffix: ".", answer: "his" },
+    { prompt: "This is her lunchbox.", prefix: "This lunchbox is", suffix: ".", answer: "hers" },
+    { prompt: "That is my dictionary.", prefix: "That dictionary is", suffix: ".", answer: "mine" }
+  ];
+
+  let currentPart1 = [];
+  let currentPart2 = [];
+  let bankChips = [];
+  let zoneAssignments = {};
+  let selectedChipId = null;
+  let isGraded = false;
+
+  function shuffleArray(arr) {
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function generateNewTest() {
+    isGraded = false;
+    selectedChipId = null;
+    zoneAssignments = {};
+
+    currentPart1 = shuffleArray(bankPart1).slice(0, 10);
+    currentPart2 = shuffleArray(bankPart2).slice(0, 10);
+
+    const wordsForBank = shuffleArray(currentPart2.map(item => item.answer));
+    bankChips = wordsForBank.map((word, idx) => ({
+      id: `chip-${idx}`,
+      word: word,
+      usedByZone: null
+    }));
+
+    document.getElementById("scoreBanner").style.display = "none";
+    document.getElementById("gradeBtn").disabled = false;
+
+    renderPart1();
+    renderWordBank();
+    renderPart2();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function renderPart1() {
+    const container = document.getElementById("part1Container");
+    container.innerHTML = "";
+
+    currentPart1.forEach((item, index) => {
+      const shuffledOptions = shuffleArray(item.options);
+      const parts = item.q.split("________");
+
+      const qDiv = document.createElement("div");
+      qDiv.className = "question-item";
+      qDiv.id = `p1-q-${index}`;
+
+      const textDiv = document.createElement("div");
+      textDiv.className = "question-text";
+
+      const select = document.createElement("select");
+      select.className = "inline-select";
+      select.id = `p1-select-${index}`;
+
+      const defaultOpt = document.createElement("option");
+      defaultOpt.value = "";
+      defaultOpt.textContent = "— select —";
+      select.appendChild(defaultOpt);
+
+      shuffledOptions.forEach(opt => {
+        const optionEl = document.createElement("option");
+        optionEl.value = opt;
+        optionEl.textContent = opt;
+        select.appendChild(optionEl);
+      });
+
+      textDiv.appendChild(document.createTextNode(`${index + 1}. ${parts[0]}`));
+      textDiv.appendChild(select);
+      textDiv.appendChild(document.createTextNode(parts[1] || ""));
+
+      const feedbackDiv = document.createElement("div");
+      feedbackDiv.className = "feedback";
+      feedbackDiv.id = `p1-fb-${index}`;
+
+      qDiv.appendChild(textDiv);
+      qDiv.appendChild(feedbackDiv);
+      container.appendChild(qDiv);
+    });
+  }
+
+  function renderWordBank() {
+    const bankContainer = document.getElementById("wordBankChips");
+    bankContainer.innerHTML = "";
+
+    bankChips.forEach(chip => {
+      const el = document.createElement("div");
+      el.className = "word-chip";
+      if (chip.usedByZone !== null) el.classList.add("used");
+      if (selectedChipId === chip.id) el.classList.add("selected-chip");
+      el.textContent = chip.word;
+      el.dataset.chipId = chip.id;
+
+      el.draggable = chip.usedByZone === null && !isGraded;
+      el.addEventListener("dragstart", e => {
+        if (isGraded || chip.usedByZone !== null) return;
+        e.dataTransfer.setData("text/plain", chip.id);
+        selectedChipId = chip.id;
+      });
+
+      el.addEventListener("click", () => {
+        if (isGraded || chip.usedByZone !== null) return;
+        selectedChipId = selectedChipId === chip.id ? null : chip.id;
+        renderWordBank();
+      });
+
+      setupTouchDrag(el, chip);
+
+      bankContainer.appendChild(el);
+    });
+  }
+
+  function setupTouchDrag(el, chip) {
+    let ghost = null;
+    let isDragging = false;
+
+    el.addEventListener("touchstart", e => {
+      if (isGraded || chip.usedByZone !== null) return;
+      isDragging = false;
+
+      const onTouchMove = moveEvent => {
+        const t = moveEvent.touches[0];
+        if (!isDragging) {
+          isDragging = true;
+          ghost = document.createElement("div");
+          ghost.className = "touch-ghost";
+          ghost.textContent = chip.word;
+          document.body.appendChild(ghost);
+        }
+        moveEvent.preventDefault();
+        ghost.style.left = `${t.clientX}px`;
+        ghost.style.top = `${t.clientY}px`;
+
+        document.querySelectorAll(".drop-zone").forEach(z => z.classList.remove("drag-over"));
+        const target = document.elementFromPoint(t.clientX, t.clientY);
+        const zone = target ? target.closest(".drop-zone") : null;
+        if (zone) zone.classList.add("drag-over");
+      };
+
+      const onTouchEnd = endEvent => {
+        document.removeEventListener("touchmove", onTouchMove);
+        document.removeEventListener("touchend", onTouchEnd);
+
+        if (ghost) {
+          ghost.remove();
+          ghost = null;
+        }
+        document.querySelectorAll(".drop-zone").forEach(z => z.classList.remove("drag-over"));
+
+        if (isDragging) {
+          const t = endEvent.changedTouches[0];
+          const target = document.elementFromPoint(t.clientX, t.clientY);
+          const zone = target ? target.closest(".drop-zone") : null;
+          if (zone) {
+            const zIndex = parseInt(zone.dataset.zoneIndex, 10);
+            assignChipToZone(chip.id, zIndex);
+          }
+        }
+      };
+
+      document.addEventListener("touchmove", onTouchMove, { passive: false });
+      document.addEventListener("touchend", onTouchEnd);
+    }, { passive: true });
+  }
+
+  function renderPart2() {
+    const container = document.getElementById("part2Container");
+    container.innerHTML = "";
+
+    currentPart2.forEach((item, index) => {
+      const qNumber = index + 11;
+      const qDiv = document.createElement("div");
+      qDiv.className = "question-item";
+      qDiv.id = `p2-q-${index}`;
+
+      const box = document.createElement("div");
+      box.className = "rewrite-box";
+
+      const numSpan = document.createElement("span");
+      numSpan.style.fontWeight = "600";
+      numSpan.textContent = `${qNumber}.`;
+
+      const promptSpan = document.createElement("span");
+      promptSpan.className = "prompt-italic";
+      promptSpan.textContent = item.prompt;
+
+      const arrowSpan = document.createElement("span");
+      arrowSpan.className = "arrow";
+      arrowSpan.textContent = "→";
+
+      const prefixSpan = document.createElement("span");
+      prefixSpan.textContent = item.prefix;
+
+      const dropZone = document.createElement("div");
+      dropZone.className = "drop-zone";
+      dropZone.id = `p2-zone-${index}`;
+      dropZone.dataset.zoneIndex = index;
+
+      const assignedChipId = zoneAssignments[index];
+      if (assignedChipId) {
+        const chipObj = bankChips.find(c => c.id === assignedChipId);
+        dropZone.textContent = chipObj ? chipObj.word : "";
+        dropZone.classList.add("filled");
+      } else {
+        dropZone.textContent = "drop here";
+        dropZone.style.color = "#94a3b8";
+        dropZone.style.fontWeight = "500";
+      }
+
+      if (isGraded) {
+        dropZone.classList.add("locked");
+      }
+
+      dropZone.addEventListener("dragover", e => {
+        if (isGraded) return;
+        e.preventDefault();
+        dropZone.classList.add("drag-over");
+      });
+
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("drag-over");
+      });
+
+      dropZone.addEventListener("drop", e => {
+        if (isGraded) return;
+        e.preventDefault();
+        dropZone.classList.remove("drag-over");
+        const chipId = e.dataTransfer.getData("text/plain") || selectedChipId;
+        if (chipId) assignChipToZone(chipId, index);
+      });
+
+      dropZone.addEventListener("click", () => {
+        if (isGraded) return;
+        if (selectedChipId) {
+          assignChipToZone(selectedChipId, index);
+        } else if (zoneAssignments[index]) {
+          removeChipFromZone(index);
+        }
+      });
+
+      const suffixSpan = document.createElement("span");
+      suffixSpan.textContent = item.suffix;
+
+      const feedbackDiv = document.createElement("div");
+      feedbackDiv.className = "feedback";
+      feedbackDiv.id = `p2-fb-${index}`;
+
+      box.appendChild(numSpan);
+      box.appendChild(promptSpan);
+      box.appendChild(arrowSpan);
+      box.appendChild(prefixSpan);
+      box.appendChild(dropZone);
+      box.appendChild(suffixSpan);
+
+      qDiv.appendChild(box);
+      qDiv.appendChild(feedbackDiv);
+      container.appendChild(qDiv);
+    });
+  }
+
+  function assignChipToZone(chipId, zoneIndex) {
+    const chip = bankChips.find(c => c.id === chipId);
+    if (!chip) return;
+
+    if (zoneAssignments[zoneIndex]) {
+      const oldChip = bankChips.find(c => c.id === zoneAssignments[zoneIndex]);
+      if (oldChip) oldChip.usedByZone = null;
+    }
+
+    if (chip.usedByZone !== null) {
+      delete zoneAssignments[chip.usedByZone];
+    }
+
+    chip.usedByZone = zoneIndex;
+    zoneAssignments[zoneIndex] = chipId;
+    selectedChipId = null;
+
+    renderWordBank();
+    renderPart2();
+  }
+
+  function removeChipFromZone(zoneIndex) {
+    const chipId = zoneAssignments[zoneIndex];
+    if (!chipId) return;
+    const chip = bankChips.find(c => c.id === chipId);
+    if (!chip) return;
+
+    if (zoneAssignments[zoneIndex]) {
+      const oldChip = bankChips.find(c => c.id === zoneAssignments[zoneIndex]);
+      if (oldChip) oldChip.usedByZone = null;
+    }
+
+    if (chip.usedByZone !== null) {
+      delete zoneAssignments[chip.usedByZone];
+    }
+
+    chip.usedByZone = zoneIndex;
+    zoneAssignments[zoneIndex] = chipId;
+    selectedChipId = null;
+
+    renderWordBank();
+    renderPart2();
+  }
+
+  function removeChipFromZone(zoneIndex) {
+    const chipId = zoneAssignments[zoneIndex];
+    if (!chipId) return;
+    const chip = bankChips.find(c => c.id === chipId);
+    if (chip) chip.usedByZone = null;
+    delete zoneAssignments[zoneIndex];
+
+    renderWordBank();
+    renderPart2();
+  }
+
+  function gradeQuiz() {
+    isGraded = true;
+    let score1 = 0;
+    let score2 = 0;
+
+    currentPart1.forEach((item, index) => {
+      const qDiv = document.getElementById(`p1-q-${index}`);
+      const fbDiv = document.getElementById(`p1-fb-${index}`);
+      const select = document.getElementById(`p1-select-${index}`);
+      select.disabled = true;
+
+      const chosen = select.value;
+      if (chosen === item.answer) {
+        score1++;
+        qDiv.classList.add("correct");
+        fbDiv.className = "feedback correct";
+        fbDiv.textContent = "✓ Correct!";
+      } else {
+        qDiv.classList.add("wrong");
+        fbDiv.className = "feedback wrong";
+        fbDiv.textContent = chosen
+          ? `✗ Incorrect. The correct answer is "${item.answer}".`
+          : `✗ Unanswered. The correct answer is "${item.answer}".`;
+      }
+    });
+
+    renderWordBank();
+    renderPart2();
+
+    currentPart2.forEach((item, index) => {
+      const qDiv = document.getElementById(`p2-q-${index}`);
+      const fbDiv = document.getElementById(`p2-fb-${index}`);
+      const chipId = zoneAssignments[index];
+      const chipObj = chipId ? bankChips.find(c => c.id === chipId) : null;
+      const chosenWord = chipObj ? chipObj.word : "";
+
+      if (chosenWord === item.answer) {
+        score2++;
+        qDiv.classList.add("correct");
+        fbDiv.className = "feedback correct";
+        fbDiv.textContent = "✓ Correct!";
+      } else {
+        qDiv.classList.add("wrong");
+        fbDiv.className = "feedback wrong";
+        fbDiv.textContent = chosenWord
+          ? `✗ Incorrect. The correct answer is "${item.answer}".`
+          : `✗ Unanswered. The correct answer is "${item.answer}".`;
+      }
+    });
+
+    const total = score1 + score2;
+    document.getElementById("totalScoreText").textContent = `Total Score: ${total} / 20 (${Math.round((total / 20) * 100)}%)`;
+    document.getElementById("part1ScoreText").textContent = `Part 1: ${score1} / 10`;
+    document.getElementById("part2ScoreText").textContent = `Part 2: ${score2} / 10`;
+
+    document.getElementById("scoreBanner").style.display = "block";
+    document.getElementById("gradeBtn").disabled = true;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  generateNewTest();
+</script>
+
+</body>
+</html>

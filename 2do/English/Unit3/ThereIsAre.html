@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>There is / There are - Practice Quiz</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --secondary: #0ea5e9;
+      --secondary-hover: #0284c7;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #cbd5e1;
+      --correct-bg: #dcfce7;
+      --correct-border: #22c55e;
+      --correct-text: #15803d;
+      --wrong-bg: #fee2e2;
+      --wrong-border: #ef4444;
+      --wrong-text: #b91c1c;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 16px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 840px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+      color: white;
+      padding: 24px 18px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.25);
+    }
+
+    header h1 {
+      margin: 0 0 6px 0;
+      font-size: 1.75rem;
+    }
+
+    header p {
+      margin: 0;
+      opacity: 0.92;
+      font-size: 0.98rem;
+    }
+
+    .score-banner {
+      display: none;
+      background: var(--card);
+      border: 2px solid var(--primary);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 24px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .score-banner h2 {
+      margin: 0 0 8px 0;
+      color: var(--primary);
+      font-size: 1.5rem;
+    }
+
+    .score-details {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .section-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      color: var(--primary);
+    }
+
+    .badge {
+      background: #eef2ff;
+      color: var(--primary);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .question-item {
+      padding: 14px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      background: #ffffff;
+      transition: all 0.2s ease;
+    }
+
+    .question-item.correct {
+      background-color: var(--correct-bg);
+      border-color: var(--correct-border);
+    }
+
+    .question-item.wrong {
+      background-color: var(--wrong-bg);
+      border-color: var(--wrong-border);
+    }
+
+    /* Sección 1: Combo integrado en la oración */
+    .question-text {
+      font-size: 1.05rem;
+      font-weight: 500;
+      line-height: 2;
+    }
+
+    .inline-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-color: #f8fafc;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://w3.org' viewBox='0 0 24 24' fill='none' stroke='%234f46e5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 16px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 34px 4px 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+      margin: 0 4px;
+      min-width: 125px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .inline-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+
+    .inline-select:disabled {
+      opacity: 0.9;
+      cursor: default;
+    }
+
+    /* Sección 2: Banco Fijo (Sticky) + Drag & Drop / Tap */
+    .sticky-word-bank {
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+      background: #eef2ff;
+      border: 2px solid #c7d2fe;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.12);
+    }
+
+    .bank-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .bank-hint {
+      font-weight: 500;
+      color: #475569;
+      font-size: 0.8rem;
+    }
+
+    .word-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 40px;
+    }
+
+    .word-chip {
+      background: white;
+      color: var(--text);
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+      transition: transform 0.15s, background-color 0.15s, box-shadow 0.15s;
+    }
+
+    .word-chip:active {
+      cursor: grabbing;
+    }
+
+    .word-chip.selected-chip {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.06);
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.35);
+    }
+
+    .word-chip.used {
+      opacity: 0.35;
+      border-color: #94a3b8;
+      pointer-events: none;
+    }
+
+    .rewrite-box {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 1.05rem;
+    }
+
+    .prompt-italic {
+      font-style: italic;
+      color: #334155;
+    }
+
+    .arrow {
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .drop-zone {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 115px;
+      height: 38px;
+      padding: 0 12px;
+      border: 2px dashed #94a3b8;
+      border-radius: 8px;
+      background: #f8fafc;
+      font-weight: 700;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .drop-zone.drag-over {
+      border-color: var(--primary);
+      background: #e0e7ff;
+      transform: scale(1.03);
+    }
+
+    .drop-zone.filled {
+      border-style: solid;
+      border-color: var(--primary);
+      background: #eef2ff;
+    }
+
+    .drop-zone.locked {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* Fantasma flotante al arrastrar con el dedo en iPad/móvil */
+    .touch-ghost {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      background: var(--primary);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      transform: translate(-50%, -50%);
+    }
+
+    .feedback {
+      margin-top: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: none;
+    }
+
+    .feedback.correct {
+      color: var(--correct-text);
+      display: block;
+    }
+
+    .feedback.wrong {
+      color: var(--wrong-text);
+      display: block;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin: 28px 0 40px 0;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      padding: 14px 30px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      color: white;
+      transition: transform 0.1s ease, background 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-action:active {
+      transform: scale(0.98);
+    }
+
+    .btn-grade {
+      background: var(--primary);
+    }
+
+    .btn-grade:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-grade:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    .btn-new {
+      background: var(--secondary);
+    }
+
+    .btn-new:hover {
+      background: var(--secondary-hover);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Practice Exercises: There is / There are</h1>
+    <p>Complete both parts carefully, then tap "Grade Test" to check your score!</p>
+  </header>
+
+  <div id="scoreBanner" class="score-banner">
+    <h2 id="totalScoreText">Total Score: 0 / 20</h2>
+    <div class="score-details">
+      <span id="part1ScoreText">Part 1: 0 / 10</span>
+      <span id="part2ScoreText">Part 2: 0 / 10</span>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 1: COMBO -->
+  <div class="section-card">
+    <div class="section-header">
+      <h2>Part 1: Choose the correct word</h2>
+      <span class="badge">10 Questions</span>
+    </div>
+    <div id="part1Container"></div>
+  </div>
+
+  <!-- SECCIÓN 2: BANCO FIJO Y ARRASTRAR -->
+  <div class="section-card">
+    <div class="section-header">
+      <h2>Part 2: Complete the sentence or question</h2>
+      <span class="badge">10 Questions</span>
+    </div>
+
+    <div class="sticky-word-bank" id="stickyBank">
+      <div class="bank-title">
+        <span>Word Bank (Drag & Drop or Tap to place)</span>
+        <span class="bank-hint">Tap a filled box to return the word</span>
+      </div>
+      <div class="word-chips" id="wordBankChips"></div>
+    </div>
+
+    <div id="part2Container"></div>
+  </div>
+
+  <div class="actions">
+    <button id="gradeBtn" class="btn-action btn-grade" onclick="gradeQuiz()">Grade Test</button>
+    <button id="newTestBtn" class="btn-action btn-new" onclick="generateNewTest()">New Test</button>
+  </div>
+</div>
+
+<script>
+  const bankPart1 = [
+    { q: "________ a big park near our house in Zibatá.", options: ["There is", "There are"], answer: "There is" },
+    { q: "________ three red apples in the fruit bowl.", options: ["There is", "There are"], answer: "There are" },
+    { q: "________ any milk left in the refrigerator.", options: ["There isn't", "There aren't"], answer: "There isn't" },
+    { q: "________ two comfortable sofas in the living room.", options: ["There is", "There are"], answer: "There are" },
+    { q: "________ any students in the classroom right now; it's empty.", options: ["There isn't", "There aren't"], answer: "There aren't" },
+    { q: "________ a cute brown puppy sleeping on the rug.", options: ["There is", "There are"], answer: "There is" },
+    { q: "________ any cookies in the jar?", options: ["Is there", "Are there"], answer: "Are there" },
+    { q: "________ a new movie theater at the shopping mall.", options: ["There is", "There are"], answer: "There is" },
+    { q: "________ five pencils inside my pencil case.", options: ["There is", "There are"], answer: "There are" },
+    { q: "________ enough time to finish the game before dinner.", options: ["There isn't", "There aren't"], answer: "There isn't" },
+    { q: "________ many tall trees along the avenue.", options: ["There is", "There are"], answer: "There are" },
+    { q: "________ a bank next to the pharmacy?", options: ["Is there", "Are there"], answer: "Is there" },
+    { q: "________ any clouds in the sky today; it's very sunny.", options: ["There isn't", "There aren't"], answer: "There aren't" },
+    { q: "________ a bottle of cold water on the kitchen table.", options: ["There is", "There are"], answer: "There is" },
+    { q: "________ twelve months in a year.", options: ["There is", "There are"], answer: "There are" },
+    { q: "________ a spider on the wall behind the door!", options: ["There is", "There are"], answer: "There is" },
+    { q: "________ any sugar in my coffee; it tastes bitter.", options: ["There isn't", "There aren't"], answer: "There isn't" },
+    { q: "________ good restaurants in downtown Querétaro?", options: ["Is there", "Are there"], answer: "Are there" },
+    { q: "________ seven days in a week.", options: ["There is", "There are"], answer: "There are" },
+    { q: "________ a computer on the teacher's desk.", options: ["There is", "There are"], answer: "There is" },
+    { q: "________ any chairs available at that table.", options: ["There isn't", "There aren't"], answer: "There aren't" },
+    { q: "________ a swimming pool in your neighborhood?", options: ["Is there", "Are there"], answer: "Is there" },
+    { q: "________ twenty-four students in my English class.", options: ["There is", "There are"], answer: "There are" },
+    { q: "________ a rainbow in the sky after the rain!", options: ["There is", "There are"], answer: "There is" },
+    { q: "________ any traffic on the highway this morning.", options: ["There isn't", "There aren't"], answer: "There isn't" },
+    { q: "________ four chairs around the dining table.", options: ["There is", "There are"], answer: "There are" },
+    { q: "________ any elephants at the local zoo?", options: ["Is there", "Are there"], answer: "Are there" },
+    { q: "________ a blue backpack under the chair.", options: ["There is", "There are"], answer: "There is" },
+    { q: "________ any batteries in the remote control.", options: ["There isn't", "There aren't"], answer: "There aren't" },
+    { q: "________ a message for you on the phone.", options: ["There is", "There are"], answer: "There is" },
+    { q: "________ two bathrooms in our apartment.", options: ["There is", "There are"], answer: "There are" },
+    { q: "________ any ice cream in the freezer?", options: ["Is there", "Are there"], answer: "Is there" },
+    { q: "________ a lot of books on the library shelves.", options: ["There is", "There are"], answer: "There are" },
+    { q: "________ a bakery on the corner of this street.", options: ["There is", "There are"], answer: "There is" },
+    { q: "________ any clean glasses in the cupboard.", options: ["There isn't", "There aren't"], answer: "There aren't" },
+    { q: "________ six eggs in the carton.", options: ["There is", "There are"], answer: "There are" },
+    { q: "________ a problem with my internet connection.", options: ["There is", "There are"], answer: "There is" },
+    { q: "________ many people waiting in line at the store?", options: ["Is there", "Are there"], answer: "Are there" },
+    { q: "________ a clock hanging above the whiteboard.", options: ["There is", "There are"], answer: "There is" },
+    { q: "________ any cheese left for the sandwiches.", options: ["There isn't", "There aren't"], answer: "There isn't" },
+    { q: "________ ten players on the soccer field right now.", options: ["There is", "There are"], answer: "There are" },
+    { q: "________ a hospital near here?", options: ["Is there", "Are there"], answer: "Is there" },
+    { q: "________ three colorful butterflies in the garden.", options: ["There is", "There are"], answer: "There are" },
+    { q: "________ a mirror on the bedroom wall.", options: ["There is", "There are"], answer: "There is" },
+    { q: "________ any buses running after midnight.", options: ["There isn't", "There aren't"], answer: "There aren't" },
+    { q: "________ a new student in our group today.", options: ["There is", "There are"], answer: "There is" },
+    { q: "________ eight slices in a large pizza.", options: ["There is", "There are"], answer: "There are" },
+    { q: "________ any parks where we can walk the dog?", options: ["Is there", "Are there"], answer: "Are there" },
+    { q: "________ a dictionary on top of the bookshelf.", options: ["There is", "There are"], answer: "There is" },
+    { q: "________ any juice in the pitcher.", options: ["There isn't", "There aren't"], answer: "There isn't" }
+  ];
+
+
+  const bankPart2 = [
+    { prompt: "(Affirmative / Singular)", prefix: "", suffix: "a big yellow bus outside.", answer: "There is" },
+    { prompt: "(Affirmative / Plural)", prefix: "", suffix: "four notebooks on the desk.", answer: "There are" },
+    { prompt: "(Negative / Uncountable)", prefix: "", suffix: "any water in the bottle.", answer: "There isn't" },
+    { prompt: "(Negative / Plural)", prefix: "", suffix: "any apples in the basket.", answer: "There aren't" },
+    { prompt: "(Question / Plural)", prefix: "", suffix: "any dogs in the park?", answer: "Are there" },
+    { prompt: "(Affirmative / Singular)", prefix: "", suffix: "a cat on the roof.", answer: "There is" },
+    { prompt: "(Affirmative / Plural)", prefix: "", suffix: "two bicycles in the garage.", answer: "There are" },
+    { prompt: "(Negative / Singular)", prefix: "", suffix: "a TV in my bedroom.", answer: "There isn't" },
+    { prompt: "(Negative / Plural)", prefix: "", suffix: "any pencils in my bag.", answer: "There aren't" },
+    { prompt: "(Question / Plural)", prefix: "", suffix: "two windows in your room?", answer: "Are there" },
+    { prompt: "(Affirmative / Singular)", prefix: "", suffix: "a nice café near the plaza.", answer: "There is" },
+    { prompt: "(Affirmative / Plural)", prefix: "", suffix: "many stars in the night sky.", answer: "There are" },
+    { prompt: "(Negative / Uncountable)", prefix: "", suffix: "any bread for breakfast.", answer: "There isn't" },
+    { prompt: "(Negative / Plural)", prefix: "", suffix: "any cars on the street.", answer: "There aren't" },
+    { prompt: "(Question / Plural)", prefix: "", suffix: "any strawberries in the fridge?", answer: "Are there" },
+    { prompt: "(Affirmative / Singular)", prefix: "", suffix: "an orange on the plate.", answer: "There is" },
+    { prompt: "(Affirmative / Plural)", prefix: "", suffix: "five birds on the tree branch.", answer: "There are" },
+    { prompt: "(Negative / Singular)", prefix: "", suffix: "a supermarket on this road.", answer: "There isn't" },
+    { prompt: "(Negative / Plural)", prefix: "", suffix: "any toys on the floor.", answer: "There aren't" },
+    { prompt: "(Question / Plural)", prefix: "", suffix: "many books in your backpack?", answer: "Are there" },
+    { prompt: "(Affirmative / Singular)", prefix: "", suffix: "a lamp next to the bed.", answer: "There is" },
+    { prompt: "(Affirmative / Plural)", prefix: "", suffix: "three pillows on the sofa.", answer: "There are" },
+    { prompt: "(Negative / Uncountable)", prefix: "", suffix: "any homework for tomorrow.", answer: "There isn't" },
+    { prompt: "(Negative / Plural)", prefix: "", suffix: "any markers on the board.", answer: "There aren't" },
+    { prompt: "(Question / Plural)", prefix: "", suffix: "any museums in this city?", answer: "Are there" },
+    { prompt: "(Affirmative / Singular)", prefix: "", suffix: "a letter for you on the table.", answer: "There is" },
+    { prompt: "(Affirmative / Plural)", prefix: "", suffix: "six chairs in the kitchen.", answer: "There are" },
+    { prompt: "(Negative / Singular)", prefix: "", suffix: "an elevator in this building.", answer: "There isn't" },
+    { prompt: "(Negative / Plural)", prefix: "", suffix: "any cookies left in the box.", answer: "There aren't" },
+    { prompt: "(Question / Plural)", prefix: "", suffix: "any good movies on TV tonight?", answer: "Are there" },
+    { prompt: "(Affirmative / Singular)", prefix: "", suffix: "a green frog near the pond.", answer: "There is" },
+    { prompt: "(Affirmative / Plural)", prefix: "", suffix: "ten crayons in the box.", answer: "There are" },
+    { prompt: "(Negative / Uncountable)", prefix: "", suffix: "any butter on the toast.", answer: "There isn't" },
+    { prompt: "(Negative / Plural)", prefix: "", suffix: "any mistakes in your test.", answer: "There aren't" },
+    { prompt: "(Question / Plural)", prefix: "", suffix: "any tickets left for the concert?", answer: "Are there" },
+    { prompt: "(Affirmative / Singular)", prefix: "", suffix: "a new bookstore at the mall.", answer: "There is" },
+    { prompt: "(Affirmative / Plural)", prefix: "", suffix: "two hamsters in the cage.", answer: "There are" },
+    { prompt: "(Negative / Singular)", prefix: "", suffix: "a playground in that park.", answer: "There isn't" },
+    { prompt: "(Negative / Plural)", prefix: "", suffix: "any plates on the table.", answer: "There aren't" },
+    { prompt: "(Question / Plural)", prefix: "", suffix: "many students in the library?", answer: "Are there" },
+    { prompt: "(Affirmative / Singular)", prefix: "", suffix: "a red jacket in the closet.", answer: "There is" },
+    { prompt: "(Affirmative / Plural)", prefix: "", suffix: "four seasons in a year.", answer: "There are" },
+    { prompt: "(Negative / Uncountable)", prefix: "", suffix: "any salt in the soup.", answer: "There isn't" },
+    { prompt: "(Negative / Plural)", prefix: "", suffix: "any bananas in the kitchen.", answer: "There aren't" },
+    { prompt: "(Question / Plural)", prefix: "", suffix: "any flowers in the vase?", answer: "Are there" },
+    { prompt: "(Affirmative / Singular)", prefix: "", suffix: "a guitar in the music room.", answer: "There is" },
+    { prompt: "(Affirmative / Plural)", prefix: "", suffix: "seven continents on Earth.", answer: "There are" },
+    { prompt: "(Negative / Singular)", prefix: "", suffix: "a clock in this classroom.", answer: "There isn't" },
+    { prompt: "(Negative / Plural)", prefix: "", suffix: "any clouds in the sky.", answer: "There aren't" },
+    { prompt: "(Question / Plural)", prefix: "", suffix: "any chairs in the hallway?", answer: "Are there" }
+  ];
+
+
+  let currentPart1 = [];
+  let currentPart2 = [];
+  let bankChips = [];
+  let zoneAssignments = {};
+  let selectedChipId = null;
+  let isGraded = false;
+
+  function shuffleArray(arr) {
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function generateNewTest() {
+    isGraded = false;
+    selectedChipId = null;
+    zoneAssignments = {};
+
+    currentPart1 = shuffleArray(bankPart1).slice(0, 10);
+    currentPart2 = shuffleArray(bankPart2).slice(0, 10);
+
+    const wordsForBank = shuffleArray(currentPart2.map(item => item.answer));
+    bankChips = wordsForBank.map((word, idx) => ({
+      id: `chip-${idx}`,
+      word: word,
+      usedByZone: null
+    }));
+
+    document.getElementById("scoreBanner").style.display = "none";
+    document.getElementById("gradeBtn").disabled = false;
+
+    renderPart1();
+    renderWordBank();
+    renderPart2();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function renderPart1() {
+    const container = document.getElementById("part1Container");
+    container.innerHTML = "";
+
+    currentPart1.forEach((item, index) => {
+      const shuffledOptions = shuffleArray(item.options);
+      const parts = item.q.split("________");
+
+      const qDiv = document.createElement("div");
+      qDiv.className = "question-item";
+      qDiv.id = `p1-q-${index}`;
+
+      const textDiv = document.createElement("div");
+      textDiv.className = "question-text";
+
+      const select = document.createElement("select");
+      select.className = "inline-select";
+      select.id = `p1-select-${index}`;
+
+      const defaultOpt = document.createElement("option");
+      defaultOpt.value = "";
+      defaultOpt.textContent = "— select —";
+      select.appendChild(defaultOpt);
+
+      shuffledOptions.forEach(opt => {
+        const optionEl = document.createElement("option");
+        optionEl.value = opt;
+        optionEl.textContent = opt;
+        select.appendChild(optionEl);
+      });
+
+      textDiv.appendChild(document.createTextNode(`${index + 1}. ${parts[0]}`));
+      textDiv.appendChild(select);
+      textDiv.appendChild(document.createTextNode(parts[1] || ""));
+
+      const feedbackDiv = document.createElement("div");
+      feedbackDiv.className = "feedback";
+      feedbackDiv.id = `p1-fb-${index}`;
+
+      qDiv.appendChild(textDiv);
+      qDiv.appendChild(feedbackDiv);
+      container.appendChild(qDiv);
+    });
+  }
+
+  function renderWordBank() {
+    const bankContainer = document.getElementById("wordBankChips");
+    bankContainer.innerHTML = "";
+
+    bankChips.forEach(chip => {
+      const el = document.createElement("div");
+      el.className = "word-chip";
+      if (chip.usedByZone !== null) el.classList.add("used");
+      if (selectedChipId === chip.id) el.classList.add("selected-chip");
+      el.textContent = chip.word;
+      el.dataset.chipId = chip.id;
+
+      el.draggable = chip.usedByZone === null && !isGraded;
+      el.addEventListener("dragstart", e => {
+        if (isGraded || chip.usedByZone !== null) return;
+        e.dataTransfer.setData("text/plain", chip.id);
+        selectedChipId = chip.id;
+      });
+
+      el.addEventListener("click", () => {
+        if (isGraded || chip.usedByZone !== null) return;
+        selectedChipId = selectedChipId === chip.id ? null : chip.id;
+        renderWordBank();
+      });
+
+      setupTouchDrag(el, chip);
+
+      bankContainer.appendChild(el);
+    });
+  }
+
+  function setupTouchDrag(el, chip) {
+    let ghost = null;
+    let isDragging = false;
+
+    el.addEventListener("touchstart", e => {
+      if (isGraded || chip.usedByZone !== null) return;
+      isDragging = false;
+
+      const onTouchMove = moveEvent => {
+        const t = moveEvent.touches[0];
+        if (!isDragging) {
+          isDragging = true;
+          ghost = document.createElement("div");
+          ghost.className = "touch-ghost";
+          ghost.textContent = chip.word;
+          document.body.appendChild(ghost);
+        }
+        moveEvent.preventDefault();
+        ghost.style.left = `${t.clientX}px`;
+        ghost.style.top = `${t.clientY}px`;
+
+        document.querySelectorAll(".drop-zone").forEach(z => z.classList.remove("drag-over"));
+        const target = document.elementFromPoint(t.clientX, t.clientY);
+        const zone = target ? target.closest(".drop-zone") : null;
+        if (zone) zone.classList.add("drag-over");
+      };
+
+      const onTouchEnd = endEvent => {
+        document.removeEventListener("touchmove", onTouchMove);
+        document.removeEventListener("touchend", onTouchEnd);
+
+        if (ghost) {
+          ghost.remove();
+          ghost = null;
+        }
+        document.querySelectorAll(".drop-zone").forEach(z => z.classList.remove("drag-over"));
+
+        if (isDragging) {
+          const t = endEvent.changedTouches[0];
+          const target = document.elementFromPoint(t.clientX, t.clientY);
+          const zone = target ? target.closest(".drop-zone") : null;
+          if (zone) {
+            const zIndex = parseInt(zone.dataset.zoneIndex, 10);
+            assignChipToZone(chip.id, zIndex);
+          }
+        }
+      };
+
+      document.addEventListener("touchmove", onTouchMove, { passive: false });
+      document.addEventListener("touchend", onTouchEnd);
+    }, { passive: true });
+  }
+
+  function renderPart2() {
+    const container = document.getElementById("part2Container");
+    container.innerHTML = "";
+
+    currentPart2.forEach((item, index) => {
+      const qNumber = index + 11;
+      const qDiv = document.createElement("div");
+      qDiv.className = "question-item";
+      qDiv.id = `p2-q-${index}`;
+
+      const box = document.createElement("div");
+      box.className = "rewrite-box";
+
+      const numSpan = document.createElement("span");
+      numSpan.style.fontWeight = "600";
+      numSpan.textContent = `${qNumber}.`;
+
+      const promptSpan = document.createElement("span");
+      promptSpan.className = "prompt-italic";
+      promptSpan.textContent = item.prompt;
+
+      const arrowSpan = document.createElement("span");
+      arrowSpan.className = "arrow";
+      arrowSpan.textContent = "→";
+
+      const prefixSpan = document.createElement("span");
+      prefixSpan.textContent = item.prefix;
+
+      const dropZone = document.createElement("div");
+      dropZone.className = "drop-zone";
+      dropZone.id = `p2-zone-${index}`;
+      dropZone.dataset.zoneIndex = index;
+
+      const assignedChipId = zoneAssignments[index];
+      if (assignedChipId) {
+        const chipObj = bankChips.find(c => c.id === assignedChipId);
+        dropZone.textContent = chipObj ? chipObj.word : "";
+        dropZone.classList.add("filled");
+      } else {
+        dropZone.textContent = "drop here";
+        dropZone.style.color = "#94a3b8";
+        dropZone.style.fontWeight = "500";
+      }
+
+      if (isGraded) {
+        dropZone.classList.add("locked");
+      }
+
+      dropZone.addEventListener("dragover", e => {
+        if (isGraded) return;
+        e.preventDefault();
+        dropZone.classList.add("drag-over");
+      });
+
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("drag-over");
+      });
+
+      dropZone.addEventListener("drop", e => {
+        if (isGraded) return;
+        e.preventDefault();
+        dropZone.classList.remove("drag-over");
+        const chipId = e.dataTransfer.getData("text/plain") || selectedChipId;
+        if (chipId) assignChipToZone(chipId, index);
+      });
+
+      dropZone.addEventListener("click", () => {
+        if (isGraded) return;
+        if (selectedChipId) {
+          assignChipToZone(selectedChipId, index);
+        } else if (zoneAssignments[index]) {
+          removeChipFromZone(index);
+        }
+      });
+
+      const suffixSpan = document.createElement("span");
+      suffixSpan.textContent = item.suffix;
+
+      const feedbackDiv = document.createElement("div");
+      feedbackDiv.className = "feedback";
+      feedbackDiv.id = `p2-fb-${index}`;
+
+      box.appendChild(numSpan);
+      box.appendChild(promptSpan);
+      box.appendChild(arrowSpan);
+      box.appendChild(prefixSpan);
+      box.appendChild(dropZone);
+      box.appendChild(suffixSpan);
+
+      qDiv.appendChild(box);
+      qDiv.appendChild(feedbackDiv);
+      container.appendChild(qDiv);
+    });
+  }
+
+  function assignChipToZone(chipId, zoneIndex) {
+    const chip = bankChips.find(c => c.id === chipId);
+    if (!chip) return;
+
+    if (zoneAssignments[zoneIndex]) {
+      const oldChip = bankChips.find(c => c.id === zoneAssignments[zoneIndex]);
+      if (oldChip) oldChip.usedByZone = null;
+    }
+
+    if (chip.usedByZone !== null) {
+      delete zoneAssignments[chip.usedByZone];
+    }
+
+    chip.usedByZone = zoneIndex;
+    zoneAssignments[zoneIndex] = chipId;
+    selectedChipId = null;
+
+    renderWordBank();
+    renderPart2();
+  }
+
+  function removeChipFromZone(zoneIndex) {
+    const chipId = zoneAssignments[zoneIndex];
+    if (!chipId) return;
+    const chip = bankChips.find(c => c.id === chipId);
+    if (!chip) return;
+
+    if (zoneAssignments[zoneIndex]) {
+      const oldChip = bankChips.find(c => c.id === zoneAssignments[zoneIndex]);
+      if (oldChip) oldChip.usedByZone = null;
+    }
+
+    if (chip.usedByZone !== null) {
+      delete zoneAssignments[chip.usedByZone];
+    }
+
+    chip.usedByZone = zoneIndex;
+    zoneAssignments[zoneIndex] = chipId;
+    selectedChipId = null;
+
+    renderWordBank();
+    renderPart2();
+  }
+
+  function removeChipFromZone(zoneIndex) {
+    const chipId = zoneAssignments[zoneIndex];
+    if (!chipId) return;
+    const chip = bankChips.find(c => c.id === chipId);
+    if (chip) chip.usedByZone = null;
+    delete zoneAssignments[zoneIndex];
+
+    renderWordBank();
+    renderPart2();
+  }
+
+  function gradeQuiz() {
+    isGraded = true;
+    let score1 = 0;
+    let score2 = 0;
+
+    currentPart1.forEach((item, index) => {
+      const qDiv = document.getElementById(`p1-q-${index}`);
+      const fbDiv = document.getElementById(`p1-fb-${index}`);
+      const select = document.getElementById(`p1-select-${index}`);
+      select.disabled = true;
+
+      const chosen = select.value;
+      if (chosen === item.answer) {
+        score1++;
+        qDiv.classList.add("correct");
+        fbDiv.className = "feedback correct";
+        fbDiv.textContent = "✓ Correct!";
+      } else {
+        qDiv.classList.add("wrong");
+        fbDiv.className = "feedback wrong";
+        fbDiv.textContent = chosen
+          ? `✗ Incorrect. The correct answer is "${item.answer}".`
+          : `✗ Unanswered. The correct answer is "${item.answer}".`;
+      }
+    });
+
+    renderWordBank();
+    renderPart2();
+
+    currentPart2.forEach((item, index) => {
+      const qDiv = document.getElementById(`p2-q-${index}`);
+      const fbDiv = document.getElementById(`p2-fb-${index}`);
+      const chipId = zoneAssignments[index];
+      const chipObj = chipId ? bankChips.find(c => c.id === chipId) : null;
+      const chosenWord = chipObj ? chipObj.word : "";
+
+      if (chosenWord === item.answer) {
+        score2++;
+        qDiv.classList.add("correct");
+        fbDiv.className = "feedback correct";
+        fbDiv.textContent = "✓ Correct!";
+      } else {
+        qDiv.classList.add("wrong");
+        fbDiv.className = "feedback wrong";
+        fbDiv.textContent = chosenWord
+          ? `✗ Incorrect. The correct answer is "${item.answer}".`
+          : `✗ Unanswered. The correct answer is "${item.answer}".`;
+      }
+    });
+
+    const total = score1 + score2;
+    document.getElementById("totalScoreText").textContent = `Total Score: ${total} / 20 (${Math.round((total / 20) * 100)}%)`;
+    document.getElementById("part1ScoreText").textContent = `Part 1: ${score1} / 10`;
+    document.getElementById("part2ScoreText").textContent = `Part 2: ${score2} / 10`;
+
+    document.getElementById("scoreBanner").style.display = "block";
+    document.getElementById("gradeBtn").disabled = true;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  generateNewTest();
+</script>
+
+</body>
+</html>

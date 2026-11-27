@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Secuencias Numéricas - 2.º Primaria</title>
+<style>
+  :root {
+    --bg-color: #f0f7ff;
+    --card-bg: #ffffff;
+    --primary: #2563eb;
+    --um-bg: #fef3c7; --um-border: #d97706; --um-text: #92400e;
+    --c-bg: #dcfce7;  --c-border: #16a34a;  --c-text: #166534;
+    --d-bg: #fce7f3;  --d-border: #db2777;  --d-text: #9d174d;
+    --u-bg: #dbeafe;  --u-border: #2563eb;  --u-text: #1e40af;
+    --correct: #22c55e;
+    --wrong: #ef4444;
+  }
+
+  * {
+    box-sizing: border-box;
+    font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    padding: 16px;
+    background-color: var(--bg-color);
+    color: #1e293b;
+    padding-bottom: 60px;
+  }
+
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  header {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+    border: 3px solid #bfdbfe;
+  }
+
+  h1 {
+    margin: 0 0 12px 0;
+    color: #1e3a8a;
+    font-size: 1.75rem;
+  }
+
+  .top-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mode-selector {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    background: #e2e8f0;
+    padding: 5px;
+    border-radius: 14px;
+  }
+
+  .mode-btn {
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    background: transparent;
+    color: #475569;
+    transition: all 0.2s;
+  }
+
+  .mode-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+  }
+
+  section.exercise-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    border: 2px solid #e2e8f0;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    color: #0f172a;
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+
+  .badge {
+    background: var(--primary);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+  }
+
+  .instructions {
+    color: #475569;
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 1rem;
+  }
+
+  /* Banco de fichas calibrado para iPad */
+  .tile-bank {
+    background: #f1f5f9;
+    border: 3px solid #3b82f6;
+    border-radius: 16px;
+    padding: 8px 12px 12px 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 20px;
+    min-height: 60px;
+    max-height: 165px;
+    overflow-y: auto;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 12px;
+    z-index: 100;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.16);
+  }
+
+  .bank-label {
+    width: 100%;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #1e40af;
+    background: #dbeafe;
+    padding: 4px 10px;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    flex-shrink: 0;
+  }
+
+  .tile {
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    border: 3px solid #64748b;
+    background: white;
+    box-shadow: 0 3px 0 rgba(0,0,0,0.12);
+    transition: transform 0.1s, box-shadow 0.1s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 52px;
+  }
+
+  .tile:active { cursor: grabbing; }
+  .tile.selected-tile {
+    outline: 4px solid #f59e0b;
+    transform: scale(1.08);
+  }
+
+  .tile.type-um { background: var(--um-bg); border-color: var(--um-border); color: var(--um-text); }
+  .tile.type-c  { background: var(--c-bg);  border-color: var(--c-border);  color: var(--c-text); }
+  .tile.type-d  { background: var(--d-bg);  border-color: var(--d-border);  color: var(--d-text); }
+  .tile.type-u  { background: var(--u-bg);  border-color: var(--u-border);  color: var(--u-text); }
+
+  /* Filas de secuencia */
+  .seq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .seq-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    padding: 12px 14px;
+    border-radius: 16px;
+    border: 2px solid #cbd5e1;
+    gap: 6px;
+  }
+
+  .seq-num {
+    background: white;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    min-width: 48px;
+    text-align: center;
+    color: #0f172a;
+  }
+
+  .seq-comma {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #64748b;
+    margin-right: 2px;
+  }
+
+  /* Zonas donde soltar */
+  .dropzone {
+    min-width: 58px;
+    height: 46px;
+    border-radius: 12px;
+    border: 2px dashed #3b82f6;
+    background: #eff6ff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    position: relative;
+  }
+
+  .dropzone.hover-over {
+    background: #bae6fd;
+    border-color: #0284c7;
+    transform: scale(1.05);
+  }
+
+  .dropzone.correct-zone {
+    border: 3px solid var(--correct) !important;
+    background: #dcfce7 !important;
+  }
+
+  .dropzone.wrong-zone {
+    border: 3px solid var(--wrong) !important;
+    background: #fee2e2 !important;
+  }
+
+  /* Botones finales */
+  .actions-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .action-btn {
+    border: none;
+    padding: 14px 28px;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.18);
+    transition: transform 0.1s;
+  }
+
+  .action-btn:active {
+    transform: translateY(2px);
+  }
+
+  .btn-check { background: #16a34a; }
+  .btn-new   { background: #ea580c; }
+
+  #score-banner {
+    display: none;
+    margin-top: 20px;
+    background: #fef9c3;
+    border: 3px solid #eab308;
+    border-radius: 18px;
+    padding: 18px;
+    text-align: center;
+    font-size: 1.35rem;
+    font-weight: bold;
+    color: #854d0e;
+  }
+
+  .drag-ghost {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.92;
+    transform: scale(1.1);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>🧩 Secuencias Numéricas — 2.º Primaria</h1>
+    <div class="top-controls">
+      <div class="mode-selector">
+        <button class="mode-btn active" id="btnStep2" onclick="setStepLen(2)">Patrón de 2 pasos</button>
+        <button class="mode-btn" id="btnStep3" onclick="setStepLen(3)">Patrón de 3 pasos</button>
+        <button class="mode-btn" id="btnStep4" onclick="setStepLen(4)">Patrón de 4 pasos</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- EJERCICIO 1: 4 SUMAS -->
+  <section class="exercise-card">
+    <h2 class="section-title"><span class="badge">Sección 1</span> Secuencias que avanzan (Sumas)</h2>
+    <p class="instructions" id="inst-ex1">Descubre cuánto va sumando en cada salto y completa los números que faltan.</p>
+    <div class="tile-bank" id="bank-ex1"></div>
+    <div class="seq-list" id="list-ex1"></div>
+  </section>
+
+  <!-- EJERCICIO 2: 3 RESTAS -->
+  <section class="exercise-card">
+    <h2 class="section-title"><span class="badge">Sección 2</span> Secuencias que retroceden (Restas)</h2>
+    <p class="instructions" id="inst-ex2">Descubre cuánto va restando en cada salto y completa los números que faltan.</p>
+    <div class="tile-bank" id="bank-ex2"></div>
+    <div class="seq-list" id="list-ex2"></div>
+  </section>
+
+  <!-- EJERCICIO 3: 3 MIXTAS -->
+  <section class="exercise-card">
+    <h2 class="section-title"><span class="badge">Sección 3</span> Secuencias combinadas (Sumas y Restas)</h2>
+    <p class="instructions" id="inst-ex3">¡Atención! Estas secuencias suben y bajan siguiendo un patrón. Completa los que faltan.</p>
+    <div class="tile-bank" id="bank-ex3"></div>
+    <div class="seq-list" id="list-ex3"></div>
+  </section>
+
+  <div class="actions-bar">
+    <button class="action-btn btn-check" onclick="gradeAll()">✅ Calificar todo</button>
+    <button class="action-btn btn-new" onclick="initGame()">🔄 Nuevo juego</button>
+  </div>
+
+  <div id="score-banner"></div>
+</div>
+
+<script>
+let stepLen = 2; // 2, 3 o 4 pasos
+let selectedTile = null;
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function shuffle(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function setStepLen(len) {
+  stepLen = len;
+  document.getElementById('btnStep2').classList.toggle('active', len === 2);
+  document.getElementById('btnStep3').classList.toggle('active', len === 3);
+  document.getElementById('btnStep4').classList.toggle('active', len === 4);
+  initGame();
+}
+
+// Genera una secuencia válida de saltos de una cifra (1..9)
+function buildSequence(type, len) {
+  while (true) {
+    let steps = [];
+    for (let i = 0; i < len; i++) {
+      const mag = randomInt(1, 9);
+      if (type === 'add') {
+        steps.push(mag);
+      } else if (type === 'sub') {
+        steps.push(-mag);
+      } else {
+        // Mixto: asegura que haya al menos una suma y una resta en el ciclo
+        const sign = (i % 2 === 0) ? 1 : -1;
+        steps.push(sign * mag);
+      }
+    }
+
+    // Evita que todos los saltos sean idénticos (para que realmente sea un patrón compuesto)
+    if (new Set(steps).size < 2) continue;
+
+     // En modo mixto, evita que el ciclo neto sea 0 (para que no se repitan exactamente los mismos números)
+    const netCycle = steps.reduce((acc, v) => acc + v, 0);
+    if (type === 'mix' && netCycle === 0) continue;
+
+    // Calculamos 2 ciclos completos de pista + 1 ciclo completo a responder
+    // Ejemplo len=2: 5 números visibles (4 saltos = 2 ciclos) + 2 huecos
+    // Ejemplo len=3: 7 números visibles (6 saltos = 2 ciclos) + 3 huecos
+    // Ejemplo len=4: 9 números visibles (8 saltos = 2 ciclos) + 4 huecos
+    const totalJumps = len * 3;
+    const visibleCount = len * 2 + 1;
+
+    // Elegimos un número inicial que garantice que todos los términos queden entre 2 y 98
+    let minOffset = 0;
+    let maxOffset = 0;
+    let curr = 0;
+    for (let j = 0; j < totalJumps; j++) {
+      curr += steps[j % len];
+      if (curr < minOffset) minOffset = curr;
+      if (curr > maxOffset) maxOffset = curr;
+    }
+
+    const lowestStart = Math.max(2, 2 - minOffset);
+    const highestStart = Math.min(95, 98 - maxOffset);
+
+    if (lowestStart > highestStart) continue;
+
+    const start = randomInt(lowestStart, highestStart);
+    const seq = [start];
+    for (let j = 0; j < totalJumps; j++) {
+      seq.push(seq[seq.length - 1] + steps[j % len]);
+    }
+
+    return {
+      given: seq.slice(0, visibleCount),
+      answers: seq.slice(visibleCount)
+    };
+  }
+}
+
+function renderSection(sectionId, type, count) {
+  const bankEl = document.getElementById('bank-' + sectionId);
+  const listEl = document.getElementById('list-' + sectionId);
+  bankEl.innerHTML = `<div class="bank-label">📦 Banco de fichas — coloca los ${stepLen} números siguientes</div>`;
+  listEl.innerHTML = '';
+
+  const colors = ['type-c', 'type-d', 'type-u', 'type-um'];
+  let allTiles = [];
+
+  for (let i = 0; i < count; i++) {
+    const item = buildSequence(type, stepLen);
+    const row = document.createElement('div');
+    row.className = 'seq-row';
+
+    // Números visibles
+    item.given.forEach(num => {
+      const box = document.createElement('div');
+      box.className = 'seq-num';
+      box.textContent = num;
+      row.appendChild(box);
+
+      const comma = document.createElement('span');
+      comma.className = 'seq-comma';
+      comma.textContent = ',';
+      row.appendChild(comma);
+    });
+
+    // Huecos a completar
+    item.answers.forEach((ans, idx) => {
+      const dz = createDropzone(sectionId, String(ans));
+      row.appendChild(dz);
+
+      if (idx < item.answers.length - 1) {
+        const comma = document.createElement('span');
+        comma.className = 'seq-comma';
+        comma.textContent = ',';
+        row.appendChild(comma);
+      }
+
+      allTiles.push({
+        val: String(ans),
+        type: colors[(i + idx) % colors.length]
+      });
+    });
+
+    listEl.appendChild(row);
+  }
+
+  shuffle(allTiles).forEach(t => {
+    bankEl.appendChild(createTile(t.val, t.type, sectionId));
+  });
+}
+
+function initGame() {
+  selectedTile = null;
+  const banner = document.getElementById('score-banner');
+  banner.style.display = 'none';
+  banner.innerHTML = '';
+
+  renderSection('ex1', 'add', 4);
+  renderSection('ex2', 'sub', 3);
+  renderSection('ex3', 'mix', 3);
+}
+
+// ================= SISTEMA DE ARRASTRE TÁCTIL Y CLICK =================
+function createDropzone(group, expected) {
+  const dz = document.createElement('div');
+  dz.className = 'dropzone';
+  dz.dataset.group = group;
+  dz.dataset.expected = expected;
+
+  dz.addEventListener('click', () => {
+    if (selectedTile && selectedTile.dataset.group === group) {
+      placeTileInZone(selectedTile, dz);
+      clearSelection();
+      return;
+    }
+    if (dz.firstElementChild) {
+      returnTileToBank(dz.firstElementChild);
+    }
+  });
+
+  return dz;
+}
+
+function createTile(value, styleClass, group) {
+  const tile = document.createElement('div');
+  tile.className = `tile ${styleClass}`;
+  tile.textContent = value;
+  tile.dataset.value = value;
+  tile.dataset.group = group;
+
+  tile.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+    e.preventDefault();
+
+    if (tile.setPointerCapture) {
+      try { tile.setPointerCapture(e.pointerId); } catch (err) {}
+    }
+
+    const startX = e.clientX;
+    const startY = e.clientY;
+    let isDragging = false;
+    let ghost = null;
+
+    const onPointerMove = (moveEvent) => {
+      const dx = moveEvent.clientX - startX;
+      const dy = moveEvent.clientY - startY;
+
+      if (!isDragging && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
+        isDragging = true;
+        clearSelection();
+        ghost = tile.cloneNode(true);
+        ghost.classList.add('drag-ghost');
+        ghost.style.width = tile.offsetWidth + 'px';
+        ghost.style.height = tile.offsetHeight + 'px';
+        document.body.appendChild(ghost);
+      }
+
+      if (isDragging && ghost) {
+        const offsetY = moveEvent.pointerType === 'touch' ? 28 : 0;
+        ghost.style.left = (moveEvent.clientX - ghost.offsetWidth / 2) + 'px';
+        ghost.style.top = (moveEvent.clientY - ghost.offsetHeight / 2 - offsetY) + 'px';
+
+        document.querySelectorAll('.dropzone.hover-over').forEach(z => z.classList.remove('hover-over'));
+        const elemBelow = document.elementFromPoint(moveEvent.clientX, moveEvent.clientY - offsetY);
+        const dz = elemBelow ? elemBelow.closest('.dropzone') : null;
+        if (dz && dz.dataset.group === group) {
+          dz.classList.add('hover-over');
+        }
+      }
+    };
+
+    const onPointerUp = (upEvent) => {
+      tile.removeEventListener('pointermove', onPointerMove);
+      tile.removeEventListener('pointerup', onPointerUp);
+      tile.removeEventListener('pointercancel', onPointerUp);
+
+      if (tile.releasePointerCapture) {
+        try { tile.releasePointerCapture(upEvent.pointerId); } catch (err) {}
+      }
+
+      if (isDragging) {
+        if (ghost) ghost.remove();
+        document.querySelectorAll('.dropzone.hover-over').forEach(z => z.classList.remove('hover-over'));
+
+        const offsetY = upEvent.pointerType === 'touch' ? 28 : 0;
+        const elemBelow = document.elementFromPoint(upEvent.clientX, upEvent.clientY - offsetY);
+        const dz = elemBelow ? elemBelow.closest('.dropzone') : null;
+
+        if (dz && dz.dataset.group === group) {
+          placeTileInZone(tile, dz);
+        } else if (tile.parentElement && tile.parentElement.classList.contains('dropzone')) {
+          returnTileToBank(tile);
+        }
+      } else {
+        if (tile.parentElement && tile.parentElement.classList.contains('dropzone')) {
+          returnTileToBank(tile);
+        } else if (selectedTile === tile) {
+          clearSelection();
+        } else {
+          clearSelection();
+          selectedTile = tile;
+          tile.classList.add('selected-tile');
+        }
+      }
+    };
+
+    tile.addEventListener('pointermove', onPointerMove);
+    tile.addEventListener('pointerup', onPointerUp);
+    tile.addEventListener('pointercancel', onPointerUp);
+  });
+
+  return tile;
+}
+
+function clearSelection() {
+  if (selectedTile) {
+    selectedTile.classList.remove('selected-tile');
+    selectedTile = null;
+  }
+}
+
+function placeTileInZone(tile, dz) {
+  dz.classList.remove('correct-zone', 'wrong-zone');
+  if (dz.firstElementChild) {
+    returnTileToBank(dz.firstElementChild);
+  }
+  dz.appendChild(tile);
+}
+
+function returnTileToBank(tile) {
+  const dz = tile.parentElement;
+  if (dz && dz.classList.contains('dropzone')) {
+    dz.classList.remove('correct-zone', 'wrong-zone');
+  }
+  const bank = document.getElementById('bank-' + tile.dataset.group);
+  bank.appendChild(tile);
+}
+
+// ================= CALIFICACIÓN =================
+function gradeAll() {
+  clearSelection();
+  let totalCorrect = 0;
+  let totalQuestions = 0;
+
+  document.querySelectorAll('.seq-row').forEach(row => {
+    totalQuestions++;
+    const zones = row.querySelectorAll('.dropzone');
+    let rowAllRight = true;
+
+    zones.forEach(dz => {
+      dz.classList.remove('correct-zone', 'wrong-zone');
+      const placed = dz.firstElementChild ? dz.firstElementChild.dataset.value : '';
+      if (placed === dz.dataset.expected) {
+        dz.classList.add('correct-zone');
+      } else {
+        dz.classList.add('wrong-zone');
+        rowAllRight = false;
+      }
+    });
+
+    if (rowAllRight) totalCorrect++;
+  });
+
+  const banner = document.getElementById('score-banner');
+  banner.style.display = 'block';
+  banner.innerHTML = `¡Buen trabajo! Completaste <strong>${totalCorrect} de ${totalQuestions}</strong> secuencias correctamente. ${totalCorrect === totalQuestions ? '🌟 ¡Excelente!' : 'Revisa los cuadros en rojo y vuelve a intentarlo.'}`;
+  banner.scrollIntoView({ behavior: 'smooth' });
+}
+
+initGame();
+</script>
+</body>
+</html>

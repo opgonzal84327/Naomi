@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Problemas Matemáticos - 2.º Primaria</title>
+<style>
+  :root {
+    --bg-color: #f0f7ff;
+    --card-bg: #ffffff;
+    --primary: #2563eb;
+    --secondary: #0d9488;
+    --correct: #22c55e;
+    --wrong: #ef4444;
+  }
+
+  * {
+    box-sizing: border-box;
+    font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    padding: 16px;
+    background-color: var(--bg-color);
+    color: #1e293b;
+    padding-bottom: 60px;
+  }
+
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+  }
+
+  header {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+    border: 3px solid #bfdbfe;
+  }
+
+  h1 {
+    margin: 0 0 14px 0;
+    color: #1e3a8a;
+    font-size: 1.75rem;
+  }
+
+  .top-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .control-label {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #475569;
+  }
+
+  .mode-selector {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    background: #e2e8f0;
+    padding: 5px;
+    border-radius: 14px;
+  }
+
+  .mode-btn {
+    border: none;
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-size: 0.98rem;
+    font-weight: bold;
+    cursor: pointer;
+    background: transparent;
+    color: #475569;
+    transition: all 0.2s;
+  }
+
+  .mode-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+  }
+
+  .mode-btn.active-count {
+    background: var(--secondary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(13, 148, 136, 0.3);
+  }
+
+  .instructions-bar {
+    background: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 12px 18px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #475569;
+    font-size: 1.05rem;
+  }
+
+  /* Tarjetas de problemas */
+  .problems-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .problem-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    border: 2px solid #cbd5e1;
+  }
+
+  .problem-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .problem-badge {
+    background: var(--primary);
+    color: white;
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: bold;
+  }
+
+  .problem-text {
+    font-size: 1.2rem;
+    line-height: 1.55;
+    color: #1e293b;
+    background: #eef2ff;
+    border-left: 5px solid #6366f1;
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+
+  .choices-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .choice-btn {
+    flex: 1;
+    min-width: 150px;
+    padding: 12px 14px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 14px;
+    border: 3px solid #94a3b8;
+    background: white;
+    color: #1e293b;
+    cursor: pointer;
+    box-shadow: 0 3px 0 rgba(0,0,0,0.08);
+    transition: transform 0.1s, background 0.15s, border-color 0.15s;
+  }
+
+  .choice-btn:active {
+    transform: translateY(2px);
+  }
+
+  .choice-btn.selected {
+    background: #dbeafe;
+    border-color: #2563eb;
+    color: #1e3a8a;
+    transform: scale(1.02);
+  }
+
+  .choice-btn.correct-choice {
+    background: #dcfce7 !important;
+    border-color: var(--correct) !important;
+    color: #166534 !important;
+  }
+
+  .choice-btn.wrong-choice {
+    background: #fee2e2 !important;
+    border-color: var(--wrong) !important;
+    color: #991b1b !important;
+  }
+
+  /* Botones finales */
+  .actions-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 26px;
+  }
+
+  .action-btn {
+    border: none;
+    padding: 14px 28px;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.18);
+    transition: transform 0.1s;
+  }
+
+  .action-btn:active {
+    transform: translateY(2px);
+  }
+
+  .btn-check { background: #16a34a; }
+  .btn-new   { background: #ea580c; }
+
+  #score-banner {
+    display: none;
+    margin-top: 20px;
+    background: #fef9c3;
+    border: 3px solid #eab308;
+    border-radius: 18px;
+    padding: 18px;
+    text-align: center;
+    font-size: 1.35rem;
+    font-weight: bold;
+    color: #854d0e;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>📖 Problemas Matemáticos — 2.º Primaria</h1>
+    <div class="top-controls">
+      <div class="control-group">
+        <span class="control-label">Dificultad</span>
+        <div class="mode-selector">
+          <button class="mode-btn active" id="btn2Cifras" onclick="setLevel('2cifras')">2 Cifras</button>
+          <button class="mode-btn" id="btn3Cifras" onclick="setLevel('3cifras')">3 Cifras</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="control-label">Cantidad de problemas</span>
+        <div class="mode-selector">
+          <button class="mode-btn active-count" id="btnCount5"  onclick="setCount(5)">5 problemas</button>
+          <button class="mode-btn" id="btnCount7"  onclick="setCount(7)">7 problemas</button>
+          <button class="mode-btn" id="btnCount10" onclick="setCount(10)">10 problemas</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="instructions-bar">
+    ✏️ Lee con atención cada historia, haz tu suma o resta en el cuaderno y toca la respuesta correcta.
+  </div>
+
+  <div class="problems-list" id="problems-container"></div>
+
+  <div class="actions-bar">
+    <button class="action-btn btn-check" onclick="gradeAll()">✅ Calificar todo</button>
+    <button class="action-btn btn-new" onclick="initGame()">🔄 Nuevos problemas</button>
+  </div>
+
+  <div id="score-banner"></div>
+</div>
+
+<!-- Banco de problemas externo -->
+<script src="problemas.js"></script>
+
+<script>
+let currentLevel = '2cifras';
+let currentCount = 5;
+
+function shuffle(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function setLevel(level) {
+  currentLevel = level;
+  document.getElementById('btn2Cifras').classList.toggle('active', level === '2cifras');
+  document.getElementById('btn3Cifras').classList.toggle('active', level === '3cifras');
+  initGame();
+}
+
+function setCount(count) {
+  currentCount = count;
+  document.getElementById('btnCount5').classList.toggle('active-count', count === 5);
+  document.getElementById('btnCount7').classList.toggle('active-count', count === 7);
+  document.getElementById('btnCount10').classList.toggle('active-count', count === 10);
+  initGame();
+}
+
+function initGame() {
+  const banner = document.getElementById('score-banner');
+  banner.style.display = 'none';
+  banner.innerHTML = '';
+
+  const container = document.getElementById('problems-container');
+  container.innerHTML = '';
+
+  const filtered = BANK_PROBLEMAS.filter(p => p.nivel === currentLevel);
+  const chosen = shuffle(filtered).slice(0, currentCount);
+
+  chosen.forEach((prob, idx) => {
+    const card = document.createElement('div');
+    card.className = 'problem-card question-item';
+
+    const header = document.createElement('div');
+    header.className = 'problem-header';
+    header.innerHTML = `<span class="problem-badge">Problema ${idx + 1}</span>`;
+
+    const textBox = document.createElement('div');
+    textBox.className = 'problem-text';
+    textBox.textContent = prob.texto;
+
+    const choicesRow = document.createElement('div');
+    choicesRow.className = 'choices-row';
+    choicesRow.dataset.expected = prob.correcta;
+
+    shuffle(prob.opciones).forEach(opt => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'choice-btn';
+      btn.textContent = opt;
+      btn.dataset.value = opt;
+
+      btn.addEventListener('click', () => {
+        choicesRow.querySelectorAll('.choice-btn').forEach(b => {
+          b.classList.remove('selected', 'correct-choice', 'wrong-choice');
+        });
+        btn.classList.add('selected');
+      });
+
+      choicesRow.appendChild(btn);
+    });
+
+    card.appendChild(header);
+    card.appendChild(textBox);
+    card.appendChild(choicesRow);
+    container.appendChild(card);
+  });
+}
+
+function gradeAll() {
+  let totalCorrect = 0;
+  let totalQuestions = 0;
+
+  document.querySelectorAll('.question-item').forEach(item => {
+    totalQuestions++;
+    const row = item.querySelector('.choices-row');
+    const expected = row.dataset.expected;
+    const selectedBtn = row.querySelector('.choice-btn.selected');
+
+    row.querySelectorAll('.choice-btn').forEach(b => {
+      b.classList.remove('correct-choice', 'wrong-choice');
+    });
+
+    if (selectedBtn) {
+      if (selectedBtn.dataset.value === expected) {
+        selectedBtn.classList.remove('selected');
+        selectedBtn.classList.add('correct-choice');
+        totalCorrect++;
+      } else {
+        selectedBtn.classList.remove('selected');
+        selectedBtn.classList.add('wrong-choice');
+      }
+    }
+  });
+
+  const banner = document.getElementById('score-banner');
+  banner.style.display = 'block';
+  banner.innerHTML = `¡Buen trabajo! Resolviste <strong>${totalCorrect} de ${totalQuestions}</strong> problemas correctamente. ${totalCorrect === totalQuestions ? '🌟 ¡Excelente!' : 'Revisa los problemas en rojo y vuelve a intentarlo.'}`;
+  banner.scrollIntoView({ behavior: 'smooth' });
+}
+
+initGame();
+</script>
+</body>
+</html>

@@ -661,9 +661,23 @@ function gradeAll() {
   });
 
   const banner = document.getElementById('score-banner');
+  const ratio = totalCorrect / totalQuestions;
+  let saludo = '';
+
+  if (ratio === 1) {
+    saludo = '🌟 ¡Excelente, todo perfecto!';
+  } else if (ratio >= 0.8) {
+    saludo = '👏 ¡Muy bien! Casi lo logras todo, revisa las rojas.';
+  } else if (ratio >= 0.5) {
+    saludo = '💪 ¡Buen intento! Revisa con calma los cuadros en rojo.';
+  } else {
+    saludo = '🧐 ¡A practicar un poco más! Revisa los errores en rojo y vuelve a intentarlo.';
+  }
+
   banner.style.display = 'block';
-  banner.innerHTML = `¡Buen trabajo! Completaste <strong>${totalCorrect} de ${totalQuestions}</strong> secuencias correctamente. ${totalCorrect === totalQuestions ? '🌟 ¡Excelente!' : 'Revisa los cuadros en rojo y vuelve a intentarlo.'}`;
+  banner.innerHTML = `${saludo}<br>Obtuviste <strong>${totalCorrect} de ${totalQuestions}</strong> aciertos.`;
   banner.scrollIntoView({ behavior: 'smooth' });
+
 }
 
 initGame();

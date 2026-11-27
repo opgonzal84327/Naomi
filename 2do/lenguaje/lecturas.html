@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lectura con Puntuación - 2.º Primaria</title>
+<style>
+  :root {
+    --bg-color: #f0f7ff;
+    --card-bg: #ffffff;
+    --primary: #2563eb;
+    --secondary: #0d9488;
+    --correct: #22c55e;
+    --wrong: #ef4444;
+  }
+
+  * {
+    box-sizing: border-box;
+    font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    padding: 16px;
+    background-color: var(--bg-color);
+    color: #1e293b;
+    padding-bottom: 60px;
+  }
+
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+  }
+
+  header {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 18px 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
+    border: 3px solid #bfdbfe;
+  }
+
+  h1 {
+    margin: 0 0 12px 0;
+    color: #1e3a8a;
+    font-size: 1.7rem;
+  }
+
+  .top-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+  }
+
+  select.reading-select {
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 2px solid #93c5fd;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #1e3a8a;
+    background: #eff6ff;
+    cursor: pointer;
+    max-width: 100%;
+  }
+
+  .toggle-btn {
+    border: 2px solid #f59e0b;
+    background: #fef3c7;
+    color: #92400e;
+    padding: 9px 16px;
+    border-radius: 12px;
+    font-size: 0.98rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .toggle-btn.off {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+    color: #475569;
+  }
+
+  /* Leyenda del semáforo */
+  .legend-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    background: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+  }
+
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: bold;
+  }
+
+  .pill-comma {
+    background: #fef08a;
+    border: 2px solid #eab308;
+    color: #854d0e;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+  }
+
+  .pill-period {
+    background: #fee2e2;
+    border: 2px solid #ef4444;
+    color: #991b1b;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+  }
+
+  /* Tarjeta principal de lectura */
+  .reading-card {
+    background: var(--card-bg);
+    border-radius: 22px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    border: 2px solid #cbd5e1;
+  }
+
+  .reading-title {
+    margin: 0 0 14px 0;
+    color: #1e3a8a;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  /* Barra de lectura guiada (Teleprompter) */
+  .guide-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background: #f8fafc;
+    border: 2px solid #dbeafe;
+    border-radius: 14px;
+    padding: 10px 14px;
+    margin-bottom: 18px;
+  }
+
+  .play-btn {
+    border: none;
+    background: #2563eb;
+    color: white;
+    padding: 9px 18px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #1d4ed8;
+  }
+
+  .play-btn.stop {
+    background: #dc2626;
+    box-shadow: 0 3px 0 #991b1b;
+  }
+
+  .speed-group {
+    display: inline-flex;
+    background: #e2e8f0;
+    padding: 4px;
+    border-radius: 10px;
+    gap: 4px;
+  }
+
+  .speed-btn {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    background: transparent;
+    color: #475569;
+    cursor: pointer;
+  }
+
+  .speed-btn.active {
+    background: #0d9488;
+    color: white;
+  }
+
+  .status-pill {
+    font-size: 0.95rem;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #1e40af;
+    min-width: 170px;
+    text-align: center;
+  }
+
+  .status-pill.pause-short {
+    background: #fef08a;
+    color: #854d0e;
+  }
+
+  .status-pill.pause-long {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  /* Texto de la lectura */
+  .reading-body {
+    font-size: 1.45rem;
+    line-height: 2.1;
+    color: #0f172a;
+    background: #fffbeb;
+    border: 2px solid #fde68a;
+    border-radius: 16px;
+    padding: 20px 22px;
+  }
+
+  .word-span {
+    padding: 2px 3px;
+    border-radius: 6px;
+    transition: background 0.12s;
+  }
+
+  .word-span.active-word {
+    background: #fde047;
+    color: #0f172a;
+    box-shadow: 0 2px 0 #eab308;
+  }
+
+  .sign-badge {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: bold;
+    vertical-align: middle;
+    margin: 0 4px 0 2px;
+    padding: 1px 8px;
+    border-radius: 999px;
+  }
+
+  .sign-comma {
+    background: #fef08a;
+    border: 2px solid #eab308;
+    color: #854d0e;
+  }
+
+  .sign-period {
+    background: #fee2e2;
+    border: 2px solid #ef4444;
+    color: #991b1b;
+  }
+
+  .hide-signs .sign-badge {
+    display: none;
+  }
+
+  /* Preguntas de comprensión */
+  .comp-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    border: 2px solid #e2e8f0;
+  }
+
+  .comp-title {
+    margin: 0 0 14px 0;
+    color: #0f172a;
+    font-size: 1.3rem;
+  }
+
+  .q-item {
+    background: #f8fafc;
+    border: 2px solid #cbd5e1;
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+
+  .q-text {
+    font-size: 1.12rem;
+    font-weight: bold;
+    color: #1e293b;
+    margin-bottom: 10px;
+  }
+
+  .choices-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .choice-btn {
+    flex: 1;
+    min-width: 180px;
+    padding: 10px 14px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    border-radius: 12px;
+    border: 3px solid #94a3b8;
+    background: white;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .choice-btn.selected {
+    background: #dbeafe;
+    border-color: #2563eb;
+    color: #1e3a8a;
+  }
+
+  .choice-btn.correct-choice {
+    background: #dcfce7 !important;
+    border-color: var(--correct) !important;
+    color: #166534 !important;
+  }
+
+  .choice-btn.wrong-choice {
+    background: #fee2e2 !important;
+    border-color: var(--wrong) !important;
+    color: #991b1b !important;
+  }
+
+  .actions-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 22px;
+  }
+
+  .action-btn {
+    border: none;
+    padding: 14px 26px;
+    border-radius: 16px;
+    font-size: 1.15rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.18);
+  }
+
+  .btn-check { background: #16a34a; }
+  .btn-new   { background: #ea580c; }
+
+  #score-banner {
+    display: none;
+    margin-top: 20px;
+    background: #fef9c3;
+    border: 3px solid #eab308;
+    border-radius: 18px;
+    padding: 18px;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #854d0e;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>📚 Lectura con Puntuación — 2.º Primaria</h1>
+    <div class="top-controls">
+      <select class="reading-select" id="readingSelect" onchange="selectReading(this.value)"></select>
+      <button type="button" class="toggle-btn" id="btnToggleSigns" onclick="toggleSigns()">👁️ Señales: ACTIVADAS</button>
+    </div>
+  </header>
+
+  <div class="legend-bar">
+    <div class="legend-item"><span class="pill-comma">, ⏸️ Pausa corta</span> Respira 1 segundo en cada coma</div>
+    <div class="legend-item"><span class="pill-period">. 🛑 Alto</span> Detente y respira 2 segundos en cada punto</div>
+  </div>
+
+  <div class="reading-card">
+    <h2 class="reading-title" id="readingTitle"></h2>
+
+    <div class="guide-bar">
+      <button type="button" class="play-btn" id="btnGuide" onclick="toggleGuide()">▶️ Guía de ritmo</button>
+      <div class="speed-group">
+        <button type="button" class="speed-btn active" id="spdSlow" onclick="setSpeed('slow')">🐢 Lento</button>
+        <button type="button" class="speed-btn" id="spdNormal" onclick="setSpeed('normal')">🚶 Normal</button>
+        <button type="button" class="speed-btn" id="spdFast" onclick="setSpeed('fast')">🐇 Rápido</button>
+      </div>
+      <div class="status-pill" id="guideStatus">Listo para leer en voz alta</div>
+    </div>
+
+    <div class="reading-body" id="readingBody"></div>
+  </div>
+
+  <div class="comp-card">
+    <h3 class="comp-title">🧠 ¿Qué comprendiste de la lectura?</h3>
+    <div id="questionsContainer"></div>
+  </div>
+
+  <div class="actions-bar">
+    <button type="button" class="action-btn btn-check" onclick="gradeAll()">✅ Calificar preguntas</button>
+    <button type="button" class="action-btn btn-new" onclick="randomReading()">🎲 Otra lectura al azar</button>
+  </div>
+
+  <div id="score-banner"></div>
+</div>
+
+<!-- Banco de lecturas externo -->
+<script src="lecturas.js"></script>
+
+<script>
+let currentIndex = 0;
+let showSigns = true;
+let guideTimer = null;
+let isPlaying = false;
+let speedMode = 'slow'; // 'slow', 'normal', 'fast'
+
+const SPEEDS = {
+  slow:   { wordMs: 650, commaMs: 1300, periodMs: 2200 },
+  normal: { wordMs: 450, commaMs: 1000, periodMs: 1800 },
+  fast:   { wordMs: 320, commaMs: 800,  periodMs: 1400 }
+};
+
+function shuffle(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function populateSelector() {
+  const sel = document.getElementById('readingSelect');
+  sel.innerHTML = '';
+  BANK_LECTURAS.forEach((lec, idx) => {
+    const opt = document.createElement('option');
+    opt.value = idx;
+    opt.textContent = `${idx + 1}. ${lec.titulo}`;
+    sel.appendChild(opt);
+  });
+}
+
+function toggleSigns() {
+  showSigns = !showSigns;
+  const btn = document.getElementById('btnToggleSigns');
+  const body = document.getElementById('readingBody');
+  btn.textContent = showSigns ? '👁️ Señales: ACTIVADAS' : '🙈 Señales: OCULTAS (Modo reto)';
+  btn.classList.toggle('off', !showSigns);
+  body.classList.toggle('hide-signs', !showSigns);
+}
+
+function setSpeed(mode) {
+  speedMode = mode;
+  document.getElementById('spdSlow').classList.toggle('active', mode === 'slow');
+  document.getElementById('spdNormal').classList.toggle('active', mode === 'normal');
+  document.getElementById('spdFast').classList.toggle('active', mode === 'fast');
+}
+
+function stopGuide() {
+  isPlaying = false;
+  if (guideTimer) {
+    clearTimeout(guideTimer);
+    guideTimer = null;
+  }
+  const btn = document.getElementById('btnGuide');
+  btn.textContent = '▶️ Guía de ritmo';
+  btn.classList.remove('stop');
+
+  const status = document.getElementById('guideStatus');
+  status.className = 'status-pill';
+  status.textContent = 'Listo para leer en voz alta';
+
+  document.querySelectorAll('.word-span.active-word').forEach(el => el.classList.remove('active-word'));
+}
+
+function toggleGuide() {
+  if (isPlaying) {
+    stopGuide();
+    return;
+  }
+
+  const words = Array.from(document.querySelectorAll('#readingBody .word-span'));
+  if (!words.length) return;
+
+  isPlaying = true;
+  const btn = document.getElementById('btnGuide');
+  btn.textContent = '⏹️ Detener guía';
+  btn.classList.add('stop');
+
+  let idx = 0;
+
+  function step() {
+    if (!isPlaying) return;
+
+    words.forEach(w => w.classList.remove('active-word'));
+
+    if (idx >= words.length) {
+      stopGuide();
+      const status = document.getElementById('guideStatus');
+      status.textContent = '🌟 ¡Lectura terminada!';
+      return;
+    }
+
+    const currentWord = words[idx];
+    currentWord.classList.add('active-word');
+
+    const punct = currentWord.dataset.punct; // 'comma', 'period' o 'none'
+    const cfg = SPEEDS[speedMode];
+    const status = document.getElementById('guideStatus');
+
+    let delay = cfg.wordMs;
+
+    if (punct === 'comma') {
+      delay += cfg.commaMs;
+      status.className = 'status-pill pause-short';
+      status.textContent = '⏸️ Coma: pausa corta...';
+    } else if (punct === 'period') {
+      delay += cfg.periodMs;
+      status.className = 'status-pill pause-long';
+      status.textContent = '🛑 Punto: ¡detente y respira!';
+    } else {
+      status.className = 'status-pill';
+      status.textContent = '📖 Leyendo...';
+    }
+
+    idx++;
+    guideTimer = setTimeout(step, delay);
+  }
+
+  step();
+}
+
+function renderReading(index) {
+  stopGuide();
+  currentIndex = index;
+  document.getElementById('readingSelect').value = index;
+
+  const banner = document.getElementById('score-banner');
+  banner.style.display = 'none';
+  banner.innerHTML = '';
+
+  const lectura = BANK_LECTURAS[index];
+  document.getElementById('readingTitle').textContent = lectura.titulo;
+
+  const bodyEl = document.getElementById('readingBody');
+  bodyEl.innerHTML = '';
+
+  // Dividimos por palabras conservando comas y puntos pegados al final
+  const tokens = lectura.texto.split(/\s+/);
+
+  tokens.forEach(tok => {
+    const span = document.createElement('span');
+    span.className = 'word-span';
+
+    if (tok.endsWith(',')) {
+      span.dataset.punct = 'comma';
+      span.innerHTML = `${tok}<span class="sign-badge sign-comma">⏸️ pausa</span> `;
+    } else if (tok.endsWith('.')) {
+      span.dataset.punct = 'period';
+      span.innerHTML = `${tok}<span class="sign-badge sign-period">🛑 alto</span> `;
+    } else {
+      span.dataset.punct = 'none';
+      span.textContent = tok + ' ';
+    }
+
+    bodyEl.appendChild(span);
+  });
+
+  // Renderizar preguntas de comprensión
+  const qContainer = document.getElementById('questionsContainer');
+  qContainer.innerHTML = '';
+
+  lectura.preguntas.forEach((q, qIdx) => {
+    const qBox = document.createElement('div');
+    qBox.className = 'q-item';
+
+    const qText = document.createElement('div');
+    qText.className = 'q-text';
+    qText.textContent = `${qIdx + 1}. ${q.pregunta}`;
+
+    const row = document.createElement('div');
+    row.className = 'choices-row';
+    row.dataset.expected = q.correcta;
+
+    shuffle(q.opciones).forEach(opt => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'choice-btn';
+      btn.textContent = opt;
+      btn.dataset.value = opt;
+
+      btn.addEventListener('click', () => {
+        row.querySelectorAll('.choice-btn').forEach(b => {
+          b.classList.remove('selected', 'correct-choice', 'wrong-choice');
+        });
+        btn.classList.add('selected');
+      });
+
+      row.appendChild(btn);
+    });
+
+    qBox.appendChild(qText);
+    qBox.appendChild(row);
+    qContainer.appendChild(qBox);
+  });
+}
+
+function selectReading(val) {
+  renderReading(Number(val));
+}
+
+function randomReading() {
+  if (BANK_LECTURAS.length <= 1) return;
+  let next = currentIndex;
+  while (next === currentIndex) {
+    next = Math.floor(Math.random() * BANK_LECTURAS.length);
+  }
+  renderReading(next);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function gradeAll() {
+  let totalCorrect = 0;
+  let totalQuestions = 0;
+
+  document.querySelectorAll('.q-item').forEach(item => {
+    totalQuestions++;
+    const row = item.querySelector('.choices-row');
+    const expected = row.dataset.expected;
+    const selectedBtn = row.querySelector('.choice-btn.selected');
+
+    row.querySelectorAll('.choice-btn').forEach(b => {
+      b.classList.remove('correct-choice', 'wrong-choice');
+    });
+
+    if (selectedBtn) {
+      if (selectedBtn.dataset.value === expected) {
+        selectedBtn.classList.remove('selected');
+        selectedBtn.classList.add('correct-choice');
+        totalCorrect++;
+      } else {
+        selectedBtn.classList.remove('selected');
+        selectedBtn.classList.add('wrong-choice');
+      }
+    }
+  });
+
+  const banner = document.getElementById('score-banner');
+  const ratio = totalCorrect / totalQuestions;
+  let saludo = '';
+
+  if (ratio === 1) {
+    saludo = '🌟 ¡Excelente lectura y comprensión!';
+  } else if (ratio >= 0.6) {
+    saludo = '👏 ¡Muy bien! Revisa la pregunta en rojo.';
+  } else {
+    saludo = '🧐 ¡Vuelve a leer con calma y vuelve a intentarlo!';
+  }
+
+  banner.style.display = 'block';
+  banner.innerHTML = `${saludo}<br>Obtuviste <strong>${totalCorrect} de ${totalQuestions}</strong> aciertos.`;
+  banner.scrollIntoView({ behavior: 'smooth' });
+}
+
+populateSelector();
+renderReading(0);
+</script>
+</body>
+</html>
+

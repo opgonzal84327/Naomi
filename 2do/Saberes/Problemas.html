@@ -255,6 +255,7 @@
         <div class="mode-selector">
           <button class="mode-btn active" id="btn2Cifras" onclick="setLevel('2cifras')">2 Cifras</button>
           <button class="mode-btn" id="btn3Cifras" onclick="setLevel('3cifras')">3 Cifras</button>
+          <button class="mode-btn" id="btn2Pasos"  onclick="setLevel('2pasos')">2 Pasos</button>
         </div>
       </div>
 
@@ -303,8 +304,10 @@ function setLevel(level) {
   currentLevel = level;
   document.getElementById('btn2Cifras').classList.toggle('active', level === '2cifras');
   document.getElementById('btn3Cifras').classList.toggle('active', level === '3cifras');
+  document.getElementById('btn2Pasos').classList.toggle('active', level === '2pasos');
   initGame();
 }
+
 
 function setCount(count) {
   currentCount = count;
